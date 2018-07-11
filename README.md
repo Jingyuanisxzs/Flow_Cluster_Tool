@@ -24,7 +24,7 @@ This is a Nodejs web application(with some python scripts). The weighted Kmeans 
     2. The application will create a new folder './public/flow_data/' if there isn't one.
     3. It may take one hour to extract OMX file into a bunch of csv files stored in './public/flow_data/'
     4. As long as'./public/flow_data' folder is existing, the './public/data/flow_matrices.omx' file won't be decoded again.
-### 2. Use Google Chrome and go to "https://localhost:3000".
+### 2. Use Google Chrome or Firefox, and go to "https://localhost:3000".
     1. During the process of decoding, the webpage won't work.
     
 ## Current Fatals:
