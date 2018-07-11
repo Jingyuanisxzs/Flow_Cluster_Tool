@@ -1,5 +1,6 @@
 !.gitignore
 /public/flow_data
+
+/public/data/*
 !/public/data/4326ZonesCoordinates.geojson
-/public/data
 /node_modules
