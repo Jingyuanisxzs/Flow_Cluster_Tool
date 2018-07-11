@@ -1,6 +1,6 @@
 # Flow_Cluster_Tool
 
-This is a Nodejs web application(with some python scripts).
+This is a Nodejs web application(with some python scripts). The important data is not here. You should use your own flow_matrices.omx file. package.json and package-lock.json might should be removed before setting up.
 
 ## Set Up
 ### 1. Download the folder
