@@ -1,10 +1,10 @@
 # Flow_Cluster_Tool
 
 This is a Nodejs web application(with some python scripts). The important data is not here. You should use your own flow_matrices.omx file. 
-package.json and package-lock.json might should be removed before setting up.
 
 ## Set Up
 ### 1. Download the folder
+    1. package.json and package-lock.json might should be removed before setting up.
 ### 2. Go to the root of the folder, and run some npm commands in the terminal/cmd. If 'npm' is not found, then you may need to install nodejs first...
     1. npm install
     2. npm install --save express
