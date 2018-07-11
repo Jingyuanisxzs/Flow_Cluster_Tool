@@ -1,4 +1,4 @@
-# Flow_Cluster_Tool
+# Flow Cluster Editing Tool
 
 This is a Nodejs web application(with some python scripts). The important data is not here. You should use your own flow_matrices.omx file. 
 
@@ -30,3 +30,11 @@ This is a Nodejs web application(with some python scripts). The important data i
 ## Current Fatals:
     1. Sometime, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
     
+## Some Tips:
+    1. All the lines is clickable, no matter it is a blue(single) line or red(clustered) line, but you have to click on the central of the line precisely. Clicking on the arrow won't have any effect.
+    2. If you choose to see single flow in 'lines', the right-side table is clickable to highlight the chosen single flow.
+    3. If you choose to see single flow in 'dots', you can see a lot of circles in different size; however, the dots are not clickable and can't be selected through the right-side table.
+    4. The slider can let the app run kmeans automatically, but 20 iterations may be good enough. Don't leave it running forever(though it will stop after 200 iterations), it may occupy your cpu resource.
+    5. Right now, the Kmeans process runs parallelly using four threads. If you have an awesome computer, such as 14 cores..., you may get a better performance by increasing the threads number, though the benchmark is unknown.
+    
+   
