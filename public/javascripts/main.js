@@ -144,7 +144,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                       
                       
                       for (var u =0;u<transitArrayWithClusters[clickedGroup].length;u++){
-                        if(transitArrayWithClusters[clickedGroup][u][4]/10000000>=0.05){
+                        if(transitArrayWithClusters[clickedGroup][u][4]/ratio>=0.05){
                           $("#dataTable").append('<tr class="clickableRow"><td>'+transitArrayWithClusters[clickedGroup][u][5]+'</td><td>'+transitArrayWithClusters[clickedGroup][u][6]+'</td><td>'+transitArrayWithClusters[clickedGroup][u][4]+'</td></tr>');
                         }
                       }
@@ -431,7 +431,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 maxWidth = newCentroid[p][4];
             }
           }
-          ratio = maxWidth/10;
+          ratio = maxWidth/15;
         
           for(var j = 0,k= newCentroid.length;j<k;j++){
             var centroidWidth;
@@ -452,18 +452,16 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 "wkid": 4326
               }),
               };
-              const attributes = {
-                ObjectID: newCentroid[j][5]
-              };
+              var infoTemplate = new InfoTemplate("Value: ${value}")
 
               var advPolyline = new Polyline(polylineJson);
-              var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5]}, attributes);
+              var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
           }
         }
         function startEndDots(line){
-            var adjustedSize=line[4]/1000000;
+            var adjustedSize=line[4]*100/ratio;
             //the data has huge gap, will eliminate very small ones.
             if(adjustedSize<0.5&&adjustedSize>0.05){
               adjustedSize = 0.5;
