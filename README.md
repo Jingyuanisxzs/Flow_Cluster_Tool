@@ -36,6 +36,6 @@ This is a Nodejs web application(with some python scripts). The weighted Kmeans 
     2. If you choose to see single flows in 'lines', the right-side table is clickable and highlight the chosen single flow on the map.
     3. If you choose to see single flows in 'dots', you can see a lot of circles in different sizes; however, the dots are not clickable and can't be selected through the right-side table.
     4. The slider can let the app run Kmeans continuously, but 20 iterations may be good enough. Don't leave it run forever(though it will stop after 200 iterations), it may occupy your cpu resource.
-    5. Right now, the Kmeans process runs parallelly using four threads. If you have an awesome computer, such as 14 cores..., you may get a better performance by increasing the threads number, though the benchmark is unknown.
+    5. Right now, the Kmeans process runs parallelly using four threads. If you have an awesome computer, such as 8 cores..., you may get a better performance by increasing the threads number, though the benchmark is unknown.
     6. './public/data/4326ZonesCoordinates.geojson' is provided. It is converted from the ZoneCoordinates.csv file. ZoneCoordinates.csv file uses 3401 GIS coding system. The Application doesn't support a 3401 coding system, so it is converted to 4326 using QGIS. 
    
