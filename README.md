@@ -1,6 +1,6 @@
 # Flow Cluster Editing Tool
 
-This is a Nodejs web application(with some python scripts). The important data is not here. You should use your own flow_matrices.omx file. 
+This is a Nodejs web application(with some python scripts). The weighted Kmeans algorithm is used. The important data is not here. You should use your own flow_matrices.omx file. 
 
 ## Set Up
 ### 1. Download the folder
