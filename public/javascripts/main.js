@@ -161,7 +161,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                           var rowItems = $(this).children('td').map(function () {
                               return this.innerHTML;
                           }).toArray();
-                          $(this).addClass('selected')
+                          $(this).addClass('selected');
                           for(var p=0,m =startEndLayer.graphics.length;p<m;p++){
                                 if(startEndLayer.graphics[p].attributes.inZone === rowItems[0] &&startEndLayer.graphics[p].attributes.outZone ===rowItems[1] ){
                                     startEndLayer.graphics[p].symbol.setColor(new Color([22, 254, 18  ]));
@@ -297,22 +297,23 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
               transitArrayWithClusters[JSON.stringify(m)] = [];
             }
         }
-        function splitIntoGroupsGPU(clusters,transitArray){
+        function splitIntoGroupsGPU(clusters,wholeTransitArray){
           transitArrayWithClusters=[];
           for(var m=0,l=clusters.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
-          var num_threads = 4;
+          var num_threads = 8;
           var c = 0;
           var MT = new Multithread(num_threads);
-
           var funcInADifferentThread = MT.process(
             function(clusters,transitArray,index){
+
               var result = new Array(transitArray.length);
               for(var i=0,l1=transitArray.length;i<l1;i++){
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=clusters.length;j<l2;j++){
+              
                   var currentDist=Math.sqrt(
                       (transitArray[i][0]-clusters[j][0])*(transitArray[i][0]-clusters[j][0]) +
                       (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1])  +
@@ -329,42 +330,27 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
             },
             function(r) {
               c+=1;
-              if(r[0] === 1){
-                for(var t=0;t<firstArray.length;t++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t])].push(firstArray[t]);
-                }
+              for(var t4=0;t4<GroupArray[r[0]].length;t4++){
+                transitArrayWithClusters[JSON.stringify(r[1][t4])].push(GroupArray[r[0]][t4]);
               }
-              else if(r[0] ===2){
-                for(var t2=0;t2<secondArray.length;t2++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t2])].push(secondArray[t2]);
-                }
-              }
-              else if(r[0]  ===3){
-                for(var t3=0;t3<thirdArray.length;t3++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t3])].push(thirdArray[t3]);
-                }
-
-              }
-              else if(r[0]  === 4){
-                for(var t4=0;t4<fourthArray.length;t4++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t4])].push(fourthArray[t4]);
-                }
-              }
-              if(c==4){
+            
+              if(c=== num_threads){
                 myVar.SetValue(1);
               }
             }
           );
-          var stringlen =transitArray.length;
-          var firstArray =transitArray.slice(0,stringlen/4);
-          var secondArray =transitArray.slice(stringlen/4,stringlen/2);
-          var thirdArray = transitArray.slice(stringlen/2,3*stringlen/4);
-          var fourthArray = transitArray.slice(3*stringlen/4,stringlen);
-          var w1 = funcInADifferentThread(clusters,firstArray,1);
-          var w2 = funcInADifferentThread(clusters,secondArray,2);
-          var w3 = funcInADifferentThread(clusters,thirdArray,3);
-          var w4 = funcInADifferentThread(clusters,fourthArray,4);
-}
+
+          var averageLength = wholeTransitArray.length/num_threads;
+          var GroupArray = new Array(num_threads);
+          for(var i = 0; i<num_threads; i++){
+            GroupArray[i] = wholeTransitArray.slice(averageLength*i,averageLength*(i+1));
+          }
+          for(var j=0; j<num_threads;j++){
+             funcInADifferentThread(clusters,GroupArray[j],j);
+          }
+        
+        
+        }
         function Variable(initVal, onChange)
         {
             this.val = initVal;          //Value to be stored in this object
