@@ -47,6 +47,8 @@ The internal [omx file structure is documented](https://github.com/osPlanning/om
 2. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
 clicking on an arrow for see the detailed lines or dots. 
 
+3. Show the zone boundaries on the map (from /public/data/ZoneBoundaries3401.geojson)
+
 ## Some Tips:
 
 1. All the lines are clickable, no matter it is a blue(single) line or red(clustered) line, but you have to click on the central of the line precisely. Clicking on the arrow won't have any effect.
