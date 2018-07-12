@@ -4,3 +4,5 @@
 /public/data/*
 !/public/data/4326ZonesCoordinates.geojson
 /node_modules
+/package.json
+/package-lock.json
