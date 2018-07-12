@@ -8,12 +8,12 @@ This is a Nodejs web application(with some python scripts). The weighted Kmeans 
 #### 2. Go to the root of the folder, and run some npm commands in the terminal/cmd. If 'npm' is not found, then you may need to install nodejs first...
     1. npm install
     2. npm install --save express
-       npm install --save Blob
-       npm install --save child-process
-       npm install --save http-errors
-       npm install --save jade
-       npm install --save jsdom
-       npm install --save morgan
+    3. npm install --save Blob
+    4. npm install --save child-process
+    5. npm install --save http-errors
+    6. npm install --save jade
+    7. npm install --save jsdom
+    8. npm install --save morgan
        
 #### 3. Python2.7 is needed. Please use PIP to install openmatix and numpy.
 #### 4. Go to './public/data/' folder, add your 'flow_matrices.omx'(name is important, must be exactly the same name) file there.
