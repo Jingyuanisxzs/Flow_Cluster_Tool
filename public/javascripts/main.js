@@ -3,6 +3,7 @@ var map;
 var directionalSymbols = [];
 var currentIteration = 1;
 var result;
+var default_threads = 8;
 var clusterNumber=200;
 var defaultClusterNumber = 200;
 var newCentroid;
@@ -13,18 +14,33 @@ var myVar;
 var myCounter;
 var selectedMatrix;
 var ratio;
-require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js",
+var viewSpatialReference; 
+var geoSpatialReference;
+require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate"],
-    function (Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,
+    function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,
               SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw,SpatialReference, config, request,
               ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate) {
         ready(function () {
              //for the sample print server
+             if (!projection.isSupported()) {
+               alert("client-side projection is not supported");
+               return;
+             }
+            const projectionPromise = projection.load();
+             viewSpatialReference = new SpatialReference({
+              wkid: 4326
+            });
+             geoSpatialReference = new SpatialReference({
+              wkid: 3401
+            });
+
+
              $("#clusters").val(clusterNumber);
              $("#currentIteration").prop('disabled', true);
              //zonesfile must be 4326 encoded for current application
-            var zonesJsonURL = "data/4326ZonesCoordinates.geojson";
+            var zonesJsonURL = "data/3401ZonesCoordinates.geojson";
             //can be labour flow, transit flow, whatever flow
             var transitURL = null;
             var flowTitleURL = "data/pecas_matrices_title.csv";
@@ -161,7 +177,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                           var rowItems = $(this).children('td').map(function () {
                               return this.innerHTML;
                           }).toArray();
-                          $(this).addClass('selected')
+                          $(this).addClass('selected');
                           for(var p=0,m =startEndLayer.graphics.length;p<m;p++){
                                 if(startEndLayer.graphics[p].attributes.inZone === rowItems[0] &&startEndLayer.graphics[p].attributes.outZone ===rowItems[1] ){
                                     startEndLayer.graphics[p].symbol.setColor(new Color([22, 254, 18  ]));
@@ -297,22 +313,23 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
               transitArrayWithClusters[JSON.stringify(m)] = [];
             }
         }
-        function splitIntoGroupsGPU(clusters,transitArray){
+        function splitIntoGroupsGPU(clusters,wholeTransitArray){
           transitArrayWithClusters=[];
           for(var m=0,l=clusters.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
-          var num_threads = 4;
+          var num_threads = 8;
           var c = 0;
           var MT = new Multithread(num_threads);
-
           var funcInADifferentThread = MT.process(
             function(clusters,transitArray,index){
+
               var result = new Array(transitArray.length);
               for(var i=0,l1=transitArray.length;i<l1;i++){
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=clusters.length;j<l2;j++){
+              
                   var currentDist=Math.sqrt(
                       (transitArray[i][0]-clusters[j][0])*(transitArray[i][0]-clusters[j][0]) +
                       (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1])  +
@@ -329,42 +346,27 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
             },
             function(r) {
               c+=1;
-              if(r[0] === 1){
-                for(var t=0;t<firstArray.length;t++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t])].push(firstArray[t]);
-                }
+              for(var t4=0;t4<GroupArray[r[0]].length;t4++){
+                transitArrayWithClusters[JSON.stringify(r[1][t4])].push(GroupArray[r[0]][t4]);
               }
-              else if(r[0] ===2){
-                for(var t2=0;t2<secondArray.length;t2++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t2])].push(secondArray[t2]);
-                }
-              }
-              else if(r[0]  ===3){
-                for(var t3=0;t3<thirdArray.length;t3++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t3])].push(thirdArray[t3]);
-                }
-
-              }
-              else if(r[0]  === 4){
-                for(var t4=0;t4<fourthArray.length;t4++){
-                  transitArrayWithClusters[JSON.stringify(r[1][t4])].push(fourthArray[t4]);
-                }
-              }
-              if(c==4){
+            
+              if(c=== num_threads){
                 myVar.SetValue(1);
               }
             }
           );
-          var stringlen =transitArray.length;
-          var firstArray =transitArray.slice(0,stringlen/4);
-          var secondArray =transitArray.slice(stringlen/4,stringlen/2);
-          var thirdArray = transitArray.slice(stringlen/2,3*stringlen/4);
-          var fourthArray = transitArray.slice(3*stringlen/4,stringlen);
-          var w1 = funcInADifferentThread(clusters,firstArray,1);
-          var w2 = funcInADifferentThread(clusters,secondArray,2);
-          var w3 = funcInADifferentThread(clusters,thirdArray,3);
-          var w4 = funcInADifferentThread(clusters,fourthArray,4);
-}
+
+          var averageLength = wholeTransitArray.length/num_threads;
+          var GroupArray = new Array(num_threads);
+          for(var i = 0; i<num_threads; i++){
+            GroupArray[i] = wholeTransitArray.slice(averageLength*i,averageLength*(i+1));
+          }
+          for(var j=0; j<num_threads;j++){
+             funcInADifferentThread(clusters,GroupArray[j],j);
+          }
+        
+        
+        }
         function Variable(initVal, onChange)
         {
             this.val = initVal;          //Value to be stored in this object
@@ -402,7 +404,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
           var geojson =
              {"name":"NewFeatureType",
               "type":"FeatureCollection",
-              "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
+              "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3401" } },
               "features":[]};
             // format=  {"name":"NewFeatureType",
             //    "type":"FeatureCollection",
@@ -445,6 +447,11 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
           for(var j = 0,k= newCentroid.length;j<k;j++){
             var centroidWidth;
             centroidWidth = newCentroid[j][4]/ratio;
+            const pointOrigin = new Point([newCentroid[j][0], newCentroid[j][1]], geoSpatialReference);
+            const pointDest = new Point([newCentroid[j][2], newCentroid[j][3]], geoSpatialReference)
+            const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
+            const projectedPointDest = projection.project(pointDest, viewSpatialReference);
+
             if(centroidWidth>0.05){
               var advSymbol = new DirectionalLineSymbol({
                   style: SimpleLineSymbol.STYLE_SOLID,
@@ -455,15 +462,14 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                   directionColor: new Color([204, 51, 0]),
                   directionSize: centroidWidth*5
               });
+
               var polylineJson = {
-                "paths":[[ [newCentroid[j][0], newCentroid[j][1] ], [ newCentroid[j][2], newCentroid[j][3]] ] ],
-                "spatialReference": new SpatialReference({
-                "wkid": 4326
-              }),
+                "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
               };
               var infoTemplate = new InfoTemplate("Value: ${value}");
+              var advPolyline = new Polyline(polylineJson,viewSpatialReference);
+              //console.log(advPolyline)
 
-              var advPolyline = new Polyline(polylineJson);
               var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
@@ -472,6 +478,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
         function startEndDots(line){
             var adjustedSize=line[4]*25/ratio;
             //the data has huge gap, will eliminate very small ones.
+
             if(adjustedSize<0.5&&adjustedSize>0.05){
               adjustedSize = 0.5;
             }
@@ -505,15 +512,21 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 "style":"esriSLSSolid"
               }
             });
-            var originPoint = new Point(line[0],line[1],new SpatialReference({ wkid: 4326 }));
-            var destPoint = new Point(line[2],line[3],new SpatialReference({ wkid: 4326 }));
-            var originG = new Graphic(originPoint, symbolOrigin, {}, null);
-            var destG = new Graphic(destPoint, symbolDest, {}, null);
+            var originPoint = new Point(line[0],line[1],geoSpatialReference);
+            var destPoint = new Point(line[2],line[3],geoSpatialReference);
+            var projectedPointOrigin = projection.project(originPoint, viewSpatialReference);
+            var projectedPointDest = projection.project(destPoint, viewSpatialReference);
+            var originG = new Graphic(projectedPointOrigin, symbolOrigin, {}, null);
+            var destG = new Graphic(projectedPointDest, symbolDest, {}, null);
             return [originG,destG];
         }
         function startEndLines(line){
           var centroidWidth;
           centroidWidth = line[4]/ratio;
+          const pointOrigin = new Point([line[0],line[1]], geoSpatialReference);
+          const pointDest = new Point([line[2], line[3]], geoSpatialReference);
+          const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
+          const projectedPointDest = projection.project(pointDest, viewSpatialReference);
           if(centroidWidth>0.05){
             var advSymbol = new DirectionalLineSymbol({
                 style: SimpleLineSymbol.STYLE_SOLID,
@@ -525,13 +538,10 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 directionSize: centroidWidth*5
             });
             var polylineJson = {
-                "paths":[[[line[0], line[1]],[line[2],line[3]]]],
-                "spatialReference": new SpatialReference({
-                "wkid": 4326
-                }),
+              "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
             };
             var infoTemplate = new InfoTemplate("Value: ${value}","Origin Zone: ${inZone}<br/>Destination Zone:${outZone}");
-            var advPolyline = new Polyline(polylineJson);
+            var advPolyline = new Polyline(polylineJson,viewSpatialReference);
             var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
             return ag;
         }
