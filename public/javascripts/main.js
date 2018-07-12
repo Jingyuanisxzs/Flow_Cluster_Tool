@@ -404,7 +404,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           var geojson =
              {"name":"NewFeatureType",
               "type":"FeatureCollection",
-              "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
+              "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3401" } },
               "features":[]};
             // format=  {"name":"NewFeatureType",
             //    "type":"FeatureCollection",
