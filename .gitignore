@@ -6,3 +6,4 @@
 !/public/data/3401ZonesCoordinates.geojson
 
 /node_modules
+.DS_Store
