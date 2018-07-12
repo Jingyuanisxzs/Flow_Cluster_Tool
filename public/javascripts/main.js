@@ -461,7 +461,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
           }
         }
         function startEndDots(line){
-            var adjustedSize=line[4]*100/ratio;
+            var adjustedSize=line[4]*25/ratio;
             //the data has huge gap, will eliminate very small ones.
             if(adjustedSize<0.5&&adjustedSize>0.05){
               adjustedSize = 0.5;
