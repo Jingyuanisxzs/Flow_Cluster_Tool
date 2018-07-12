@@ -46,6 +46,9 @@ The internal [omx file structure is documented](https://github.com/osPlanning/om
 
 2. The ZonesCoordinates file needs to be in two coordinate systems, projection 4326 for mapping but in a less skewed projection for clustering.
 
+3. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
+clicking on an arrow for see the detailed lines or dots. 
+
 ## Some Tips:
 
 1. All the lines are clickable, no matter it is a blue(single) line or red(clustered) line, but you have to click on the central of the line precisely. Clicking on the arrow won't have any effect.

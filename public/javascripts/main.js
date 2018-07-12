@@ -302,7 +302,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
           for(var m=0,l=clusters.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
-          var num_threads = 4;
+          var num_threads = 20;
           var c = 0;
           var MT = new Multithread(num_threads);
 
