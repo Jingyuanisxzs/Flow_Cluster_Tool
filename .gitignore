@@ -4,3 +4,4 @@
 /public/data/*
 !/public/data/4326ZonesCoordinates.geojson
 /node_modules
+.DS_Store
