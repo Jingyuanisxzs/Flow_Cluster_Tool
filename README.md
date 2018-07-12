@@ -27,7 +27,7 @@ This is a Nodejs web application(with some python scripts). The weighted Kmeans 
 ### 2. Use Google Chrome or Firefox, and go to "https://localhost:3000".
     1. During the process of decoding, the webpage won't work.
     
-## Current Fatals:
+## Current Issues:
     1. Sometime, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
     2. Browse using a Chrome Box won't work.
     3. If the matrix is not a flow matrix with some strange data, it may make the App stuck. You need to refresh the page manually. 
