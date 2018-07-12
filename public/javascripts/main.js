@@ -39,19 +39,26 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                     subkeys.forEach(function(subkey){
                       $("#flowTable").append('<tr class="clickableRow2"><td>'+flowTitles[key][subkey]+'</td></tr>');
                     });
+                    
                 });
                 
-              $(".clickableRow2").on("click", function() {
-                var rowItem = $(this).children('td').map(function () {
-                    return this.innerHTML;
-                }).toArray();
-                selectedMatrix=rowItem[0];
-                transitURL = './flow_data/'+selectedMatrix+'.csv';
-                console.log(transitURL);
-                $("#clusters").val(defaultClusterNumber);
-                clusterNumber = defaultClusterNumber;
-                $('#currentIteration').val(0);
-                processData(zonesJsonURL,transitURL,clusterNumber,1);
+                
+                
+                $(".clickableRow2").on("click", function() {
+                  $("#flowTable tr").removeClass("selected");
+
+                  var rowItem = $(this).children('td').map(function () {
+                      return this.innerHTML;
+                  }).toArray();
+                  $(this).addClass("selected");
+                  
+                  selectedMatrix=rowItem[0];
+                  transitURL = './flow_data/'+selectedMatrix+'.csv';
+                  console.log(transitURL);
+                  $("#clusters").val(defaultClusterNumber);
+                  clusterNumber = defaultClusterNumber;
+                  $('#currentIteration').val(0);
+                  processData(zonesJsonURL,transitURL,clusterNumber,1);
               });
             }
           
@@ -452,7 +459,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 "wkid": 4326
               }),
               };
-              var infoTemplate = new InfoTemplate("Value: ${value}")
+              var infoTemplate = new InfoTemplate("Value: ${value}");
 
               var advPolyline = new Polyline(polylineJson);
               var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
@@ -520,8 +527,8 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 "spatialReference": new SpatialReference({
                 "wkid": 4326
                 }),
-            }
-            var infoTemplate = new InfoTemplate("Value: ${value}","Origin Zone: ${inZone}<br/>Destination Zone:${outZone}")
+            };
+            var infoTemplate = new InfoTemplate("Value: ${value}","Origin Zone: ${inZone}<br/>Destination Zone:${outZone}");
             var advPolyline = new Polyline(polylineJson);
             var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
             return ag;
@@ -530,3 +537,4 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
       }
 
     });
+    

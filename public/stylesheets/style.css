@@ -131,6 +131,7 @@ fieldset{
   width:250%;
 }
 
+
 table#dataTable {
     border-collapse: collapse;   
 }
@@ -163,6 +164,7 @@ table#flowTable {
 #flowTable tr:hover {
     background-color: #ccc;
 }
+
 #flowTable th {
     background-color: #fff;
 }
@@ -175,11 +177,14 @@ table#flowTable {
 #flowTable{
   height:190px; overflow-y:scroll; display:block;width:350px;
 }
+
+#flowTable tr.selected td {
+    background-color:	#696969	;
+    color: #FFFFFF;
+}
 #legendDiv{
   position:absolute;
   top:180px;
-  
-  
 }
 #circleOrigin {
   width: 10px;
