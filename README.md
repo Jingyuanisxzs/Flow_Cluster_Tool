@@ -56,5 +56,4 @@ clicking on an arrow for see the detailed lines or dots.
 3. If you choose to see single flows in 'dots', you can see a lot of circles showing in different sizes after clicking on a red clusted line; however, the dots are not clickable and can't be selected through the right-side table.
 4. The slider can let the app run Kmeans continuously, but 20 iterations may be good enough. Don't leave it run forever(though it will stop after 200 iterations), it may occupy your cpu resource.
 5. Right now, the Kmeans process runs parallelly using four threads. If you have an awesome computer, such as 8 cores..., you may get a better performance by increasing the threads number, though the benchmark is unknown.
-6. `./public/data/4326ZonesCoordinates.geojson` is provided in `./public/data/` folder. It is converted from the `ZoneCoordinates.csv` (3401 Spatial Reference) using QGIS, since the application can only support 4326 spatial system.
-   
+
