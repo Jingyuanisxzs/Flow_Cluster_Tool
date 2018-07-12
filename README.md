@@ -29,7 +29,7 @@ This is a Nodejs web application(with some python scripts). The weighted Kmeans 
     
 ## Current Issues:
     1. Sometime, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
-    2. Browse using a Chrome Box won't work.
+    2. Browsing through a Chrome Box may not work.
     3. If the matrix is not a flow matrix with some strange data, it may make the App stuck. You need to refresh the page manually. 
 ## Some Tips:
     1. All the lines are clickable, no matter it is a blue(single) line or red(clustered) line, but you have to click on the central of the line precisely. Clicking on the arrow won't have any effect.
