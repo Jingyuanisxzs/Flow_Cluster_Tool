@@ -85,6 +85,9 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             $("#myRange").change(function(){
               $("#clusters").val(this.value);
             });
+            $("#threadRange").change(function(){
+              $("#threadNumber").val(this.value);
+            });
             map = new Map("map", {
                 center: [-113.4947, 53.5437],
                 zoom: 10,
@@ -318,7 +321,8 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           for(var m=0,l=clusters.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
-          var num_threads = 8;
+          var num_threads = Number($("#threadNumber").val());
+          console.log(num_threads)
           var c = 0;
           var MT = new Multithread(num_threads);
           var funcInADifferentThread = MT.process(

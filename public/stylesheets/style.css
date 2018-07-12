@@ -128,7 +128,7 @@ input:checked + .slider:before {
   float:right;
 }
 fieldset{
-  width:250%;
+  width:100%;
 }
 
 
