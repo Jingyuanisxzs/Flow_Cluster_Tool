@@ -3,6 +3,7 @@ var map;
 var directionalSymbols = [];
 var currentIteration = 1;
 var result;
+var default_threads = 8;
 var clusterNumber=200;
 var defaultClusterNumber = 200;
 var newCentroid;
@@ -13,18 +14,33 @@ var myVar;
 var myCounter;
 var selectedMatrix;
 var ratio;
-require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js",
+var viewSpatialReference; 
+var geoSpatialReference;
+require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate"],
-    function (Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,
+    function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,
               SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw,SpatialReference, config, request,
               ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate) {
         ready(function () {
              //for the sample print server
+             if (!projection.isSupported()) {
+               alert("client-side projection is not supported");
+               return;
+             }
+            const projectionPromise = projection.load();
+             viewSpatialReference = new SpatialReference({
+              wkid: 4326
+            });
+             geoSpatialReference = new SpatialReference({
+              wkid: 3401
+            });
+
+
              $("#clusters").val(clusterNumber);
              $("#currentIteration").prop('disabled', true);
              //zonesfile must be 4326 encoded for current application
-            var zonesJsonURL = "data/4326ZonesCoordinates.geojson";
+            var zonesJsonURL = "data/3401ZonesCoordinates.geojson";
             //can be labour flow, transit flow, whatever flow
             var transitURL = null;
             var flowTitleURL = "data/pecas_matrices_title.csv";
@@ -431,6 +447,11 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
           for(var j = 0,k= newCentroid.length;j<k;j++){
             var centroidWidth;
             centroidWidth = newCentroid[j][4]/ratio;
+            const pointOrigin = new Point([newCentroid[j][0], newCentroid[j][1]], geoSpatialReference);
+            const pointDest = new Point([newCentroid[j][2], newCentroid[j][3]], geoSpatialReference)
+            const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
+            const projectedPointDest = projection.project(pointDest, viewSpatialReference);
+
             if(centroidWidth>0.05){
               var advSymbol = new DirectionalLineSymbol({
                   style: SimpleLineSymbol.STYLE_SOLID,
@@ -441,15 +462,14 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                   directionColor: new Color([204, 51, 0]),
                   directionSize: centroidWidth*5
               });
+
               var polylineJson = {
-                "paths":[[ [newCentroid[j][0], newCentroid[j][1] ], [ newCentroid[j][2], newCentroid[j][3]] ] ],
-                "spatialReference": new SpatialReference({
-                "wkid": 4326
-              }),
+                "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
               };
               var infoTemplate = new InfoTemplate("Value: ${value}");
+              var advPolyline = new Polyline(polylineJson,viewSpatialReference);
+              //console.log(advPolyline)
 
-              var advPolyline = new Polyline(polylineJson);
               var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
@@ -458,6 +478,7 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
         function startEndDots(line){
             var adjustedSize=line[4]*25/ratio;
             //the data has huge gap, will eliminate very small ones.
+
             if(adjustedSize<0.5&&adjustedSize>0.05){
               adjustedSize = 0.5;
             }
@@ -491,15 +512,21 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 "style":"esriSLSSolid"
               }
             });
-            var originPoint = new Point(line[0],line[1],new SpatialReference({ wkid: 4326 }));
-            var destPoint = new Point(line[2],line[3],new SpatialReference({ wkid: 4326 }));
-            var originG = new Graphic(originPoint, symbolOrigin, {}, null);
-            var destG = new Graphic(destPoint, symbolDest, {}, null);
+            var originPoint = new Point(line[0],line[1],geoSpatialReference);
+            var destPoint = new Point(line[2],line[3],geoSpatialReference);
+            var projectedPointOrigin = projection.project(originPoint, viewSpatialReference);
+            var projectedPointDest = projection.project(destPoint, viewSpatialReference);
+            var originG = new Graphic(projectedPointOrigin, symbolOrigin, {}, null);
+            var destG = new Graphic(projectedPointDest, symbolDest, {}, null);
             return [originG,destG];
         }
         function startEndLines(line){
           var centroidWidth;
           centroidWidth = line[4]/ratio;
+          const pointOrigin = new Point([line[0],line[1]], geoSpatialReference);
+          const pointDest = new Point([line[2], line[3]], geoSpatialReference);
+          const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
+          const projectedPointDest = projection.project(pointDest, viewSpatialReference);
           if(centroidWidth>0.05){
             var advSymbol = new DirectionalLineSymbol({
                 style: SimpleLineSymbol.STYLE_SOLID,
@@ -511,13 +538,10 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                 directionSize: centroidWidth*5
             });
             var polylineJson = {
-                "paths":[[[line[0], line[1]],[line[2],line[3]]]],
-                "spatialReference": new SpatialReference({
-                "wkid": 4326
-                }),
+              "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
             };
             var infoTemplate = new InfoTemplate("Value: ${value}","Origin Zone: ${inZone}<br/>Destination Zone:${outZone}");
-            var advPolyline = new Polyline(polylineJson);
+            var advPolyline = new Polyline(polylineJson,viewSpatialReference);
             var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
             return ag;
         }
