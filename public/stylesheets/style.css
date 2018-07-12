@@ -154,6 +154,11 @@ table#dataTable {
 #dataTable{
   height:190px; overflow-y:scroll; display:block;
 }
+#dataTable tr.selected td {
+    background-color:	#696969	;
+    color: #FFFFFF;
+}
+
 table#flowTable {
     border-collapse: collapse;   
 }

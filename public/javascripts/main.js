@@ -157,9 +157,11 @@ require(["esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", 
                       }
                       if($("#lines").is(':checked') === true){
                         $(".clickableRow").on("click", function() {
+                          $("#dataTable tr").removeClass("selected");
                           var rowItems = $(this).children('td').map(function () {
                               return this.innerHTML;
                           }).toArray();
+                          $(this).addClass('selected')
                           for(var p=0,m =startEndLayer.graphics.length;p<m;p++){
                                 if(startEndLayer.graphics[p].attributes.inZone === rowItems[0] &&startEndLayer.graphics[p].attributes.outZone ===rowItems[1] ){
                                     startEndLayer.graphics[p].symbol.setColor(new Color([22, 254, 18  ]));
