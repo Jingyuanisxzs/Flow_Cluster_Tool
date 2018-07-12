@@ -322,7 +322,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
           var num_threads = Number($("#threadNumber").val());
-          console.log(num_threads)
           var c = 0;
           var MT = new Multithread(num_threads);
           var funcInADifferentThread = MT.process(
