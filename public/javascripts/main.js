@@ -17,6 +17,8 @@ var ratio;
 var viewSpatialReference; 
 var geoSpatialReference;
 var geoJsonLayer1 ;
+var graphicsLayer;
+var startEndLayer
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
@@ -110,8 +112,8 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               map.showZoomSlider();
             }
             
-            var graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
-            var startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
+            graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
+            startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
             myCounter = new Variable(0,function(){
               if($('#currentIteration').val()<200){
                 result = splitIntoGroupsGPU(newCentroid,transitArray);
@@ -606,12 +608,9 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              geoJsonLayer1 = new GeoJsonLayer({
                 url:jsonUrl
             });
-            map.addLayer(geoJsonLayer1)
+
         }
         $('#AlbertaBaseLayer').click(function() {
-
-
-
             if ($("#AlbertaBaseLayer").hasClass('selected')) {
                 $(this).prop('checked', false);
                 $(this).removeClass('selected');
@@ -619,7 +618,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             }
             // else select
             else {
+                map.removeLayer(startEndLayer);
+                map.removeLayer(graphicsLayer);
                 map.addLayer(geoJsonLayer1);
+                map.addLayer(graphicsLayer);
+                map.addLayer(startEndLayer);
                 $(this).prop('checked', true);
                 $(this).addClass('selected');
             }
