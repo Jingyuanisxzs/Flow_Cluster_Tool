@@ -44,10 +44,10 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
 1. There is a [Node.js HDF5 library](https://www.npmjs.com/package/hdf5) that could read the [omx matrices](https://github.com/osPlanning/omx) directly, rather than decoding them very slowly with python.  
 The internal [omx file structure is documented](https://github.com/osPlanning/omx/wiki/Specification).
 
-2. The ZonesCoordinates file needs to be in two coordinate systems, projection 4326 for mapping but in a less skewed projection for clustering.
-
-3. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
+2. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
 clicking on an arrow for see the detailed lines or dots. 
+
+3. Show the zone boundaries on the map (from /public/data/ZoneBoundaries3401.geojson)
 
 ## Some Tips:
 
