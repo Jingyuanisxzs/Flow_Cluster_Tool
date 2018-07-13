@@ -6,6 +6,7 @@
 !/public/data/3401ZonesCoordinates.geojson
 !/public/data/ZonesCoordinates.csv
 !/public/data/ZoneBoundaries*.geojson
-
+!/public/data/ZoneBoundaries*.geojson
+!/public/data/SinglePolygenZoneBoundaries4326.geojson
 /node_modules
 .DS_Store

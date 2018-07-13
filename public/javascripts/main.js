@@ -16,12 +16,13 @@ var selectedMatrix;
 var ratio;
 var viewSpatialReference; 
 var geoSpatialReference;
-require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js",
+var geoJsonLayer1 ;
+require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
-        "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate"],
-    function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,
+        "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
+    function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,GeoJsonLayer,
               SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw,SpatialReference, config, request,
-              ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate) {
+              ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,FeatureLayer) {
         ready(function () {
              //for the sample print server
              if (!projection.isSupported()) {
@@ -64,7 +65,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                       return this.innerHTML;
                   }).toArray();
                   $(this).addClass("selected");
-                  
                   selectedMatrix=rowItem[0];
                   transitURL = './flow_data/'+selectedMatrix+'.csv';
                   $("#clusters").val(defaultClusterNumber);
@@ -96,9 +96,8 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                basemap: "streets"
              }, "viewDiv");
             toggle.startup();
-            var scalebar = new Scalebar({
-               map: map,
-               scalebarUnit: "dual"
+            map.on("load", function () {
+                addGeoJsonLayer("./data/SinglePolygenZoneBoundaries4326.geojson");
             });
             on(map, "update-start", showLoading);
             on(map, "update-end", hideLoading);
@@ -446,7 +445,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var centroidWidth;
             centroidWidth = newCentroid[j][4]/ratio;
             const pointOrigin = new Point([newCentroid[j][0], newCentroid[j][1]], geoSpatialReference);
-            const pointDest = new Point([newCentroid[j][2], newCentroid[j][3]], geoSpatialReference)
+            const pointDest = new Point([newCentroid[j][2], newCentroid[j][3]], geoSpatialReference);
             const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
             const projectedPointDest = projection.project(pointDest, viewSpatialReference);
 
@@ -545,6 +544,85 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
         }
         return null;
       }
+      
+      var renderer = {
+        type: "simple",  // autocasts as new SimpleRenderer()
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: [ 255, 128, 0, 0.5 ],
+          outline: {  // autocasts as new SimpleLineSymbol()
+            width: 1,
+            color: "white"
+          }
+        }
+      };
+      var fields =[{
+        name:"ObjectID",
+        alias:"ObjectID",
+        type:"oid"
+      }];
+      // Set up popup template for the layer
+       var pTemplate = {
+         title: "{ObjectID}",
+         content: [{
+             type: "fields",
+           fieldInfos: [{
+             fieldName: "ObjectID",
+             label: "More info",
+             visible: true
+           }]
+         }],
+         fieldInfos: [{
+           fieldName: "ObjectID",
+           format: {
+             dateFormat: "short-date-short-time"
+           }
+         }]
+       };
 
-    });
+
+
+        function createGraphics(response) {
+            // raw GeoJSON data
+            var geoJson = response;
+
+            // Create an array of Graphics from each GeoJSON feature
+            return geoJson.features.map(function(feature, i) {
+
+                return {
+                    geometry: new Polygon({
+                        rings: feature.geometry.coordinates[0],
+                    }),
+                    // select only the attributes you care about
+                    attributes: {
+                        ObjectID: feature.properties.luz,
+                    }
+                };
+            });
+        }
+
+
+        function addGeoJsonLayer(jsonUrl){
+             geoJsonLayer1 = new GeoJsonLayer({
+                url:jsonUrl
+            });
+            map.addLayer(geoJsonLayer1)
+        }
+        $('#AlbertaBaseLayer').click(function() {
+
+
+
+            if ($("#AlbertaBaseLayer").hasClass('selected')) {
+                $(this).prop('checked', false);
+                $(this).removeClass('selected');
+                map.removeLayer(geoJsonLayer1)
+            }
+            // else select
+            else {
+                map.addLayer(geoJsonLayer1);
+                $(this).prop('checked', true);
+                $(this).addClass('selected');
+            }
+        });
+  });
     

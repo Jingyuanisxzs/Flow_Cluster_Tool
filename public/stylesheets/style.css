@@ -236,3 +236,9 @@ table#flowTable {
 #clustered-line{
   margin-left:3px;
 }
+#layerSelection{
+    z-index:100;
+    position:absolute;
+    bottom:5px;
+
+}
