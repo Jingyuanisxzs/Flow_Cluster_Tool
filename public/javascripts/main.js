@@ -40,15 +40,14 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              $("#clusters").val(clusterNumber);
              $("#currentIteration").prop('disabled', true);
              //zonesfile must be 4326 encoded for current application
-            var zonesJsonURL = "data/3401ZonesCoordinates.geojson";
             //can be labour flow, transit flow, whatever flow
             var transitURL = null;
             var flowTitleURL = "data/pecas_matrices_title.csv";
+            var indexLatLongURL = "data/indexLatLongDict.csv";
             $("#flowTable tr").remove();
             $("#flowTable").append('<tr><th onclick="sortTable(0)">Flow Matrices</th></tr>');
-            var q = d3.queue();
-            q.defer(d3.csv,flowTitleURL).await(fillFlowTable);
-            function fillFlowTable(error,flowTitles){
+
+            d3.csv(flowTitleURL, function(flowTitles) {
               var keys = Object.keys(flowTitles);
                 keys.forEach(function(key){
                     var subkeys = Object.keys(flowTitles[key]);
@@ -57,9 +56,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                     });
                     
                 });
-                
-                
-                
+                    
                 $(".clickableRow2").on("click", function() {
                   $("#flowTable tr").removeClass("selected");
 
@@ -70,13 +67,13 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   
                   selectedMatrix=rowItem[0];
                   transitURL = './flow_data/'+selectedMatrix+'.csv';
-                  console.log(transitURL);
                   $("#clusters").val(defaultClusterNumber);
                   clusterNumber = defaultClusterNumber;
                   $('#currentIteration').val(0);
-                  processData(zonesJsonURL,transitURL,clusterNumber,1);
+                  processData(indexLatLongURL,transitURL,clusterNumber,1);
               });
-            }
+            });
+            
           
             
             //process first iteration
@@ -135,6 +132,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
                   newCentroid = findNewCentroid(transitArrayWithClusters);
+                
                   map.addLayer(graphicsLayer);
                   
 
@@ -270,41 +268,33 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              }
             });
 
-            function combineZonesAndTransit(zonesMatrix,transitMatrix){
-              var combinedTransitMatrix = [];
-              for(var i = 0,l = transitMatrix.length;i<l;i++){
-                  if(Number(transitMatrix[i].matrix0)!=Number(0)){
-                    combinedTransitMatrix.push([zonesMatrix[transitMatrix[i].i][0],zonesMatrix[transitMatrix[i].i][1],zonesMatrix[transitMatrix[i].j][0],zonesMatrix[transitMatrix[i].j][1],Number(transitMatrix[i].matrix0),transitMatrix[i].i,transitMatrix[i].j]);
-                  }
-              }
-              return combinedTransitMatrix;
-            }
-
-            function processData(zonesURL,transitURL,clusterNumber,iteration) {
+            function processData(indexLatLongURL,transitURL,clusterNumber,iteration) {
               $("#nextIteration").prop('disabled', true);
               $("#RerunButton").prop('disabled', true);
               $("#autoRun").prop('disabled', true);
               $("#WantJson").prop('disabled', true);
               var q = d3.queue();
               var zoneDict = {};
-              q.defer(d3.json,zonesURL)
+
+              q.defer(d3.csv,indexLatLongURL)
                         .defer(d3.csv,transitURL)
                         .await(kmeansCalculate);
-                        
-                        
 
               function kmeansCalculate(error,zones,transit){
+            
                 if(error){console.log(error);}
-                for(var i=0,l = zones.features.length; i<l;i++){
-                  zoneDict[zones.features[i].properties.ZoneNumber] = zones.features[i].geometry.coordinates;
+      
+                for(var i = 0, l = transit.length; i<l;i++){
+                    for(var j=0; j<l;j++){
+                        transitArray.push([Number(JSON.parse(zones[0][i])[1]),Number(JSON.parse(zones[0][i])[2]),Number(JSON.parse(zones[0][j])[1]),Number(JSON.parse(zones[0][j])[2]),Number(transit[i][j]),JSON.parse(zones[0][i])[0].toString(),JSON.parse(zones[0][j])[0].toString()]);
+                    }
                 }
-                transitArray = combineZonesAndTransit(zoneDict,transit);
-                //initialize clusters
                 var totalTransitLength = transitArray.length;
                 var initClusters = new Array(clusterNumber);
                 for(var i2=0;i2<clusterNumber;i2++){
                     initClusters[i2] = transitArray[Math.floor(Math.random() * (totalTransitLength + 1))];
                 }
+      
                 result = splitIntoGroupsGPU(initClusters,transitArray);
               }
             }
@@ -317,6 +307,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             }
         }
         function splitIntoGroupsGPU(clusters,wholeTransitArray){
+    
           transitArrayWithClusters=[];
           for(var m=0,l=clusters.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
@@ -332,12 +323,13 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=clusters.length;j<l2;j++){
-              
+                  
                   var currentDist=Math.sqrt(
                       (transitArray[i][0]-clusters[j][0])*(transitArray[i][0]-clusters[j][0]) +
-                      (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1])  +
+                      (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1]) +
                       (transitArray[i][2]-clusters[j][2])*(transitArray[i][2]-clusters[j][2]) +
                       (transitArray[i][3]-clusters[j][3])*(transitArray[i][3]-clusters[j][3]) );
+
                   if(minDist>currentDist){
                     group = j;
                     minDist = currentDist;
@@ -388,7 +380,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var weight = 0,dest_x = 0,dest_y = 0,orig_x = 0,orig_y = 0;
             var groupMember = transitArrayWithClusters[key];
             for(var n =0,l = groupMember.length; n<l;n++){
-              if(typeof(groupMember[n]) !== "undefined"){
+              if(groupMember[n][4] !==0){
                   var oldWeight = groupMember[n][4];
                   var newWeight = weight+oldWeight;
                   orig_x = (orig_x*weight+groupMember[n][0]*oldWeight)/newWeight;
@@ -397,7 +389,10 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   dest_y = (dest_y*weight+groupMember[n][3]*oldWeight)/newWeight;
                   weight = newWeight;
               }
+              
+              
             }
+            
             newCentroid.push([orig_x,orig_y,dest_x,dest_y,weight,key]);
           }
           return newCentroid;
