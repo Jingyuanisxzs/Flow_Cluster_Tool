@@ -139,6 +139,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
 
                   dojo.connect(graphicsLayer,'onClick',function(evt){
                     var clickedGroup = evt.graphic.attributes.indexOfGroup;
+
                     if(typeof(clickedGroup)!=="undefined"){
                       map.removeLayer(startEndLayer);
                       startEndLayer = new GraphicsLayer({ id: "startEndLayer" });    
@@ -146,8 +147,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                         for (var h =0;h<transitArrayWithClusters[clickedGroup].length;h++){
                           var orginDest = startEndDots(transitArrayWithClusters[clickedGroup][h]);
                           startEndLayer.add(orginDest[0]);
-                          startEndLayer.add(orginDest[1]);
-                        }  
+                          if(orginDest[1]!==null){
+                              startEndLayer.add(orginDest[1]);
+
+                          }
+                        }
                       }
                       else if($("#lines").is(':checked') === true){
                         for (var h2 =0;h2<transitArrayWithClusters[clickedGroup].length;h2++){
@@ -181,11 +185,24 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                           }).toArray();
                           $(this).addClass('selected');
                           for(var p=0,m =startEndLayer.graphics.length;p<m;p++){
+
                                 if(startEndLayer.graphics[p].attributes.inZone === rowItems[0] &&startEndLayer.graphics[p].attributes.outZone ===rowItems[1] ){
                                     startEndLayer.graphics[p].symbol.setColor(new Color([22, 254, 18  ]));
+                                    if(rowItems[0]===rowItems[1]){
+
+                                        startEndLayer.graphics[p].symbol.outline.setColor(new Color([22, 254, 18  ]));
+
+                                    }
                                 }
                                 else{
+                                    if(typeof(startEndLayer.graphics[p].attributes.inZone)==="undefined"){
+                                        continue;
+                                    }
                                   startEndLayer.graphics[p].symbol.setColor(new Color([0,0,204]));
+
+                                  if(startEndLayer.graphics[p].attributes.inZone === startEndLayer.graphics[p].attributes.outZone){
+                                      startEndLayer.graphics[p].symbol.outline.setColor(new Color([0,0,204]));
+                                  }
                                 }
                           }
                           startEndLayer.refresh();
@@ -481,6 +498,21 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             if(adjustedSize<0.5&&adjustedSize>0.05){
               adjustedSize = 0.5;
             }
+            var squareSymbol = new SimpleMarkerSymbol({
+                "color":[0,0,128,128],
+                "size":adjustedSize,
+                "angle":0,
+                "xoffset":0,
+                "yoffset":0,
+                "type":"esriSMS",
+                "style":"esriSMSDiamond",
+                "outline":{"color":[0,0,128,255],
+                    "width":1,
+                    "type":"esriSLS",
+                    "style":"esriSLSSolid"
+                }
+            });
+
             var symbolOrigin = new SimpleMarkerSymbol({
               "color":[0,0,128,128],
               "size":adjustedSize,
@@ -511,43 +543,87 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 "style":"esriSLSSolid"
               }
             });
+
             var originPoint = new Point(line[0],line[1],geoSpatialReference);
             var destPoint = new Point(line[2],line[3],geoSpatialReference);
             var projectedPointOrigin = projection.project(originPoint, viewSpatialReference);
             var projectedPointDest = projection.project(destPoint, viewSpatialReference);
-            var originG = new Graphic(projectedPointOrigin, symbolOrigin, {}, null);
-            var destG = new Graphic(projectedPointDest, symbolDest, {}, null);
-            return [originG,destG];
+            if(line[5] === line[6]){
+                var originG = new Graphic(projectedPointOrigin,squareSymbol,{},null);
+
+                return [originG,null]
+            }
+            else{
+
+
+                var originG = new Graphic(projectedPointOrigin, symbolOrigin, {}, null);
+                var destG = new Graphic(projectedPointDest, symbolDest, {}, null);
+                return [originG,destG];
+
+            }
+
         }
         function startEndLines(line){
-          var centroidWidth;
-          centroidWidth = line[4]/ratio;
-          const pointOrigin = new Point([line[0],line[1]], geoSpatialReference);
-          const pointDest = new Point([line[2], line[3]], geoSpatialReference);
-          const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
-          const projectedPointDest = projection.project(pointDest, viewSpatialReference);
-          if(centroidWidth>0.05){
-            var advSymbol = new DirectionalLineSymbol({
-                style: SimpleLineSymbol.STYLE_SOLID,
-                color: new Color([0,0,204]),
-                width: centroidWidth,
-                directionSymbol: "arrow1",
-                directionPixelBuffer: 12,
-                directionColor: new Color([0,0,204]),
-                directionSize: centroidWidth*5
-            });
-            var polylineJson = {
-              "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
-            };
+            var centroidWidth;
+            centroidWidth = line[4]/ratio;
+            const pointOrigin = new Point([line[0],line[1]], geoSpatialReference);
+            const pointDest = new Point([line[2], line[3]], geoSpatialReference);
+            const projectedPointOrigin = projection.project(pointOrigin, viewSpatialReference);
+            const projectedPointDest = projection.project(pointDest, viewSpatialReference);
             var infoTemplate = new InfoTemplate("Value: ${value}","Origin Zone: ${inZone}<br/>Destination Zone:${outZone}");
-            var advPolyline = new Polyline(polylineJson,viewSpatialReference);
-            var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
-            return ag;
+
+            if(centroidWidth>0.05){
+                if(line[5]===line[6]){
+                    var squareSymbol = new SimpleMarkerSymbol({
+                        "color":[0,0,128,128],
+                        "size":centroidWidth*25,
+                        "angle":0,
+                        "xoffset":0,
+                        "yoffset":0,
+                        "type":"esriSMS",
+                        "style":"esriSMSDiamond",
+                        "outline":{"color":[0,0,128,255],
+                            "width":1,
+                            "type":"esriSLS",
+                            "style":"esriSLSSolid"
+                        }
+                    });
+                    var originG = new Graphic(projectedPointOrigin,squareSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
+
+
+                    return originG;
+
+
+                }
+                else{
+                    var advSymbol = new DirectionalLineSymbol({
+                        style: SimpleLineSymbol.STYLE_SOLID,
+                        color: new Color([0,0,204]),
+                        width: centroidWidth,
+                        directionSymbol: "arrow1",
+                        directionPixelBuffer: 12,
+                        directionColor: new Color([0,0,204]),
+                        directionSize: centroidWidth*5
+                    });
+                    var polylineJson = {
+                        "paths":[[ [projectedPointOrigin.x, projectedPointOrigin.y], [ projectedPointDest.x, projectedPointDest.y] ] ]
+                    };
+                    var advPolyline = new Polyline(polylineJson,viewSpatialReference);
+                    var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
+                    return ag;
+
+                }
+
+
+            }
+            else{
+                return null;
+
+            }
         }
-        return null;
-      }
-      
-      var renderer = {
+
+
+        var renderer = {
         type: "simple",  // autocasts as new SimpleRenderer()
         symbol: {
           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
