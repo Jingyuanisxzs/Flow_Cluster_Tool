@@ -45,7 +45,10 @@ if not os.path.exists('./public/flow_data'):
             #print(zoneLatLongDict['101'])
         # for key,value in inverted_LUT.items():
         #     print(key,value,zoneLatLongDict[str(value)])
-        indexLatLongDict = {key:json.dumps([value,zoneLatLongDict[str(value)][0],zoneLatLongDict[str(value)][1]],io) for key,value in inverted_LUT.items()}
+
+        #indexLatLongDict = {key:json.dumps([value,zoneLatLongDict[str(value)][0],zoneLatLongDict[str(value)][1]]) for key,value in inverted_LUT.items()}
+        for key,value in inverted_LUT.items():
+            indexLatLongDict[key] = json.dumps([str(value),zoneLatLongDict[str(value)][0],zoneLatLongDict[str(value)][1]])
         with open('./public/data/indexLatLongDict.csv', 'wb') as f:  # Just use 'w' mode in 3.x
             w = csv.DictWriter(f, indexLatLongDict.keys())
             w.writeheader()

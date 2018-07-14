@@ -301,12 +301,13 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               function kmeansCalculate(error,zones,transit){
             
                 if(error){console.log(error);}
-      
+
                 for(var i = 0, l = transit.length; i<l;i++){
                     for(var j=0; j<l;j++){
                         transitArray.push([Number(JSON.parse(zones[0][i])[1]),Number(JSON.parse(zones[0][i])[2]),Number(JSON.parse(zones[0][j])[1]),Number(JSON.parse(zones[0][j])[2]),Number(transit[i][j]),JSON.parse(zones[0][i])[0].toString(),JSON.parse(zones[0][j])[0].toString()]);
                     }
                 }
+                console.log(transitArray)
                 var totalTransitLength = transitArray.length;
                 var initClusters = new Array(clusterNumber);
                 for(var i2=0;i2<clusterNumber;i2++){
