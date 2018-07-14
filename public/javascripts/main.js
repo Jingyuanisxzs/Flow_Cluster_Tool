@@ -333,21 +333,41 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           var num_threads = Number($("#threadNumber").val());
           var c = 0;
           var MT = new Multithread(num_threads);
+          
           var funcInADifferentThread = MT.process(
             function(clusters,transitArray,index){
 
+              // TODO move these to parameters or to UI objects, or at least to the top of the file
+              var angleWeighting = 5000;
+              var distanceWeighting = 1;    
+              var distanceExponent = 0.5;          
               var result = new Array(transitArray.length);
               for(var i=0,l1=transitArray.length;i<l1;i++){
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=clusters.length;j<l2;j++){
-                  
+
+                  // coordinate distance
                   var currentDist=Math.sqrt(
                       (transitArray[i][0]-clusters[j][0])*(transitArray[i][0]-clusters[j][0]) +
                       (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1]) +
                       (transitArray[i][2]-clusters[j][2])*(transitArray[i][2]-clusters[j][2]) +
                       (transitArray[i][3]-clusters[j][3])*(transitArray[i][3]-clusters[j][3]) );
 
+                  var len1 = Math.sqrt(
+                  (transitArray[i][0] - transitArray[i][2])*(transitArray[i][0] - transitArray[i][2]) +
+                      (transitArray[i][1] - transitArray[i][3])*(transitArray[i][1] - transitArray[i][3]));
+                  var len2 = Math.sqrt(
+                        (clusters[j][0] - clusters[j][2])*(clusters[j][0] - clusters[j][2]) +
+                      (clusters[j][1] - clusters[j][3])*(clusters[j][1] - clusters[j][3]));
+                  currentDist = currentDist + distanceWeighting * (Math.abs(len1-len2))^distanceExponent;
+                  var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
+                  var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
+                  var angleDiff = Math.abs(angle1 - angle2);
+                  if (angleDiff > Math.PI) {
+                    angleDiff -= Math.PI;
+                  }
+                  currentDist += angleWeighting * Math.abs(angleDiff);
                   if(minDist>currentDist){
                     group = j;
                     minDist = currentDist;
