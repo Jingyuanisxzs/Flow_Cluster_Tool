@@ -129,10 +129,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               }
             });
             myVar = new Variable(10, function(){
+
                   map.removeLayer(graphicsLayer);
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
-                  newCentroid = findNewCentroid(transitArrayWithClusters);
+                  //newCentroid = findNewCentroid(transitArrayWithClusters);
                 
                   map.addLayer(graphicsLayer);
                   
@@ -213,12 +214,16 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 });
     
                   //example using a picture marker symbol.
-                  currentIteration = Number($('#currentIteration').val())+1;
-                  $('#currentIteration').val(currentIteration);
+                if(myVar.GetValue() === 1){
+                    currentIteration = Number($('#currentIteration').val())+1;
+                    $('#currentIteration').val(currentIteration);
+                }
+
                   //add a polyline with 3 paths
                   redrawClusters(newCentroid,graphicsLayer);
 
                   if($("#autoRun").is(':checked') === true){
+
                     myCounter.SetValue(1);
                   }
                   else{
@@ -307,7 +312,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                         transitArray.push([Number(JSON.parse(zones[0][i])[1]),Number(JSON.parse(zones[0][i])[2]),Number(JSON.parse(zones[0][j])[1]),Number(JSON.parse(zones[0][j])[2]),Number(transit[i][j]),JSON.parse(zones[0][i])[0].toString(),JSON.parse(zones[0][j])[0].toString()]);
                     }
                 }
-                console.log(transitArray)
                 var totalTransitLength = transitArray.length;
                 var initClusters = new Array(clusterNumber);
                 for(var i2=0;i2<clusterNumber;i2++){
@@ -365,7 +369,9 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               }
             
               if(c=== num_threads){
-                myVar.SetValue(1);
+                  newCentroid = findNewCentroid(transitArrayWithClusters);
+
+                  myVar.SetValue(1);
               }
             }
           );
@@ -623,67 +629,10 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             }
         }
 
-
-        var renderer = {
-        type: "simple",  // autocasts as new SimpleRenderer()
-        symbol: {
-          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-          color: [ 255, 128, 0, 0.5 ],
-          outline: {  // autocasts as new SimpleLineSymbol()
-            width: 1,
-            color: "white"
-          }
-        }
-      };
-      var fields =[{
-        name:"ObjectID",
-        alias:"ObjectID",
-        type:"oid"
-      }];
-      // Set up popup template for the layer
-       var pTemplate = {
-         title: "{ObjectID}",
-         content: [{
-             type: "fields",
-           fieldInfos: [{
-             fieldName: "ObjectID",
-             label: "More info",
-             visible: true
-           }]
-         }],
-         fieldInfos: [{
-           fieldName: "ObjectID",
-           format: {
-             dateFormat: "short-date-short-time"
-           }
-         }]
-       };
-
-
-
-        function createGraphics(response) {
-            // raw GeoJSON data
-            var geoJson = response;
-
-            // Create an array of Graphics from each GeoJSON feature
-            return geoJson.features.map(function(feature, i) {
-
-                return {
-                    geometry: new Polygon({
-                        rings: feature.geometry.coordinates[0],
-                    }),
-                    // select only the attributes you care about
-                    attributes: {
-                        ObjectID: feature.properties.luz,
-                    }
-                };
-            });
-        }
-
-
         function addGeoJsonLayer(jsonUrl){
              geoJsonLayer1 = new GeoJsonLayer({
-                url:jsonUrl
+                url:jsonUrl,
+                 id:"geoJsonLayer"
             });
 
         }
@@ -695,14 +644,44 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             }
             // else select
             else {
-                map.removeLayer(startEndLayer);
-                map.removeLayer(graphicsLayer);
-                map.addLayer(geoJsonLayer1);
-                map.addLayer(graphicsLayer);
-                map.addLayer(startEndLayer);
                 $(this).prop('checked', true);
                 $(this).addClass('selected');
+                secondFunction()
+
             }
         });
+
+        function firstFunction()
+        {
+            var deferred = $.Deferred();
+
+            var i = 0;
+            var nextStep = function() {
+                if (i<1) {
+                    // Do something
+                    map.removeLayer(graphicsLayer);
+                    map.addLayer(geoJsonLayer1);
+                    i++;
+                    setTimeout(nextStep, 500);
+                }
+                else {
+                    deferred.resolve(i);
+                }
+            };
+            nextStep();
+            return deferred.promise();
+        }
+
+        function secondFunction()
+        {
+            var promise = firstFunction();
+            promise.then(function(result) {
+                myVar.SetValue(2)
+                //map.addLayer(graphicsLayer)
+                console.log(map)
+
+
+            });
+        }
   });
     
