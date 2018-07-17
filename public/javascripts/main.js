@@ -669,39 +669,37 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 secondFunction()
 
             }
+
+            function firstFunction()
+            {
+                var deferred = $.Deferred();
+
+                var i = 0;
+                var nextStep = function() {
+                    if (i<1) {
+                        // Do something
+                        map.removeLayer(graphicsLayer);
+                        map.addLayer(geoJsonLayer1);
+                        i++;
+                        setTimeout(nextStep, 500);
+                    }
+                    else {
+                        deferred.resolve(i);
+                    }
+                };
+                nextStep();
+                return deferred.promise();
+            }
+
+            function secondFunction()
+            {
+                var promise = firstFunction();
+                promise.then(function(result) {
+                    myVar.SetValue(2)
+                    //map.addLayer(graphicsLayer)
+                });
+            }
         });
 
-        function firstFunction()
-        {
-            var deferred = $.Deferred();
-
-            var i = 0;
-            var nextStep = function() {
-                if (i<1) {
-                    // Do something
-                    map.removeLayer(graphicsLayer);
-                    map.addLayer(geoJsonLayer1);
-                    i++;
-                    setTimeout(nextStep, 500);
-                }
-                else {
-                    deferred.resolve(i);
-                }
-            };
-            nextStep();
-            return deferred.promise();
-        }
-
-        function secondFunction()
-        {
-            var promise = firstFunction();
-            promise.then(function(result) {
-                myVar.SetValue(2)
-                //map.addLayer(graphicsLayer)
-                console.log(map)
-
-
-            });
-        }
   });
     
