@@ -18,7 +18,8 @@ var viewSpatialReference;
 var geoSpatialReference;
 var geoJsonLayer1 ;
 var graphicsLayer;
-var startEndLayer
+var startEndLayer;
+var totalWeight;
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
@@ -280,10 +281,21 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 map.hideZoomSlider();
                if(Number($("#clusters").val())>0){
                  clusterNumber =Number($("#clusters").val());
-                 var initClusters = new Array(clusterNumber);
-                 for(var i=0;i<clusterNumber;i++){
-                     initClusters[i] = transitArray[Math.floor(Math.random() * (transitArray.length + 1))];
-                 }
+                   var initClusters = new Array(clusterNumber);
+                   for(var i2 = 0;i2<clusterNumber;i2++){
+
+                       var randomWeight = Math.floor(Math.random()*(totalWeight));
+                       for(var i3 = 0; i3<transitArray.length;i3++){
+                           randomWeight = randomWeight-transitArray[i3][4];
+                           if(randomWeight<=0){
+                               console.log("fffff")
+                               initClusters[i2] = transitArray[i3];
+                               break;
+                           }
+                       }
+                   }
+
+
                  result = splitIntoGroupsGPU(initClusters,transitArray);
                }
              else{
@@ -306,29 +318,47 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               function kmeansCalculate(error,zones,transit){
             
                 if(error){console.log(error);}
-
+                totalWeight=0;
                 for(var i = 0, l = transit.length; i<l;i++){
                     for(var j=0; j<l;j++){
                         transitArray.push([Number(JSON.parse(zones[0][i])[1]),Number(JSON.parse(zones[0][i])[2]),Number(JSON.parse(zones[0][j])[1]),Number(JSON.parse(zones[0][j])[2]),Number(transit[i][j]),JSON.parse(zones[0][i])[0].toString(),JSON.parse(zones[0][j])[0].toString()]);
+                        totalWeight += Number(transit[i][j]);
                     }
                 }
+                //initialization
                 var totalTransitLength = transitArray.length;
+                // var initClusters = new Array(clusterNumber);
+                // for(var i2=0;i2<clusterNumber;i2++){
+                //     initClusters[i2] = transitArray[Math.floor(Math.random() * (totalTransitLength + 1))];
+                // }
+                //initialization2
+                // transitArray.sort(function(a,b){
+                //     return b[4]-a[4]
+                // });
+                // var initClusters = transitArray.slice(0,clusterNumber);
+
+                  
                 var initClusters = new Array(clusterNumber);
-                for(var i2=0;i2<clusterNumber;i2++){
-                    initClusters[i2] = transitArray[Math.floor(Math.random() * (totalTransitLength + 1))];
+                for(var i2 = 0;i2<clusterNumber;i2++){
+
+                    var randomWeight = Math.floor(Math.random()*(totalWeight));
+                    for(var i3 = 0; i3<totalTransitLength;i3++){
+                        randomWeight = randomWeight-transitArray[i3][4];
+                        if(randomWeight<=0){
+                            initClusters[i2] = transitArray[i3];
+                            break;
+                        }
+                    }
                 }
-      
+
+
+
+
                 result = splitIntoGroupsGPU(initClusters,transitArray);
               }
             }
         });
 
-        function initializTransitArrayWithClusters(){
-            transitArrayWithClusters=[];
-            for(var m=0,l=clusters.length;m<l;m++){
-              transitArrayWithClusters[JSON.stringify(m)] = [];
-            }
-        }
         function splitIntoGroupsGPU(clusters,wholeTransitArray){
     
           transitArrayWithClusters=[];
@@ -695,7 +725,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             {
                 var promise = firstFunction();
                 promise.then(function(result) {
-                    myVar.SetValue(2)
+                    myVar.SetValue(2);
                     //map.addLayer(graphicsLayer)
                 });
             }
