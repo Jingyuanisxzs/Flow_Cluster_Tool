@@ -1,9 +1,7 @@
 /*jshint esversion: 6 */
 var map;
-var directionalSymbols = [];
 var currentIteration = 1;
 var result;
-var default_threads = 8;
 var clusterNumber=200;
 var defaultClusterNumber = 200;
 var newCentroid;
@@ -20,6 +18,7 @@ var geoJsonLayer1 ;
 var graphicsLayer;
 var startEndLayer;
 var totalWeight;
+var sumOfTransitArray;
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
@@ -281,19 +280,30 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 map.hideZoomSlider();
                if(Number($("#clusters").val())>0){
                  clusterNumber =Number($("#clusters").val());
+
                    var initClusters = new Array(clusterNumber);
                    for(var i2 = 0;i2<clusterNumber;i2++){
-
                        var randomWeight = Math.floor(Math.random()*(totalWeight));
-                       for(var i3 = 0; i3<transitArray.length;i3++){
-                           randomWeight = randomWeight-transitArray[i3][4];
-                           if(randomWeight<=0){
-                               console.log("fffff")
+                       for (var i3=0,l = transitArray.length;i3<l;i3++){
+                           if(sumOfTransitArray[i3]>=randomWeight && initClusters.indexOf(transitArray[i3])< 0) {
                                initClusters[i2] = transitArray[i3];
                                break;
                            }
                        }
+
                    }
+                   // var initClusters = new Array(clusterNumber);
+                   // for(var i2 = 0;i2<clusterNumber;i2++){
+                   //
+                   //     var randomWeight = Math.floor(Math.random()*(totalWeight));
+                   //     for(var i3 = 0,l = transitArray.length;i3<l;i3++){
+                   //         randomWeight = randomWeight-transitArray[i3][4];
+                   //         if(randomWeight<=0 && initClusters.indexOf(transitArray[i3]) < 0){
+                   //             initClusters[i2] = transitArray[i3];
+                   //             break;
+                   //         }
+                   //     }
+                   // }
 
 
                  result = splitIntoGroupsGPU(initClusters,transitArray);
@@ -327,30 +337,36 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 }
                 //initialization
                 var totalTransitLength = transitArray.length;
-                // var initClusters = new Array(clusterNumber);
-                // for(var i2=0;i2<clusterNumber;i2++){
-                //     initClusters[i2] = transitArray[Math.floor(Math.random() * (totalTransitLength + 1))];
-                // }
-                //initialization2
-                // transitArray.sort(function(a,b){
-                //     return b[4]-a[4]
-                // });
-                // var initClusters = transitArray.slice(0,clusterNumber);
 
-                  
+                // var initClusters = new Array(clusterNumber);
+                // for(var i2 = 0;i2<clusterNumber;i2++){
+                //
+                //     var randomWeight = Math.floor(Math.random()*(totalWeight));
+                //     for(var i3 = 0; i3<totalTransitLength;i3++){
+                //         randomWeight = randomWeight-transitArray[i3][4];
+                //         if(randomWeight<=0 && initClusters.indexOf(transitArray[i3]) < 0){
+                //             initClusters[i2] = transitArray[i3];
+                //             break;
+                //         }
+                //     }
+                // }
+                var currentSum = 0;
+                sumOfTransitArray = new Array(transitArray.length);
+                for(var r = 0;r<totalTransitLength;r++){
+                  currentSum+=transitArray[r][4];
+                  sumOfTransitArray[r] = currentSum;
+                }
                 var initClusters = new Array(clusterNumber);
                 for(var i2 = 0;i2<clusterNumber;i2++){
-
                     var randomWeight = Math.floor(Math.random()*(totalWeight));
-                    for(var i3 = 0; i3<totalTransitLength;i3++){
-                        randomWeight = randomWeight-transitArray[i3][4];
-                        if(randomWeight<=0){
+                    for (var i3=0;i3<totalTransitLength;i3++){
+                        if(sumOfTransitArray[i3]>=randomWeight && initClusters.indexOf(transitArray[i3])< 0) {
                             initClusters[i2] = transitArray[i3];
                             break;
                         }
                     }
-                }
 
+                }
 
 
 
