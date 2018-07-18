@@ -77,11 +77,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   processData(indexLatLongURL,transitURL,clusterNumber,1);
               });
             });
-            
-          
-            
-            //process first iteration
-            //processData(zonesJsonURL,transitURL,clusterNumber,1);
             //range slider
             $("#myRange").change(function(){
               $("#clusters").val(this.value);
@@ -135,14 +130,9 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.removeLayer(graphicsLayer);
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
-                  //newCentroid = findNewCentroid(transitArrayWithClusters);
-                
                   map.addLayer(graphicsLayer);
-                  
-
                   dojo.connect(graphicsLayer,'onClick',function(evt){
                     var clickedGroup = evt.graphic.attributes.indexOfGroup;
-
                     if(typeof(clickedGroup)!=="undefined"){
                       map.removeLayer(startEndLayer);
                       startEndLayer = new GraphicsLayer({ id: "startEndLayer" });    
@@ -225,7 +215,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   redrawClusters(newCentroid,graphicsLayer);
 
                   if($("#autoRun").is(':checked') === true){
-
                     myCounter.SetValue(1);
                   }
                   else{
@@ -272,7 +261,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               a.click();
             });
             $("#RerunButton").click(function(){
-             //console.log($("#clusters").val())
                 $("#currentIteration").val("0");
                 $("#nextIteration").prop('disabled', true);
                 $("#RerunButton").prop('disabled', true);
@@ -292,21 +280,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                                break;
                            }
                        }
-
                    }
-                   // var initClusters = new Array(clusterNumber);
-                   // for(var i2 = 0;i2<clusterNumber;i2++){
-                   //
-                   //     var randomWeight = Math.floor(Math.random()*(totalWeight));
-                   //     for(var i3 = 0,l = transitArray.length;i3<l;i3++){
-                   //         randomWeight = randomWeight-transitArray[i3][4];
-                   //         if(randomWeight<=0 && initClusters.indexOf(transitArray[i3]) < 0){
-                   //             initClusters[i2] = transitArray[i3];
-                   //             break;
-                   //         }
-                   //     }
-                   // }
-
 
                  result = splitIntoGroups();
                }
@@ -321,8 +295,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               $("#autoRun").prop('disabled', true);
               $("#WantJson").prop('disabled', true);
               var q = d3.queue();
-              var zoneDict = {};
-
               q.defer(d3.csv,indexLatLongURL)
                         .defer(d3.csv,transitURL)
                         .await(kmeansCalculate);
@@ -358,16 +330,14 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
 
                 }
                 transitLen = new Array(totalTransitLength);
-                transitAngle = new Array(totalTransitLength)
+                transitAngle = new Array(totalTransitLength);
 
-                  for(var t = 0;t<transitArray.length;t++){
-                      transitLen[t] = Math.sqrt(
-                          (transitArray[t][0] - transitArray[t][2])*(transitArray[t][0] - transitArray[t][2]) +
-                          (transitArray[t][1] - transitArray[t][3])*(transitArray[t][1] - transitArray[t][3]));
-                      transitAngle[t] =  Math.atan2(transitArray[t][0] - transitArray[t][2],transitArray[t][1] - transitArray[t][3]);
-                  }
-
-
+                for(var t = 0;t<totalTransitLength;t++){
+                  transitLen[t] = Math.sqrt(
+                      (transitArray[t][0] - transitArray[t][2])*(transitArray[t][0] - transitArray[t][2]) +
+                      (transitArray[t][1] - transitArray[t][3])*(transitArray[t][1] - transitArray[t][3]));
+                  transitAngle[t] =  Math.atan2(transitArray[t][0] - transitArray[t][2],transitArray[t][1] - transitArray[t][3]);
+                }
 
                 result = splitIntoGroups();
               }
@@ -393,7 +363,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               var result = new Array(transitArray.length);
               var clusterLen = new Array(newCentroid.length);
               var clusterAngle = new Array(newCentroid.length);
-              // console.log(transitLen,transitAngle)
 
               for(var c = 0;c<newCentroid.length;c++){
                   clusterLen[c] = Math.sqrt(
@@ -423,7 +392,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   //     (clusters[j][1] - clusters[j][3])*(clusters[j][1] - clusters[j][3]));
                     // var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
                     // var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
-                    var angleDiff = Math.abs(transitAngle[i] - clusterAngle[j]);
+                  var angleDiff = Math.abs(transitAngle[i] - clusterAngle[j]);
                   currentDist = currentDist + distanceWeighting * (Math.abs(transitLen[i]-clusterLen[j]))^distanceExponent;
 
                   if (angleDiff > Math.PI) {
@@ -446,7 +415,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               for(var t4=0;t4<GroupArray[r[0]].length;t4++){
                 transitArrayWithClusters[JSON.stringify(r[1][t4])].push(GroupArray[r[0]][t4]);
               }
-            
               if(c=== num_threads){
                   newCentroid = findNewCentroid(transitArrayWithClusters);
                   myVar.SetValue(1);
@@ -494,10 +462,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   dest_y = (dest_y*weight+groupMember[n][3]*oldWeight)/newWeight;
                   weight = newWeight;
               }
-              
-              
             }
-            
             newCentroid.push([orig_x,orig_y,dest_x,dest_y,weight,key]);
           }
           return newCentroid;
@@ -509,13 +474,15 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               "type":"FeatureCollection",
               "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3401" } },
               "features":[]};
-            // format=  {"name":"NewFeatureType",
-            //    "type":"FeatureCollection",
-            //    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
-            //    "features":[{"type":"Feature",
-            //                 "geometry":{"type":"LineString",
-            //                             "coordinates":[[null,null],[null,null]]},
-            //                 "properties":null}]};
+            /* geoJsonFormat=  {"name":"NewFeatureType",
+               "type":"FeatureCollection",
+               "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
+               "features":[{"type":"Feature",
+                            "geometry":{"type":"LineString",
+                                        "coordinates":[[null,null],[null,null]]},
+                            "properties":null}]};
+
+            */
           for(var i = 0,k=centroids.length;i<k;i++){
             var singleRecord = {};
             singleRecord.type = "Feature";
@@ -528,15 +495,16 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           }
           return geojson;
         }
-        // 
-        // function cartesianDistance(firstCoords,secondCoords){
-        //     //firstCoords = [[-113,53],[-112,54]]
-        //     return Math.sqrt(
-        //         (firstCoords[1][0]-secondCoords[1][0])*(firstCoords[1][0]-secondCoords[1][0]) +
-        //         (firstCoords[1][1]-secondCoords[1][1])*(firstCoords[1][1]-secondCoords[1][1]) +
-        //         (firstCoords[0][0]-secondCoords[0][0])*(firstCoords[0][0]-secondCoords[0][0]) +
-        //         (firstCoords[0][1]-secondCoords[0][1])*(firstCoords[0][1]-secondCoords[0][1]));
-        // }
+
+        /*function cartesianDistance(firstCoords,secondCoords){
+            //firstCoords = [[-113,53],[-112,54]]
+            return Math.sqrt(
+                (firstCoords[1][0]-secondCoords[1][0])*(firstCoords[1][0]-secondCoords[1][0]) +
+                (firstCoords[1][1]-secondCoords[1][1])*(firstCoords[1][1]-secondCoords[1][1]) +
+                (firstCoords[0][0]-secondCoords[0][0])*(firstCoords[0][0]-secondCoords[0][0]) +
+                (firstCoords[0][1]-secondCoords[0][1])*(firstCoords[0][1]-secondCoords[0][1]));
+        }
+        */
         
         function redrawClusters(newCentroid,graphicsLayer){
           var maxWidth = 0;
@@ -571,8 +539,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               };
               var infoTemplate = new InfoTemplate("Value: ${value}");
               var advPolyline = new Polyline(polylineJson,viewSpatialReference);
-              //console.log(advPolyline)
-
               var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
@@ -698,10 +664,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                     var advPolyline = new Polyline(polylineJson,viewSpatialReference);
                     var ag = new Graphic(advPolyline, advSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
                     return ag;
-
                 }
-
-
             }
             else{
                 return null;
@@ -756,7 +719,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 var promise = firstFunction();
                 promise.then(function(result) {
                     myVar.SetValue(2);
-                    //map.addLayer(graphicsLayer)
                 });
             }
         });
