@@ -28,7 +28,6 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
 2. The application will create a new folder './public/flow_data/' if there isn't one.
 3. It may take one hour to extract OMX file into a bunch of csv files stored in './public/flow_data/'
 4. As long as './public/flow_data' folder is existing, the './public/data/flow_matrices.omx' file won't be decoded again.
-    
 
 #### 2. Use Google Chrome or Firefox, and go to "https://localhost:3000".
 
@@ -36,7 +35,7 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
     
 ## Current Issues:
 
-1. Sometime, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
+1. Sometimes, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
 2. Browsing through a Chrome Box may not work.
 3. If the matrix is not a flow matrix or consists some wired data, it may make the App stuck. You need to refresh the page manually. 
 
@@ -47,13 +46,9 @@ The internal [omx file structure is documented](https://github.com/osPlanning/om
 2. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
 clicking on an arrow for see the detailed lines or dots. 
 
-3. Show the zone boundaries on the map (from /public/data/ZoneBoundaries3401.geojson)
-
 ## Some Tips:
 
 1. All the lines are clickable, no matter it is a blue(single) line or red(clustered) line, but you have to click on the central of the line precisely. Clicking on the arrow won't have any effect.
 2. If you choose to see single flows in 'lines', the right-side table is clickable and highlight the chosen single flow on the map.
 3. If you choose to see single flows in 'dots', you can see a lot of circles showing in different sizes after clicking on a red clusted line; however, the dots are not clickable and can't be selected through the right-side table.
 4. The slider can let the app run Kmeans continuously, but 20 iterations may be good enough. Don't leave it run forever(though it will stop after 200 iterations), it may occupy your cpu resource.
-5. Right now, the Kmeans process runs parallelly using four threads. If you have an awesome computer, such as 8 cores..., you may get a better performance by increasing the threads number, though the benchmark is unknown.
-
