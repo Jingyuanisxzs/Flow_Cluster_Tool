@@ -19,6 +19,8 @@ var graphicsLayer;
 var startEndLayer;
 var totalWeight;
 var sumOfTransitArray;
+var transitLen;
+var transitAngle;
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
@@ -116,7 +118,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
             myCounter = new Variable(0,function(){
               if($('#currentIteration').val()<200){
-                result = splitIntoGroupsGPU(newCentroid,transitArray);
+                result = splitIntoGroups();
               }
               else{
                 $("#nextIteration").prop('disabled', false);
@@ -242,7 +244,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               $("#WantJson").prop('disabled', true);
               map.disableMapNavigation();
               map.hideZoomSlider();
-              result = splitIntoGroupsGPU(newCentroid,transitArray);
+              result = splitIntoGroups();
               newCentroid = findNewCentroid(result);
             });
             $("#autoRun").click(function(e, parameters) {
@@ -254,7 +256,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
 
                   map.disableMapNavigation();
                   map.hideZoomSlider();
-                  result = splitIntoGroupsGPU(newCentroid,transitArray);
+                  result = splitIntoGroups();
                 }
             });
 
@@ -281,12 +283,12 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                if(Number($("#clusters").val())>0){
                  clusterNumber =Number($("#clusters").val());
 
-                   var initClusters = new Array(clusterNumber);
+                   newCentroid = new Array(clusterNumber);
                    for(var i2 = 0;i2<clusterNumber;i2++){
                        var randomWeight = Math.floor(Math.random()*(totalWeight));
                        for (var i3=0,l = transitArray.length;i3<l;i3++){
-                           if(sumOfTransitArray[i3]>=randomWeight && initClusters.indexOf(transitArray[i3])< 0) {
-                               initClusters[i2] = transitArray[i3];
+                           if(sumOfTransitArray[i3]>=randomWeight && newCentroid.indexOf(transitArray[i3])< 0) {
+                               newCentroid[i2] = transitArray[i3];
                                break;
                            }
                        }
@@ -306,7 +308,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                    // }
 
 
-                 result = splitIntoGroupsGPU(initClusters,transitArray);
+                 result = splitIntoGroups();
                }
              else{
                alert("Please enter a number!");
@@ -338,47 +340,43 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 //initialization
                 var totalTransitLength = transitArray.length;
 
-                // var initClusters = new Array(clusterNumber);
-                // for(var i2 = 0;i2<clusterNumber;i2++){
-                //
-                //     var randomWeight = Math.floor(Math.random()*(totalWeight));
-                //     for(var i3 = 0; i3<totalTransitLength;i3++){
-                //         randomWeight = randomWeight-transitArray[i3][4];
-                //         if(randomWeight<=0 && initClusters.indexOf(transitArray[i3]) < 0){
-                //             initClusters[i2] = transitArray[i3];
-                //             break;
-                //         }
-                //     }
-                // }
                 var currentSum = 0;
                 sumOfTransitArray = new Array(transitArray.length);
                 for(var r = 0;r<totalTransitLength;r++){
                   currentSum+=transitArray[r][4];
                   sumOfTransitArray[r] = currentSum;
                 }
-                var initClusters = new Array(clusterNumber);
+                newCentroid= new Array(clusterNumber);
                 for(var i2 = 0;i2<clusterNumber;i2++){
                     var randomWeight = Math.floor(Math.random()*(totalWeight));
                     for (var i3=0;i3<totalTransitLength;i3++){
-                        if(sumOfTransitArray[i3]>=randomWeight && initClusters.indexOf(transitArray[i3])< 0) {
-                            initClusters[i2] = transitArray[i3];
+                        if(sumOfTransitArray[i3]>=randomWeight && newCentroid.indexOf(transitArray[i3])< 0) {
+                            newCentroid[i2] = transitArray[i3];
                             break;
                         }
                     }
 
                 }
+                transitLen = new Array(totalTransitLength);
+                transitAngle = new Array(totalTransitLength)
+
+                  for(var t = 0;t<transitArray.length;t++){
+                      transitLen[t] = Math.sqrt(
+                          (transitArray[t][0] - transitArray[t][2])*(transitArray[t][0] - transitArray[t][2]) +
+                          (transitArray[t][1] - transitArray[t][3])*(transitArray[t][1] - transitArray[t][3]));
+                      transitAngle[t] =  Math.atan2(transitArray[t][0] - transitArray[t][2],transitArray[t][1] - transitArray[t][3]);
+                  }
 
 
 
-                result = splitIntoGroupsGPU(initClusters,transitArray);
+                result = splitIntoGroups();
               }
             }
         });
 
-        function splitIntoGroupsGPU(clusters,wholeTransitArray){
-    
+        function splitIntoGroups(){
           transitArrayWithClusters=[];
-          for(var m=0,l=clusters.length;m<l;m++){
+          for(var m=0,l=newCentroid.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
           }
           var num_threads = Number($("#threadNumber").val());
@@ -386,43 +384,36 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           var MT = new Multithread(num_threads);
           
           var funcInADifferentThread = MT.process(
-            function(clusters,transitArray,index){
+            function(newCentroid,transitArray,transitLen,transitAngle,index){
 
               // TODO move these to parameters or to UI objects, or at least to the top of the file
               var angleWeighting = 5000;
               var distanceWeighting = 1;    
               var distanceExponent = 0.5;          
               var result = new Array(transitArray.length);
-              var transitLen =  new Array(transitArray.length);
-              var clusterLen = new Array(clusters.length);
-              var transitAngle = new Array(transitArray.length);
-              var clusterAngle = new Array(clusters.length);
+              var clusterLen = new Array(newCentroid.length);
+              var clusterAngle = new Array(newCentroid.length);
+              // console.log(transitLen,transitAngle)
 
-              for(var t = 0;t<transitArray.length;t++){
-                  transitLen[t] = Math.sqrt(
-                      (transitArray[t][0] - transitArray[t][2])*(transitArray[t][0] - transitArray[t][2]) +
-                      (transitArray[t][1] - transitArray[t][3])*(transitArray[t][1] - transitArray[t][3]));
-                  transitAngle[t] =  Math.atan2(transitArray[t][0] - transitArray[t][2],transitArray[t][1] - transitArray[t][3]);
-              }
-              for(var c = 0;c<clusters.length;c++){
+              for(var c = 0;c<newCentroid.length;c++){
                   clusterLen[c] = Math.sqrt(
-                      (clusters[c][0] - clusters[c][2])*(clusters[c][0] - clusters[c][2]) +
-                      (clusters[c][1] - clusters[c][3])*(clusters[c][1] - clusters[c][3]));
-                  clusterAngle[c] = Math.atan2(clusters[c][0] - clusters[c][2],clusters[c][1] - clusters[c][3]);
+                      (newCentroid[c][0] - newCentroid[c][2])*(newCentroid[c][0] - newCentroid[c][2]) +
+                      (newCentroid[c][1] - newCentroid[c][3])*(newCentroid[c][1] - newCentroid[c][3]));
+                  clusterAngle[c] = Math.atan2(newCentroid[c][0] - newCentroid[c][2],newCentroid[c][1] - newCentroid[c][3]);
               }
 
               for(var i=0,l1=transitArray.length;i<l1;i++){
 
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
-                for(var j = 0,l2=clusters.length;j<l2;j++){
+                for(var j = 0,l2=newCentroid.length;j<l2;j++){
 
                   // coordinate distance
                   var currentDist=Math.sqrt(
-                      (transitArray[i][0]-clusters[j][0])*(transitArray[i][0]-clusters[j][0]) +
-                      (transitArray[i][1]-clusters[j][1])*(transitArray[i][1]-clusters[j][1]) +
-                      (transitArray[i][2]-clusters[j][2])*(transitArray[i][2]-clusters[j][2]) +
-                      (transitArray[i][3]-clusters[j][3])*(transitArray[i][3]-clusters[j][3]) );
+                      (transitArray[i][0]-newCentroid[j][0])*(transitArray[i][0]-newCentroid[j][0]) +
+                      (transitArray[i][1]-newCentroid[j][1])*(transitArray[i][1]-newCentroid[j][1]) +
+                      (transitArray[i][2]-newCentroid[j][2])*(transitArray[i][2]-newCentroid[j][2]) +
+                      (transitArray[i][3]-newCentroid[j][3])*(transitArray[i][3]-newCentroid[j][3]) );
 
                   // var len1 = Math.sqrt(
                   // (transitArray[i][0] - transitArray[i][2])*(transitArray[i][0] - transitArray[i][2]) +
@@ -430,10 +421,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   // var len2 = Math.sqrt(
                   //       (clusters[j][0] - clusters[j][2])*(clusters[j][0] - clusters[j][2]) +
                   //     (clusters[j][1] - clusters[j][3])*(clusters[j][1] - clusters[j][3]));
+                    // var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
+                    // var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
+                    var angleDiff = Math.abs(transitAngle[i] - clusterAngle[j]);
                   currentDist = currentDist + distanceWeighting * (Math.abs(transitLen[i]-clusterLen[j]))^distanceExponent;
-                  // var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
-                  // var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
-                  var angleDiff = Math.abs(transitAngle[i] - clusterAngle[j]);
+
                   if (angleDiff > Math.PI) {
                     angleDiff -= Math.PI;
                   }
@@ -457,22 +449,23 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             
               if(c=== num_threads){
                   newCentroid = findNewCentroid(transitArrayWithClusters);
-
                   myVar.SetValue(1);
               }
             }
           );
 
-          var averageLength = wholeTransitArray.length/num_threads;
+          var averageLength = transitArray.length/num_threads;
           var GroupArray = new Array(num_threads);
+          var GroupTransitLen = new Array(num_threads);
+          var GroupTransitAngle = new Array(num_threads);
           for(var i = 0; i<num_threads; i++){
-            GroupArray[i] = wholeTransitArray.slice(averageLength*i,averageLength*(i+1));
+            GroupArray[i] = transitArray.slice(averageLength*i,averageLength*(i+1));
+            GroupTransitLen[i] = transitLen.slice(averageLength*i,averageLength*(i+1));
+            GroupTransitAngle[i] = transitAngle.slice(averageLength*i,averageLength*(i+1));
           }
           for(var j=0; j<num_threads;j++){
-             funcInADifferentThread(clusters,GroupArray[j],j);
+             funcInADifferentThread(newCentroid,GroupArray[j],GroupTransitLen[j],GroupTransitAngle[j],j);
           }
-        
-        
         }
         function Variable(initVal, onChange)
         {
