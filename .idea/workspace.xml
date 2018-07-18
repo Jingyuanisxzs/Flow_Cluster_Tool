@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d2f36ef-7e8c-4ee7-b0af-4d4f5f07ade3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/javascripts/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -20,8 +19,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/javascripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="357" column="17" selection-start-line="357" selection-start-column="17" selection-end-line="357" selection-end-column="17" />
+            <state relative-caret-position="204">
+              <caret line="406" selection-start-line="406" selection-end-line="406" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -115,9 +114,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>startenddots</find>
-      <find>null</find>
-      <find>ag</find>
       <find>startendline</find>
       <find>startEndLines</find>
       <find>click</find>
@@ -139,12 +135,15 @@
       <find>num_thread</find>
       <find>processdata</find>
       <find>rerun</find>
-      <find>init</find>
       <find>initcluster</find>
       <find>angle</find>
       <find>initial</find>
       <find>process</find>
       <find>cluster</find>
+      <find>next</find>
+      <find>nexti</find>
+      <find>initi</find>
+      <find>init</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -181,9 +180,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="827" />
+    <option name="x" value="-10" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -286,10 +285,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25648000" />
+    <option name="totallyTimeSpent" value="31054000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-10" y="0" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19791667" />
@@ -594,8 +593,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="357" column="17" selection-start-line="357" selection-start-column="17" selection-end-line="357" selection-end-column="17" />
+        <state relative-caret-position="204">
+          <caret line="406" selection-start-line="406" selection-end-line="406" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

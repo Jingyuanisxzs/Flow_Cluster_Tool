@@ -393,7 +393,26 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               var distanceWeighting = 1;    
               var distanceExponent = 0.5;          
               var result = new Array(transitArray.length);
+              var transitLen =  new Array(transitArray.length);
+              var clusterLen = new Array(clusters.length);
+              var transitAngle = new Array(transitArray.length);
+              var clusterAngle = new Array(clusters.length);
+
+              for(var t = 0;t<transitArray.length;t++){
+                  transitLen[t] = Math.sqrt(
+                      (transitArray[t][0] - transitArray[t][2])*(transitArray[t][0] - transitArray[t][2]) +
+                      (transitArray[t][1] - transitArray[t][3])*(transitArray[t][1] - transitArray[t][3]));
+                  transitAngle[t] =  Math.atan2(transitArray[t][0] - transitArray[t][2],transitArray[t][1] - transitArray[t][3]);
+              }
+              for(var c = 0;c<clusters.length;c++){
+                  clusterLen[c] = Math.sqrt(
+                      (clusters[c][0] - clusters[c][2])*(clusters[c][0] - clusters[c][2]) +
+                      (clusters[c][1] - clusters[c][3])*(clusters[c][1] - clusters[c][3]));
+                  clusterAngle[c] = Math.atan2(clusters[c][0] - clusters[c][2],clusters[c][1] - clusters[c][3]);
+              }
+
               for(var i=0,l1=transitArray.length;i<l1;i++){
+
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=clusters.length;j<l2;j++){
@@ -405,16 +424,16 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                       (transitArray[i][2]-clusters[j][2])*(transitArray[i][2]-clusters[j][2]) +
                       (transitArray[i][3]-clusters[j][3])*(transitArray[i][3]-clusters[j][3]) );
 
-                  var len1 = Math.sqrt(
-                  (transitArray[i][0] - transitArray[i][2])*(transitArray[i][0] - transitArray[i][2]) +
-                      (transitArray[i][1] - transitArray[i][3])*(transitArray[i][1] - transitArray[i][3]));
-                  var len2 = Math.sqrt(
-                        (clusters[j][0] - clusters[j][2])*(clusters[j][0] - clusters[j][2]) +
-                      (clusters[j][1] - clusters[j][3])*(clusters[j][1] - clusters[j][3]));
-                  currentDist = currentDist + distanceWeighting * (Math.abs(len1-len2))^distanceExponent;
-                  var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
-                  var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
-                  var angleDiff = Math.abs(angle1 - angle2);
+                  // var len1 = Math.sqrt(
+                  // (transitArray[i][0] - transitArray[i][2])*(transitArray[i][0] - transitArray[i][2]) +
+                  //     (transitArray[i][1] - transitArray[i][3])*(transitArray[i][1] - transitArray[i][3]));
+                  // var len2 = Math.sqrt(
+                  //       (clusters[j][0] - clusters[j][2])*(clusters[j][0] - clusters[j][2]) +
+                  //     (clusters[j][1] - clusters[j][3])*(clusters[j][1] - clusters[j][3]));
+                  currentDist = currentDist + distanceWeighting * (Math.abs(transitLen[i]-clusterLen[j]))^distanceExponent;
+                  // var angle1 = Math.atan2(transitArray[i][0] - transitArray[i][2],transitArray[i][1] - transitArray[i][3]);
+                  // var angle2 = Math.atan2(clusters[j][0] - clusters[j][2],clusters[j][1] - clusters[j][3]);
+                  var angleDiff = Math.abs(transitAngle[i] - clusterAngle[j]);
                   if (angleDiff > Math.PI) {
                     angleDiff -= Math.PI;
                   }
@@ -424,8 +443,10 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                     minDist = currentDist;
                   }
                 }
+
                 result[i] =group;
               }
+
               return [index,result];
             },
             function(r) {
