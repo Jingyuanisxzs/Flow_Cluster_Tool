@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    h1= title
+    //p Welcome to #{title}
+    div(class="selectOMX" id = "selectScenario" )
+        h2 Scenario
+        select(id = 'scenario')
+            option(value=" ") Select a scenario
+
+    div(class="selectOMX")
+        h2 Year
+        select(id = 'year')
+            option(value=" ") Select a year
+
+    div(class="selectOMX")
+        h2 Version
+        select(id = 'version')
+            option(value=" ") Select a version
+
+    //form(type='button' value = "Submit" id = 'submitButton')
+
+    form(id = 'selectionForm' action="/flow_data" method="GET")
+        input(type="text" name="scenario_" id = 'queryScenario')
+        input(type="text" name="year_" id = 'queryYear')
+        input(type="text" name="version_" id = 'queryVersion')
+        input(type="submit" value="Submit" id = 'submitButton')
+
+
+    script(type="text/javascript" src="/javascripts/selection.js")
+
+    script.
+        //console.log($('#map').attr('id'))
+        //pass data to frontend from backend
+        var user = !{JSON.stringify(title)};
+            //var luz_data = !{JSON.stringify(luz_data)};

@@ -1,0 +1,24 @@
+.selectOMX{
+
+    position:relative;
+    text-align:center;
+}
+
+
+#selectScenario{
+
+
+    margin-top:150px;
+}
+
+#selectionForm{
+
+    position:relative;
+
+    text-align: center;
+    margin-top:150px;
+}
+
+form input{
+    width:50px;
+}

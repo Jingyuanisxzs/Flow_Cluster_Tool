@@ -65,8 +65,13 @@ var exec = require('child_process').exec(
 exec.stdout.pipe(process.stdout);
 exec.on('exit', function() {
   router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Flow Cluster Analysis Tool'});
+      res.render('selection',{title:'Flow Cluster Analysis Tool'})
+
   });
+  router.get('/flow_data',function(req,res,next){
+      res.render('index', { title: 'Flow Cluster Analysis Tool'});
+
+  })
 });
 
 

@@ -22,9 +22,9 @@ var totalWeight;
 var sumOfTransitArray;
 var transitLen;
 var transitAngle;
-var targetExtent;
+var omxDirectory;
 
-require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
+require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "../externalJS/DirectionalLineSymbol.js","../externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
         "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/geometry/Extent"],
     function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,GeoJsonLayer,
@@ -32,6 +32,14 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,Extent) {
         ready(function () {
              //for the sample print server
+
+
+            var href = window.location.href.split(/_=|&/);
+            //href[1] = scenario,href[3]= year,version=href[5]
+
+            omxDirectory = '../flow_data_'+href[1]+'_'+href[3]+'_'+href[5]
+
+
              if (!projection.isSupported()) {
                alert("client-side projection is not supported");
                return;
@@ -47,31 +55,13 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 wkid: 3857
             });
 
-
-
-
-            var calgaryExtent = new Extent();
-            calgaryExtent.xmin = -12836883.210747499;
-            calgaryExtent.ymin = 6579876.320036643;
-            calgaryExtent.xmax = -12666734.38578463;
-            calgaryExtent.ymax = 6683219.182278241;
-            calgaryExtent.spatialReference = mapSpatialReference;
-
-
-            var edmontonExtent = new Extent();
-            edmontonExtent.xmin = -12779631.876561876;
-            edmontonExtent.ymin = 7032536.401541631;
-            edmontonExtent.xmax = -12488712.546908382;
-            edmontonExtent.ymax = 7135879.263783229;
-            edmontonExtent.spatialReference = mapSpatialReference;
-
             $("#clusters").val(clusterNumber);
              $("#currentIteration").prop('disabled', true);
              //zonesfile must be 4326 encoded for current application
             //can be labour flow, transit flow, whatever flow
             var transitURL = null;
-            var flowTitleURL = "data/pecas_matrices_title.csv";
-            var indexLatLongURL = "data/indexLatLongDict.csv";
+            var flowTitleURL = omxDirectory+"/pecas_matrices_title.csv";
+            var indexLatLongURL = omxDirectory+"/indexLatLongDict.csv";
             $("#flowTable tr").remove();
             $("#flowTable").append('<tr><th onclick="sortTable(0)">Flow Matrices</th></tr>');
 
@@ -93,7 +83,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   }).toArray();
                   $(this).addClass("selected");
                   selectedMatrix=rowItem[0];
-                  transitURL = './flow_data/'+selectedMatrix+'.csv';
+                  transitURL = './'+omxDirectory+'/'+selectedMatrix+'.csv';
                   $("#clusters").val(defaultClusterNumber);
                   clusterNumber = defaultClusterNumber;
                   $('#currentIteration').val(0);
@@ -150,7 +140,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              }, "viewDiv");
             toggle.startup();
             map.on("load", function () {
-                addGeoJsonLayer("./data/SinglePolygenZoneBoundaries4326.geojson");
+                addGeoJsonLayer("../data/SinglePolygenZoneBoundaries4326.geojson");
             });
             on(map, "update-start", showLoading);
             on(map, "update-end", hideLoading);

@@ -1,0 +1,690 @@
+buying_B900 - Residential buildings
+buying_B901 - Industrial buildings
+buying_B902 - Office buildings
+buying_B903 - Shopping centers
+buying_B904 - Other commercial buildings
+buying_B905 - Schools universities
+buying_B906 - Health care buildings
+buying_B907 - Other institutional buildings
+buying_B908 - Highways roads
+buying_B909 - Other transportation construction
+buying_B910 - Production facilities in oil and gas extraction
+buying_B911 - Other oil and gas engineering construction
+buying_B912 - Electric power engineering construction
+buying_B913 - Communication engineering construction
+buying_B914 - Marine engineering construction
+buying_B915 - Waterworks engineering construction
+buying_B916 - Sewage engineering construction
+buying_B917 - Mining engineering construction
+buying_B918 - Other engineering construction
+buying_C011 - Bovine
+buying_C012 - Swine
+buying_C013 - Poultry
+buying_C015 - Other Live Animals
+buying_C021 - Wheat
+buying_C022 - Grains
+buying_C031 - Potatoes
+buying_C032 - Vegetables
+buying_C033 - Fruits and Nuts
+buying_C035 - Oilseeds
+buying_C036 - Floriculture
+buying_C041 - Eggs
+buying_C042 - Raw Hides Silk
+buying_C043 - Pet food
+buying_C044 - Other Animal Feed
+buying_C048 - Fruit and Vegetables Processed
+buying_C049 - Other Crop Products
+buying_C051 - Frozen Meat
+buying_C052 - Frozen Poultry
+buying_C053 - Fish
+buying_C054 - Processed Meat
+buying_C055 - Seafood
+buying_C061 - Flour
+buying_C062 - Margarine and Cooking Oils
+buying_C063 - Other Grain and Oilseed Products
+buying_C064 - Baked Products
+buying_C065 - Snack Foods
+buying_C066 - Other Food Products
+buying_C071 - Milk and Milk Products
+buying_C073 - Cheese
+buying_C074 - Ice Cream
+buying_C075 - Coffee and Tea
+buying_C076 - Water and Soft Drinks
+buying_C078 - Sugar
+buying_C081 - Beer
+buying_C082 - Wine
+buying_C083 - Distilled Liquor
+buying_C101 - Stone
+buying_C102 - Sand Gravel
+buying_C103 - NonMetallic Minerals
+buying_C105 - Other Metal Ores
+buying_C106 - Bauxite and Aluminum Oxide
+buying_C107 - Basic Inorganic Chemicals
+buying_C108 - Industrial Gases
+buying_C111 - Coal
+buying_C112 - Conventional and Synthetic Crude Oil and Bitumen
+buying_C119 - Electricity
+buying_C121 - Gasoline
+buying_C122 - Fuel Oils Diesel Biodiesel
+buying_C123 - Jet Fuel
+buying_C124 - Petrochemicals
+buying_C131 - Natural Gas
+buying_C132 - Natural Gas Liquids
+buying_C135 - Coke
+buying_C137 - Asphalt
+buying_C141 - Dyes and Pigments
+buying_C143 - Earth metals
+buying_C151 - Potash
+buying_C152 - Ammonia and Chemical Fertilizer
+buying_C167 - Basic Organic Chemicals
+buying_C231 - Logs Pulpwood
+buying_C232 - Logs Lumber
+buying_C233 - Fuel Wood
+buying_C235 - Wood Untreated
+buying_C236 - Wood Chips
+buying_C241 - Lumber
+buying_C242 - Wood Products Treated
+buying_C243 - Wood Window Door
+buying_C244 - Wood Products Millwork
+buying_C245 - Plywood
+buying_C246 - Wood Products Reconstituted
+buying_C247 - Wood Crates and Pallets
+buying_C248 - Other Engineered Wood Products
+buying_C251 - Wood Pulp
+buying_C252 - Newsprint
+buying_C253 - Paper
+buying_C254 - Paperboard
+buying_C275 - Fibre Yarn Thread
+buying_C281 - Cement
+buying_D01 - Agriculture and Forestry Office Actions
+buying_D02 - Oil and Gas Office Actions
+buying_D03 - Mining and Extraction Office Actions
+buying_D04 - Utilities Office Actions
+buying_D05 - Construction Office Actions
+buying_D06 - Food Manufacturing Office Actions
+buying_D07 - Fabrics and Paper Office Actions
+buying_D08 - Energy Manufacturing Office Actions
+buying_D09 - Chemical Manufacturing Office Actions
+buying_D10 - Machinery and Equipment Manufacturing Office Actions
+buying_D11 - Wholesale Office Actions
+buying_D12 - Retail Office Actions
+buying_D13 - Transportation Office Actions
+buying_D14 - Pipeline Office Actions
+buying_D15 - Entertainment Office Actions
+buying_D16 - Information and Publishing Office Actions
+buying_D17 - Facilities Management Office Actions
+buying_E313 - Metal Doors Windows
+buying_E314 - Metal Springs
+buying_E315 - Hardware
+buying_E316 - Metal Containers Less300L
+buying_E317 - Metal Containers More300L
+buying_E318 - Ball and Roller Bearings
+buying_E321 - Turbines
+buying_E322 - Power Generation
+buying_E331 - Metal Hand Tools
+buying_E333 - Commercial Machinery
+buying_E336 - Household Appliances
+buying_E339 - Prefabricated Buildings
+buying_E341 - Electric Motors
+buying_E342 - Electrical Equipment
+buying_E343 - Batteries
+buying_E345 - Light Bulbs
+buying_E346 - Circuit Components
+buying_E347 - Computers
+buying_E348 - Consumer Electronics
+buying_E349 - Blank Recording Media
+buying_E381 - Fine Instruments
+buying_E391 - Lighting Fixtures
+buying_E392 - Furnishings Household
+buying_E393 - Furnishings Other
+buying_F951 - Retail margins
+buying_F952 - Retail trade commissions
+buying_F953 - Transportation margins
+buying_F954 - Wholesale margins
+buying_F955 - Wholesale trade commissions
+buying_F956 - Financial Services
+buying_G091 - Tobacco Products
+buying_G169 - Other Chemical Products
+buying_G171 - Perfumery
+buying_G172 - Soaps
+buying_G173 - Insecticides
+buying_G174 - Paints Varnishes
+buying_G181 - Pharmaceutical Products
+buying_G202 - Rubber
+buying_G206 - Hoses Belts Rubber Plastic
+buying_G207 - Tires
+buying_G208 - Rubber Products
+buying_G221 - Plastic Primary
+buying_G222 - Synthetic Fibres
+buying_G227 - Plastic Products
+buying_G255 - Paperboard Containers
+buying_G256 - Paper Converted Products
+buying_G257 - Stationery Products
+buying_G258 - Sanitary Paper
+buying_G259 - Paper Printed
+buying_G261 - Newspapers
+buying_G262 - Books
+buying_G263 - Periodicals
+buying_G264 - Flyers Catalogues
+buying_G267 - Software
+buying_G268 - Entertainment Recorded
+buying_G269 - Stationery Supplies
+buying_G271 - Fabrics
+buying_G272 - Clothing
+buying_G273 - Carpets Rugs
+buying_G274 - Other Textile Furnishings
+buying_G276 - Footwear
+buying_G277 - Leather and Furs
+buying_G278 - Leather Products
+buying_G279 - Other Textile Products
+buying_G282 - Clay Products and Refractories
+buying_G283 - Lime Gypsum Products
+buying_G284 - Concrete Products
+buying_G285 - Glass and Glass Products
+buying_G286 - NonMetallic Mineral Products
+buying_G287 - ReadyMixed Concrete
+buying_G291 - Iron Steel Basic Shapes
+buying_G292 - Steel Rolled Drawn
+buying_G293 - Iron Steel Pipes Tubes
+buying_G301 - Copper Unshaped
+buying_G302 - Nickel Shaped and Unshaped
+buying_G303 - Aluminum Unshaped
+buying_G304 - Aluminum Bars
+buying_G305 - Other NonFerrous
+buying_G311 - Metal Fittings
+buying_G312 - Metal Structural Parts
+buying_G319 - Worked Metal Products
+buying_G401 - Arms and Ammunition
+buying_G402 - Sporting Goods
+buying_G404 - Toys and Games
+buying_G411 - Jewellery Precious Metal
+buying_G412 - Jewellery and Silverware
+buying_G467 - Other Miscellaneous Goods
+buying_L01 - ManagerSenior
+buying_L02 - ManagerMiddle
+buying_L03 - AnalystProfessional
+buying_L04 - AnalystTech
+buying_L05 - Administrator
+buying_L06 - Clerical
+buying_L07 - HealthProfessional
+buying_L08 - HealthTech
+buying_L09 - SocialProfessional
+buying_L10 - SocialTech
+buying_L11 - Instructor
+buying_L12 - Performer
+buying_L13 - RetailSalesService
+buying_L14 - Trades
+buying_L15 - Driver
+buying_L16 - Labourer
+buying_L17 - NatResTech
+buying_L18 - ProcessingTech
+buying_N001 - Crop Space
+buying_N002 - Range Space
+buying_N003 - Extraction Space
+buying_N004 - Heavy Industry Space
+buying_N005 - Light Industry Space
+buying_N006 - Warehouse and Depot Space
+buying_N007 - Office Space
+buying_N008 - Retail Space
+buying_N009 - Hotel Space
+buying_N010 - Primary School Space
+buying_N011 - Post Secondary Space
+buying_N012 - Health Space
+buying_R011 - Detached Economy
+buying_R012 - Detached Luxury
+buying_R020 - Attached
+buying_R031 - Multifamily Economy
+buying_R032 - Multifamily Luxury
+buying_R040 - Mobile
+buying_S491 - Water Supply Services
+buying_S492 - HVAC Supply Services
+buying_S495 - Metal Processing Services
+buying_S496 - Typeset Printing
+buying_S501 - Trans Services Passenger Air
+buying_S502 - Trans Services Passenger Rail
+buying_S503 - Trans Services Passenger Water
+buying_S505 - Trans Services Taxi Limo
+buying_S506 - Trans Services Interurban Coach
+buying_S507 - Trans Services Urban Transit
+buying_S508 - Trans Services School Bus
+buying_S509 - Trans Services Passenger Other Ground
+buying_S511 - Trans Services Freight Air
+buying_S512 - Trans Services Freight Rail
+buying_S513 - Trans Services Freight Water
+buying_S514 - Trans Services Moving
+buying_S515 - Trans Services General Freight Truck
+buying_S516 - Trans Services Special Freight Truck
+buying_S519 - Sightseeing Services
+buying_S521 - Trans Services Natural Gas Pipeline
+buying_S522 - Trans Services Oil Pipeline
+buying_S531 - Trans Support Services Air
+buying_S532 - Trans Support Services Rail
+buying_S533 - Trans Support Services Water
+buying_S535 - Trans Support Services Road
+buying_S539 - Trans Support Services Other
+buying_S541 - Postal Services
+buying_S542 - Courier Services
+buying_S544 - Warehousing Services
+buying_S545 - Advertising
+buying_S546 - Information Handling Services
+buying_S551 - Residential Space Rental
+buying_S552 - NonResidential Space Rental
+buying_S555 - Real Estate Support Services
+buying_S561 - Motor Vehicle Rental
+buying_S562 - Furnishings Household Rental
+buying_S563 - Furnishings Other Rental
+buying_S565 - Commercial Machinery Rental
+buying_S568 - Brand Rental
+buying_S571 - Professional Technical Services
+buying_S572 - Travel Agent Services
+buying_S573 - Office Administration Services
+buying_S574 - Employment Services
+buying_S575 - Business Support Services
+buying_S576 - Building Support Services
+buying_S577 - Security Services
+buying_S578 - Waste Management Services
+buying_S581 - Brand Rental
+buying_S590 - Government Education Grant K12
+buying_S591 - Purchase of Education K12
+buying_S592 - Students K12
+buying_S593 - Government Education Grant PSE
+buying_S594 - Purchase of Education PSE
+buying_S595 - Students PSE
+buying_S596 - Government Education Grant Other
+buying_S597 - Education Other
+buying_S598 - Students Other
+buying_S621 - Health Care Services
+buying_S622 - Residential Care Services
+buying_S623 - Social Assistance Services
+buying_S624 - RC Patients
+buying_S626 - Daycare Services
+buying_S631 - Entertainment Live
+buying_S632 - Representative Agent Services
+buying_S633 - Heritage Cultural Services
+buying_S634 - Gambling
+buying_S635 - Amusement and Recreation Services
+buying_S636 - Hotel Services
+buying_S637 - Recreational Camp Services
+buying_S638 - Food and Drink Services
+buying_S711 - Repair Services Motor Vehicles
+buying_S712 - Repair Services Other Than Motor Vehicles
+buying_S752 - Funeral Services
+buying_S811 - Personal Care Services
+buying_S812 - Motor Vehicle Parking Services
+buying_S813 - Membership Services
+buying_S814 - Babysitting Services
+buying_S815 - Religious Services
+buying_S919 - Repair construction services
+buying_V351 - Motor Vehicle Parts
+buying_V352 - Trucks
+buying_V353 - Cars
+buying_V354 - Motor Homes
+buying_V356 - Buses
+buying_V357 - Vehicle Bodies
+buying_V358 - Trailers
+buying_V359 - Other Transportation Equipment
+buying_V361 - Railroad Rolling Stock and Parts
+buying_V371 - Aircraft and Aircraft Parts
+buying_V372 - Boats
+buying_V373 - Ships
+buying_W451 - Scrap Metals Ferrous
+buying_W452 - Scrap Metals NonFerrous
+buying_W453 - Scrap Wood
+buying_W454 - Scrap Paper
+buying_W455 - Scrap Glass
+buying_XChemMan_Active
+buying_XChemMan_Infrastructure
+buying_XChemMan_ME
+buying_XConvExt_Active
+buying_XConvExt_Infrastructure
+buying_XConvExt_ME
+buying_XCropProd_Buildings
+buying_XCropProd_ME
+buying_XNonConvExt_Active
+buying_XNonConvExt_Infrastructure
+buying_XNonConvExt_ME
+selling_B900 - Residential buildings
+selling_B901 - Industrial buildings
+selling_B902 - Office buildings
+selling_B903 - Shopping centers
+selling_B904 - Other commercial buildings
+selling_B905 - Schools universities
+selling_B906 - Health care buildings
+selling_B907 - Other institutional buildings
+selling_B908 - Highways roads
+selling_B909 - Other transportation construction
+selling_B910 - Production facilities in oil and gas extraction
+selling_B911 - Other oil and gas engineering construction
+selling_B912 - Electric power engineering construction
+selling_B913 - Communication engineering construction
+selling_B914 - Marine engineering construction
+selling_B915 - Waterworks engineering construction
+selling_B916 - Sewage engineering construction
+selling_B917 - Mining engineering construction
+selling_B918 - Other engineering construction
+selling_C011 - Bovine
+selling_C012 - Swine
+selling_C013 - Poultry
+selling_C015 - Other Live Animals
+selling_C021 - Wheat
+selling_C022 - Grains
+selling_C031 - Potatoes
+selling_C032 - Vegetables
+selling_C033 - Fruits and Nuts
+selling_C035 - Oilseeds
+selling_C036 - Floriculture
+selling_C041 - Eggs
+selling_C042 - Raw Hides Silk
+selling_C043 - Pet food
+selling_C044 - Other Animal Feed
+selling_C048 - Fruit and Vegetables Processed
+selling_C049 - Other Crop Products
+selling_C051 - Frozen Meat
+selling_C052 - Frozen Poultry
+selling_C053 - Fish
+selling_C054 - Processed Meat
+selling_C055 - Seafood
+selling_C061 - Flour
+selling_C062 - Margarine and Cooking Oils
+selling_C063 - Other Grain and Oilseed Products
+selling_C064 - Baked Products
+selling_C065 - Snack Foods
+selling_C066 - Other Food Products
+selling_C071 - Milk and Milk Products
+selling_C073 - Cheese
+selling_C074 - Ice Cream
+selling_C075 - Coffee and Tea
+selling_C076 - Water and Soft Drinks
+selling_C078 - Sugar
+selling_C081 - Beer
+selling_C082 - Wine
+selling_C083 - Distilled Liquor
+selling_C101 - Stone
+selling_C102 - Sand Gravel
+selling_C103 - NonMetallic Minerals
+selling_C105 - Other Metal Ores
+selling_C106 - Bauxite and Aluminum Oxide
+selling_C107 - Basic Inorganic Chemicals
+selling_C108 - Industrial Gases
+selling_C111 - Coal
+selling_C112 - Conventional and Synthetic Crude Oil and Bitumen
+selling_C119 - Electricity
+selling_C121 - Gasoline
+selling_C122 - Fuel Oils Diesel Biodiesel
+selling_C123 - Jet Fuel
+selling_C124 - Petrochemicals
+selling_C131 - Natural Gas
+selling_C132 - Natural Gas Liquids
+selling_C135 - Coke
+selling_C137 - Asphalt
+selling_C141 - Dyes and Pigments
+selling_C143 - Earth metals
+selling_C151 - Potash
+selling_C152 - Ammonia and Chemical Fertilizer
+selling_C167 - Basic Organic Chemicals
+selling_C231 - Logs Pulpwood
+selling_C232 - Logs Lumber
+selling_C233 - Fuel Wood
+selling_C235 - Wood Untreated
+selling_C236 - Wood Chips
+selling_C241 - Lumber
+selling_C242 - Wood Products Treated
+selling_C243 - Wood Window Door
+selling_C244 - Wood Products Millwork
+selling_C245 - Plywood
+selling_C246 - Wood Products Reconstituted
+selling_C247 - Wood Crates and Pallets
+selling_C248 - Other Engineered Wood Products
+selling_C251 - Wood Pulp
+selling_C252 - Newsprint
+selling_C253 - Paper
+selling_C254 - Paperboard
+selling_C275 - Fibre Yarn Thread
+selling_C281 - Cement
+selling_D01 - Agriculture and Forestry Office Actions
+selling_D02 - Oil and Gas Office Actions
+selling_D03 - Mining and Extraction Office Actions
+selling_D04 - Utilities Office Actions
+selling_D05 - Construction Office Actions
+selling_D06 - Food Manufacturing Office Actions
+selling_D07 - Fabrics and Paper Office Actions
+selling_D08 - Energy Manufacturing Office Actions
+selling_D09 - Chemical Manufacturing Office Actions
+selling_D10 - Machinery and Equipment Manufacturing Office Actions
+selling_D11 - Wholesale Office Actions
+selling_D12 - Retail Office Actions
+selling_D13 - Transportation Office Actions
+selling_D14 - Pipeline Office Actions
+selling_D15 - Entertainment Office Actions
+selling_D16 - Information and Publishing Office Actions
+selling_D17 - Facilities Management Office Actions
+selling_E313 - Metal Doors Windows
+selling_E314 - Metal Springs
+selling_E315 - Hardware
+selling_E316 - Metal Containers Less300L
+selling_E317 - Metal Containers More300L
+selling_E318 - Ball and Roller Bearings
+selling_E321 - Turbines
+selling_E322 - Power Generation
+selling_E331 - Metal Hand Tools
+selling_E333 - Commercial Machinery
+selling_E336 - Household Appliances
+selling_E339 - Prefabricated Buildings
+selling_E341 - Electric Motors
+selling_E342 - Electrical Equipment
+selling_E343 - Batteries
+selling_E345 - Light Bulbs
+selling_E346 - Circuit Components
+selling_E347 - Computers
+selling_E348 - Consumer Electronics
+selling_E349 - Blank Recording Media
+selling_E381 - Fine Instruments
+selling_E391 - Lighting Fixtures
+selling_E392 - Furnishings Household
+selling_E393 - Furnishings Other
+selling_F951 - Retail margins
+selling_F952 - Retail trade commissions
+selling_F953 - Transportation margins
+selling_F954 - Wholesale margins
+selling_F955 - Wholesale trade commissions
+selling_F956 - Financial Services
+selling_G091 - Tobacco Products
+selling_G169 - Other Chemical Products
+selling_G171 - Perfumery
+selling_G172 - Soaps
+selling_G173 - Insecticides
+selling_G174 - Paints Varnishes
+selling_G181 - Pharmaceutical Products
+selling_G202 - Rubber
+selling_G206 - Hoses Belts Rubber Plastic
+selling_G207 - Tires
+selling_G208 - Rubber Products
+selling_G221 - Plastic Primary
+selling_G222 - Synthetic Fibres
+selling_G227 - Plastic Products
+selling_G255 - Paperboard Containers
+selling_G256 - Paper Converted Products
+selling_G257 - Stationery Products
+selling_G258 - Sanitary Paper
+selling_G259 - Paper Printed
+selling_G261 - Newspapers
+selling_G262 - Books
+selling_G263 - Periodicals
+selling_G264 - Flyers Catalogues
+selling_G267 - Software
+selling_G268 - Entertainment Recorded
+selling_G269 - Stationery Supplies
+selling_G271 - Fabrics
+selling_G272 - Clothing
+selling_G273 - Carpets Rugs
+selling_G274 - Other Textile Furnishings
+selling_G276 - Footwear
+selling_G277 - Leather and Furs
+selling_G278 - Leather Products
+selling_G279 - Other Textile Products
+selling_G282 - Clay Products and Refractories
+selling_G283 - Lime Gypsum Products
+selling_G284 - Concrete Products
+selling_G285 - Glass and Glass Products
+selling_G286 - NonMetallic Mineral Products
+selling_G287 - ReadyMixed Concrete
+selling_G291 - Iron Steel Basic Shapes
+selling_G292 - Steel Rolled Drawn
+selling_G293 - Iron Steel Pipes Tubes
+selling_G301 - Copper Unshaped
+selling_G302 - Nickel Shaped and Unshaped
+selling_G303 - Aluminum Unshaped
+selling_G304 - Aluminum Bars
+selling_G305 - Other NonFerrous
+selling_G311 - Metal Fittings
+selling_G312 - Metal Structural Parts
+selling_G319 - Worked Metal Products
+selling_G401 - Arms and Ammunition
+selling_G402 - Sporting Goods
+selling_G404 - Toys and Games
+selling_G411 - Jewellery Precious Metal
+selling_G412 - Jewellery and Silverware
+selling_G467 - Other Miscellaneous Goods
+selling_L01 - ManagerSenior
+selling_L02 - ManagerMiddle
+selling_L03 - AnalystProfessional
+selling_L04 - AnalystTech
+selling_L05 - Administrator
+selling_L06 - Clerical
+selling_L07 - HealthProfessional
+selling_L08 - HealthTech
+selling_L09 - SocialProfessional
+selling_L10 - SocialTech
+selling_L11 - Instructor
+selling_L12 - Performer
+selling_L13 - RetailSalesService
+selling_L14 - Trades
+selling_L15 - Driver
+selling_L16 - Labourer
+selling_L17 - NatResTech
+selling_L18 - ProcessingTech
+selling_N001 - Crop Space
+selling_N002 - Range Space
+selling_N003 - Extraction Space
+selling_N004 - Heavy Industry Space
+selling_N005 - Light Industry Space
+selling_N006 - Warehouse and Depot Space
+selling_N007 - Office Space
+selling_N008 - Retail Space
+selling_N009 - Hotel Space
+selling_N010 - Primary School Space
+selling_N011 - Post Secondary Space
+selling_N012 - Health Space
+selling_R011 - Detached Economy
+selling_R012 - Detached Luxury
+selling_R020 - Attached
+selling_R031 - Multifamily Economy
+selling_R032 - Multifamily Luxury
+selling_R040 - Mobile
+selling_S491 - Water Supply Services
+selling_S492 - HVAC Supply Services
+selling_S495 - Metal Processing Services
+selling_S496 - Typeset Printing
+selling_S501 - Trans Services Passenger Air
+selling_S502 - Trans Services Passenger Rail
+selling_S503 - Trans Services Passenger Water
+selling_S505 - Trans Services Taxi Limo
+selling_S506 - Trans Services Interurban Coach
+selling_S507 - Trans Services Urban Transit
+selling_S508 - Trans Services School Bus
+selling_S509 - Trans Services Passenger Other Ground
+selling_S511 - Trans Services Freight Air
+selling_S512 - Trans Services Freight Rail
+selling_S513 - Trans Services Freight Water
+selling_S514 - Trans Services Moving
+selling_S515 - Trans Services General Freight Truck
+selling_S516 - Trans Services Special Freight Truck
+selling_S519 - Sightseeing Services
+selling_S521 - Trans Services Natural Gas Pipeline
+selling_S522 - Trans Services Oil Pipeline
+selling_S531 - Trans Support Services Air
+selling_S532 - Trans Support Services Rail
+selling_S533 - Trans Support Services Water
+selling_S535 - Trans Support Services Road
+selling_S539 - Trans Support Services Other
+selling_S541 - Postal Services
+selling_S542 - Courier Services
+selling_S544 - Warehousing Services
+selling_S545 - Advertising
+selling_S546 - Information Handling Services
+selling_S551 - Residential Space Rental
+selling_S552 - NonResidential Space Rental
+selling_S555 - Real Estate Support Services
+selling_S561 - Motor Vehicle Rental
+selling_S562 - Furnishings Household Rental
+selling_S563 - Furnishings Other Rental
+selling_S565 - Commercial Machinery Rental
+selling_S568 - Brand Rental
+selling_S571 - Professional Technical Services
+selling_S572 - Travel Agent Services
+selling_S573 - Office Administration Services
+selling_S574 - Employment Services
+selling_S575 - Business Support Services
+selling_S576 - Building Support Services
+selling_S577 - Security Services
+selling_S578 - Waste Management Services
+selling_S581 - Brand Rental
+selling_S590 - Government Education Grant K12
+selling_S591 - Purchase of Education K12
+selling_S592 - Students K12
+selling_S593 - Government Education Grant PSE
+selling_S594 - Purchase of Education PSE
+selling_S595 - Students PSE
+selling_S596 - Government Education Grant Other
+selling_S597 - Education Other
+selling_S598 - Students Other
+selling_S621 - Health Care Services
+selling_S622 - Residential Care Services
+selling_S623 - Social Assistance Services
+selling_S624 - RC Patients
+selling_S626 - Daycare Services
+selling_S631 - Entertainment Live
+selling_S632 - Representative Agent Services
+selling_S633 - Heritage Cultural Services
+selling_S634 - Gambling
+selling_S635 - Amusement and Recreation Services
+selling_S636 - Hotel Services
+selling_S637 - Recreational Camp Services
+selling_S638 - Food and Drink Services
+selling_S711 - Repair Services Motor Vehicles
+selling_S712 - Repair Services Other Than Motor Vehicles
+selling_S752 - Funeral Services
+selling_S811 - Personal Care Services
+selling_S812 - Motor Vehicle Parking Services
+selling_S813 - Membership Services
+selling_S814 - Babysitting Services
+selling_S815 - Religious Services
+selling_S919 - Repair construction services
+selling_V351 - Motor Vehicle Parts
+selling_V352 - Trucks
+selling_V353 - Cars
+selling_V354 - Motor Homes
+selling_V356 - Buses
+selling_V357 - Vehicle Bodies
+selling_V358 - Trailers
+selling_V359 - Other Transportation Equipment
+selling_V361 - Railroad Rolling Stock and Parts
+selling_V371 - Aircraft and Aircraft Parts
+selling_V372 - Boats
+selling_V373 - Ships
+selling_W451 - Scrap Metals Ferrous
+selling_W452 - Scrap Metals NonFerrous
+selling_W453 - Scrap Wood
+selling_W454 - Scrap Paper
+selling_W455 - Scrap Glass
+selling_XChemMan_Active
+selling_XChemMan_Infrastructure
+selling_XChemMan_ME
+selling_XConvExt_Active
+selling_XConvExt_Infrastructure
+selling_XConvExt_ME
+selling_XCropProd_Buildings
+selling_XCropProd_ME
+selling_XNonConvExt_Active
+selling_XNonConvExt_Infrastructure
+selling_XNonConvExt_ME
