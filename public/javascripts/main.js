@@ -14,6 +14,7 @@ var selectedMatrix;
 var ratio;
 var viewSpatialReference; 
 var geoSpatialReference;
+var mapSpatialReference;
 var geoJsonLayer1 ;
 var graphicsLayer;
 var startEndLayer;
@@ -21,12 +22,14 @@ var totalWeight;
 var sumOfTransitArray;
 var transitLen;
 var transitAngle;
+var targetExtent;
+
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "./externalJS/DirectionalLineSymbol.js","./externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
-        "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/layers/FeatureLayer"],
+        "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/geometry/Extent"],
     function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,GeoJsonLayer,
               SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw,SpatialReference, config, request,
-              ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,FeatureLayer) {
+              ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,Extent) {
         ready(function () {
              //for the sample print server
              if (!projection.isSupported()) {
@@ -40,9 +43,29 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              geoSpatialReference = new SpatialReference({
               wkid: 3401
             });
+            mapSpatialReference = new SpatialReference({
+                wkid: 3857
+            });
 
 
-             $("#clusters").val(clusterNumber);
+
+
+            var calgaryExtent = new Extent();
+            calgaryExtent.xmin = -12836883.210747499;
+            calgaryExtent.ymin = 6579876.320036643;
+            calgaryExtent.xmax = -12666734.38578463;
+            calgaryExtent.ymax = 6683219.182278241;
+            calgaryExtent.spatialReference = mapSpatialReference;
+
+
+            var edmontonExtent = new Extent();
+            edmontonExtent.xmin = -12779631.876561876;
+            edmontonExtent.ymin = 7032536.401541631;
+            edmontonExtent.xmax = -12488712.546908382;
+            edmontonExtent.ymax = 7135879.263783229;
+            edmontonExtent.spatialReference = mapSpatialReference;
+
+            $("#clusters").val(clusterNumber);
              $("#currentIteration").prop('disabled', true);
              //zonesfile must be 4326 encoded for current application
             //can be labour flow, transit flow, whatever flow
@@ -89,6 +112,37 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 zoom: 10,
                 basemap: "gray",
                 minZoom: 3
+            });
+
+
+            var initialExtent;
+
+
+            $('input:radio[name=selectACity]').change(function() {
+                if (this.value === 'Edmonton') {
+
+                    map.centerAndZoom( [-113.4947, 53.5437],10);
+
+                }
+                else if (this.value === 'Calgary'){
+                    map.centerAndZoom([-114.0708,51.0486],10)
+
+                }
+                else if (this.value === 'Banff') {
+                    map.centerAndZoom([-115.5612,51.1716],10)
+
+                }
+
+                else if (this.value === 'RedDeer') {
+                    map.centerAndZoom([-113.8112,52.2681],10)
+
+                }
+
+                else if (this.value === 'All') {
+                    map.centerAndZoom([-116.5765,53.9333],6)
+
+                }
+
             });
             var toggle = new BasemapToggle({
                map: map,

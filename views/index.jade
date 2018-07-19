@@ -62,6 +62,20 @@ block content
               Thing Dots   
               input(type="radio" name="dotsOrLines" id="lines")
               Thing Lines
+        div(class = 'controlPanel')
+            fieldset
+                label(for = 'clusters') Select A Center:
+
+                    input(type = 'radio' name = 'selectACity' id = 'Edmonton' value = 'Edmonton')
+                    Thing Edmonton
+                    input(type = 'radio' name = 'selectACity' id = 'Calgary' value = 'Calgary')
+                    Thing Calgary
+                    input(type = 'radio' name = 'selectACity' id = 'Banff' value = 'Banff')
+                    Thing Banff
+                    input(type = 'radio' name = 'selectACity' id = 'RedDeer' value = 'RedDeer')
+                    Thing Red Deer
+                    input(type = 'radio' name = 'selectACity' id = 'All' value = 'All')
+                    Thing All
     //- div(id = "unusedDataDiv")
     //-   table(id = "dataTable0" border="1" class="table table-bordered table-condensed table-striped table-hover")
     div(id = "dataDiv")
