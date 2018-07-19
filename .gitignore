@@ -1,5 +1,6 @@
 !.gitignore
 /public/flow_data*
+/public/flow_data_110_2018_1
 
 /public/data/*
 !/public/data/4326ZonesCoordinates.geojson
