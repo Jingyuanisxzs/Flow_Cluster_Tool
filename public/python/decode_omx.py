@@ -4,13 +4,30 @@ import numpy as np
 import sys
 import csv
 import json
+import time
 
 ####myfile = omx.open_file('./public/data/flow_matrices.omx')
+
+
 flow_matrices_group = []
 
 for file in os.listdir("./public/data"):
     if file.endswith(".omx"):
         flow_matrices_group.append(os.path.join("./public/data", file))
+
+with open('./public/data/flow_list.csv', 'w') as csvFile:
+    writer = csv.writer(csvFile,delimiter = ',')
+    header = ['title']
+
+    writer.writerow(header)
+    for file in os.listdir('./public'):
+
+        if file.startswith('flow_data_'):
+
+
+            writer.writerow([file])
+    csvFile.close()
+
 
 for flow_matrices in flow_matrices_group:
 
@@ -60,10 +77,8 @@ for flow_matrices in flow_matrices_group:
     else:
         print('Some flow_matrices file has a wrong format.')
 
-
-
     myfile.close()
-print("OMX has alread been decoded")
+# print("OMX has alread been decoded")
 
 with open('./public/data/flow_list.csv', 'w') as csvFile:
     writer = csv.writer(csvFile,delimiter = ',')

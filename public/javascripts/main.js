@@ -171,11 +171,15 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
                   map.addLayer(graphicsLayer);
-                  dojo.connect(graphicsLayer,'onClick',function(evt){
+                console.log('asda')
+                  graphicsLayer.on("click",function(evt){
+
                     var clickedGroup = evt.graphic.attributes.indexOfGroup;
                     if(typeof(clickedGroup)!=="undefined"){
                       map.removeLayer(startEndLayer);
-                      startEndLayer = new GraphicsLayer({ id: "startEndLayer" });    
+                        console.log('sss')
+
+                        startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
                       if($("#dots").is(':checked') === true){
                         for (var h =0;h<transitArrayWithClusters[clickedGroup].length;h++){
                           var orginDest = startEndDots(transitArrayWithClusters[clickedGroup][h]);

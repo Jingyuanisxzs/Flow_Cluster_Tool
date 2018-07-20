@@ -2,8 +2,6 @@
 
 var express = require('express');
 var router = express.Router();
-var conString = "";
-var obj = "1";
 /* GET home page. */
 
 // const { Pool, Client } = require('pg');
@@ -64,16 +62,15 @@ var exec = require('child_process').exec(
 
 exec.stdout.pipe(process.stdout);
 exec.on('exit', function() {
-  router.get('/', function(req, res, next) {
-      res.render('selection',{title:'Flow Cluster Analysis Tool'})
-
-  });
-  router.get('/flow_data',function(req,res,next){
-      res.render('index', { title: 'Flow Cluster Analysis Tool'});
-
-  })
 });
+router.get('/', function(req, res, next) {
+    res.render('selection',{title:'Flow Cluster Analysis Tool'})
 
+});
+router.get('/flow_data',function(req,res,next){
+    res.render('index', { title: 'Flow Cluster Analysis Tool'});
+
+});
 
 //get data from frontend
 // router.post('/signup', (req, res) => {
