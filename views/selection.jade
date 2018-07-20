@@ -2,18 +2,16 @@ extends layout
 
 block content
     h1= title
+    div(id = "omxDiv")
+        table(id = "omxTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
     //p Welcome to #{title}
     div(class="selectOMX" id = "selectScenario" )
         h2 Scenario
         select(id = 'scenario')
             option(value=" ") Select a scenario
-
-    div(class="selectOMX")
         h2 Year
         select(id = 'year')
             option(value=" ") Select a year
-
-    div(class="selectOMX")
         h2 Version
         select(id = 'version')
             option(value=" ") Select a version

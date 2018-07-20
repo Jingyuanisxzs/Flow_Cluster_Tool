@@ -1,6 +1,6 @@
-function sortTable(n) {
+function sortTable(n,tableId) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("dataTable");
+  table = tableId;
   switching = true;
   //Set the sorting direction to ascending:
   dir = "asc"; 
@@ -21,14 +21,30 @@ function sortTable(n) {
       y = rows[i + 1].getElementsByTagName("TD")[n];
       /*check if the two rows should switch place,
       based on the direction, asc or desc:*/
-      if (dir == "asc") {
-        if (Number(x.innerHTML) > Number(y.innerHTML)) {
+      if (dir === "asc") {
+        if(isNaN(Number(x.innerHTML))){
+            if(x.innerHTML>y.innerHTML){
+              shouldSwitch = true;
+              break;
+            }
+
+        }
+        else if (Number(x.innerHTML) > Number(y.innerHTML)) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
           break;
         }
-      } else if (dir == "desc") {
-        if (Number(x.innerHTML) < Number(y.innerHTML)) {
+
+      }
+      else if (dir === "desc") {
+        if(isNaN(Number(x.innerHTML))){
+            if(x.innerHTML<y.innerHTML){
+                shouldSwitch = true;
+                break;
+            }
+
+        }
+        else if (Number(x.innerHTML) < Number(y.innerHTML)) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;

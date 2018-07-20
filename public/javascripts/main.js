@@ -63,7 +63,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var flowTitleURL = omxDirectory+"/pecas_matrices_title.csv";
             var indexLatLongURL = omxDirectory+"/indexLatLongDict.csv";
             $("#flowTable tr").remove();
-            $("#flowTable").append('<tr><th onclick="sortTable(0)">Flow Matrices</th></tr>');
+            $("#flowTable").append('<tr><th>Flow Matrices</th></tr>');
 
             d3.csv(flowTitleURL, function(flowTitles) {
               var keys = Object.keys(flowTitles);
@@ -103,10 +103,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 basemap: "gray",
                 minZoom: 3
             });
-
-
-            var initialExtent;
-
 
             $('input:radio[name=selectACity]').change(function() {
                 if (this.value === 'Edmonton') {
@@ -206,7 +202,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                       map.addLayer(startEndLayer);
                       
                       $("#dataTable tr").remove();
-                      $("#dataTable").append('<tr><th onclick="sortTable(0)">Origin Zone    </th><th onclick="sortTable(1)">Destination Zone   </th><th onclick="sortTable(2)">Value</th></tr>');
+                      $("#dataTable").append('<tr><th onclick="sortTable(0,dataTable)">Origin Zone    </th><th onclick="sortTable(1,dataTable)">Destination Zone   </th><th onclick="sortTable(2,dataTable)">Value</th></tr>');
                       
                       
                       for (var u =0;u<transitArrayWithClusters[clickedGroup].length;u++){
