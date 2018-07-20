@@ -34,7 +34,7 @@ form input{
 #omxDiv{
     position:fixed;
     left:200px;
-    top:200px;
+    top:300px;
     z-index:1000;
 }
 
@@ -65,4 +65,10 @@ table#omxTable {
 #omxTable tr.selected td {
     background-color:	#696969	;
     color: #FFFFFF;
+}
+h1{
+    margin-top:-10px;
+    padding:30px;
+    background-color: white
+
 }
