@@ -1,12 +1,9 @@
 # Flow Cluster Analysis Tool
 
-This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web application(with some python scripts). The weighted Kmeans algorithm is used. The important data is not here. You should use your own flow_matrices.omx file. 
+This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web application(with some python scripts). The weighted Kmeans algorithm is used. The important data is not here. You should use your own flow_matrices_Scenario_Year_Version.omx file. 
 
 ## Set Up
 #### 1. Download the folder
-
-1. package.json and package-lock.json might should be removed before setting up.
-
 #### 2. Go to the root of the folder, and run some npm commands in the terminal/cmd. If 'npm' is not found, then you may need to install nodejs first...
 
     1. npm install
@@ -19,19 +16,20 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
     8. npm install --save morgan
        
 #### 3. Python2.7 is needed. Please use PIP to install openmatrix and numpy.
-#### 4. Go to './public/data/' folder, add your 'flow_matrices.omx'(name is important, must be exactly the same name) file there.
+#### 4. Go to './public/data/' folder, add your 'flow_matrices_Scenario_Year_Version.omx'(name is important, must follow the format) file there. For example, 'flow_matrices_110_2018_1.omx' or 'flow_matrices_S1_2014_version4.omx' is good; however, 'flow_matrices.omx' or 'flow_matrices_110.omx' is invalid.
 
 ## Run The Application
 #### 1. Use your terminal going to the root and type 'npm start'
 
-1. You can see some message in the terminal.
-2. The application will create a new folder './public/flow_data/' if there isn't one.
-3. It may take one hour to extract OMX file into a bunch of csv files stored in './public/flow_data/'
-4. As long as './public/flow_data' folder is existing, the './public/data/flow_matrices.omx' file won't be decoded again.
+1. You can see some messages in the terminal.
+2. The application will create corresponding new folders './public/flow_data_Scenario_Year_Version/' if there is no such folder. For example, if the omx file is 'flow_matrices_120_2017_1', the folder created should be './public/flow_data_120_2017_1'.
+3. To extract a single .omx file needs 2-3 minutes. If you put 10 omx files in the './public/data/' folder, then it will take about 25 minutes to extract all of them. 
+4. The App won't extract all .omx files every time. As long as the corresponding './public/flow_data_Scenario_Year_Version/' folder exists, the App will ignore that omx file and execute the next one.
 
-#### 2. Use Google Chrome or Firefox, and go to "https://localhost:3000".
+#### 2. Use Google Chrome or Firefox to browse "https://localhost:3000".
 
 1. During the process of decoding, the webpage won't work.
+2. You need to select a omx file to browse.
     
 ## Current Issues:
 
