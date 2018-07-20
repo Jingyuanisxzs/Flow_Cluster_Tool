@@ -1,34 +1,53 @@
-extends layout
+doctype html
+html
+    head
+        link(rel="shortcut icon" href="")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="https://d3js.org/d3.v4.min.js")
+        script(src="https://js.arcgis.com/3.25/")
+        script(src='../externalJS/multithread.js')
+        script(src = '../javascripts/table.js')
+        script(src="../vendor/terraformer/terraformer.min.js")
+        script(src="../vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js")
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/selection.css')
 
-block content
-    h1= title
-    div(id = "omxDiv")
-        table(id = "omxTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
-    //p Welcome to #{title}
-    div(class="selectOMX" id = "selectScenario" )
-        h2 Scenario
-        select(id = 'scenario')
-            option(value=" ") Select a scenario
-        h2 Year
-        select(id = 'year')
-            option(value=" ") Select a year
-        h2 Version
-        select(id = 'version')
-            option(value=" ") Select a version
-
-    //form(type='button' value = "Submit" id = 'submitButton')
-
-    form(id = 'selectionForm' action="/flow_data" method="GET")
-        input(type="text" name="scenario_" id = 'queryScenario')
-        input(type="text" name="year_" id = 'queryYear')
-        input(type="text" name="version_" id = 'queryVersion')
-        input(type="submit" value="Submit" id = 'submitButton')
+        link(rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/blitzer/jquery-ui.css" type="text/css")
+        link(rel="stylesheet" href="http://js.arcgis.com/3.25/esri/css/esri.css" type="text/css")
+        link(rel="stylesheet" href="http://js.arcgis.com/3.25/dijit/themes/claro/claro.css")
+    body
+        block content
 
 
-    script(type="text/javascript" src="/javascripts/selection.js")
+            h1= title
+            div(id = "omxDiv")
+                table(id = "omxTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
+            //p Welcome to #{title}
+            div(class="selectOMX" id = "selectScenario" )
+                h2 Scenario
+                select(id = 'scenario')
+                    option(value=" ") Select a scenario
+                h2 Year
+                select(id = 'year')
+                    option(value=" ") Select a year
+                h2 Version
+                select(id = 'version')
+                    option(value=" ") Select a version
 
-    script.
-        //console.log($('#map').attr('id'))
-        //pass data to frontend from backend
-        var user = !{JSON.stringify(title)};
-            //var luz_data = !{JSON.stringify(luz_data)};
+            //form(type='button' value = "Submit" id = 'submitButton')
+
+            form(id = 'selectionForm' action="/flow_data" method="GET")
+                input(type="text" name="scenario_" id = 'queryScenario')
+                input(type="text" name="year_" id = 'queryYear')
+                input(type="text" name="version_" id = 'queryVersion')
+                input(type="submit" value="Submit" id = 'submitButton')
+
+
+            script(type="text/javascript" src="/javascripts/selection.js")
+
+            script.
+                //console.log($('#map').attr('id'))
+                //pass data to frontend from backend
+                var user = !{JSON.stringify(title)};
+                    //var luz_data = !{JSON.stringify(luz_data)};

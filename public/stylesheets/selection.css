@@ -1,3 +1,10 @@
+body{
+
+
+    background:url("https://teamsofourlady.ca/wp-content/uploads/2013/08/grey-map-canada.jpg");
+    background-size:cover;
+}
+
 .selectOMX{
 
     position:relative;
