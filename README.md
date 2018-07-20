@@ -24,7 +24,7 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
 1. You can see some messages in the terminal.
 2. The application will create corresponding new folders './public/flow_data_Scenario_Year_Version/' if there is no such folder. For example, if the omx file is 'flow_matrices_120_2017_1', the folder created should be './public/flow_data_120_2017_1'.
 3. To extract a single .omx file needs 2-3 minutes. If you put 10 omx files in the './public/data/' folder, then it will take about 25 minutes to extract all of them. 
-4. The App won't extract .omx file every time. As long as the corresponding './public/flow_data_Scenario_Year_Version/' folder exists, the App will ignore that omx file and execute the next one.
+4. The App won't extract all .omx files every time. As long as the corresponding './public/flow_data_Scenario_Year_Version/' folder exists, the App will ignore that omx file and execute the next one.
 
 #### 2. Use Google Chrome or Firefox to browse "https://localhost:3000".
 
