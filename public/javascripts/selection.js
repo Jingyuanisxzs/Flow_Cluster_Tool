@@ -50,12 +50,17 @@ $( document ).ready(function() {
            var splitRowItem = rowItem[0].split('_');
            scenario = splitRowItem[2];
            $('#queryScenario').val(scenario);
+           $('#scenario').val(scenario);
 
            year = splitRowItem[3];
            $('#queryYear').val(year);
+           $('#year').val(year);
+
 
            version = splitRowItem[4];
            $('#queryVersion').val(version);
+           $('#version').val(version);
+
 
        })
 
