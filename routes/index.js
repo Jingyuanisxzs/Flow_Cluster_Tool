@@ -2,6 +2,12 @@
 
 var express = require('express');
 var router = express.Router();
+
+// The top of our dir.
+var FCT_DIR = process.env.FCT_DIR;
+
+console.log("FCT_DIR=",FCT_DIR);
+
 /* GET home page. */
 
 // const { Pool, Client } = require('pg');
@@ -63,13 +69,19 @@ var exec = require('child_process').exec(
 exec.stdout.pipe(process.stdout);
 exec.on('exit', function() {
 });
-router.get('/', function(req, res, next) {
-    res.render('selection',{title:'Flow Cluster Analysis Tool'})
 
+router.get('/favicon.ico', function (req, res, next) {
+  ico_path=FCT_DIR+"/public/images/FCT.ico";
+  console.log("favicon.ico => "+ico_path);  
+  res.sendFile(ico_path);
 });
+
+router.get('/', function(req, res, next) {
+    res.render('selection',{title:'Flow Cluster Analysis Tool'});
+});
+
 router.get('/flow_data',function(req,res,next){
     res.render('index', { title: 'Flow Cluster Analysis Tool'});
-
 });
 
 //get data from frontend
