@@ -6,7 +6,7 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node)
 web application(with some python scripts). The weighted
 Kmeans algorithm is used. The important data is not
 here. You should use your own
-``flow_matrices_Scenario_Year_Version.omx`` file.
+``flow_matrices_SCENARIO_YEAR_VERSION.omx`` file.
 
 ## Quickstart
 
@@ -28,6 +28,21 @@ make _build_all
 # run the server.
 make _fct_run_server
 ```
+
+TODO
+--------------------------------------------------
+
+- The memory consumption around 10GiB for the test files.
+
+- The UI should display unique values in the selector.
+
+- The files split out of the omx files should be in their own subdir.
+  When running as a container, we want a single mount point.
+  
+- The input omx files should not be under "public" as they are not public.
+
+- The python files should not be under "public" either.
+  Should be python-3 too.
 
 
 ==================================================
