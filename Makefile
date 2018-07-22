@@ -17,12 +17,12 @@ _default:
 
 ifeq (${FCT_UNAME},Linux)
 _apt_get_install:
-	sudo apt-get install 
+	sudo apt-get install npm
 endif
 
 ifeq (${FCT_UNAME},Darwin)
 _brew_install:
-	sudo apt-get install npm 
+	brew install npm 
 endif
 
 #####
@@ -49,7 +49,6 @@ npm_exe=$(shell PATH=PATH=/usr/bin:/usr/local/bin:${PATH} type -p npm)
 
 # Readme has a list, but "package.json" is a better list.
 _npm_install:
-	npm package.json
 	npm install
 
 _build_all: _python_ve_build _npm_install
