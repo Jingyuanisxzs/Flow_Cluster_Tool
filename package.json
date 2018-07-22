@@ -1,9 +1,10 @@
 {
-  "name": "te",
+  "name": "fct",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/fct-run-server",
+    "fct-run-server": "node ./bin/fct-run-server"
   },
   "dependencies": {
     "Blob": "^0.10.0",

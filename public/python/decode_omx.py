@@ -1,9 +1,13 @@
-import os
-import openmatrix as omx
-import numpy as np
-import sys
+#
+# Flow_Cluster_Tool/public/python/decode_omx.py ---
+#
+
 import csv
 import json
+import numpy as np
+import openmatrix as omx
+import os
+import sys
 import time
 
 ####myfile = omx.open_file('./public/data/flow_matrices.omx')
@@ -92,4 +96,3 @@ with open('./public/data/flow_list.csv', 'w') as csvFile:
 
             writer.writerow([file])
     csvFile.close()
-
