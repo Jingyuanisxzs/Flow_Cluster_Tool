@@ -1,9 +1,56 @@
-# Flow Cluster Analysis Tool
+==================================================
+Flow_Cluster_Tool/README
+==================================================
 
-This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web application(with some python scripts). The weighted Kmeans algorithm is used. The important data is not here. You should use your own flow_matrices_Scenario_Year_Version.omx file. 
+This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node)
+web application(with some python scripts). The weighted
+Kmeans algorithm is used. The important data is not
+here. You should use your own
+``flow_matrices_SCENARIO_YEAR_VERSION.omx`` file.
+
+## Quickstart
+
+```
+git clone git@github.com:yueMaHello/Flow_Cluster_Tool.git
+cd Flow_Cluster_Tool
+
+source fct-setup.env
+
+# If needed, install tools...
+# (for Ubuntu)
+make _apt_get_install
+# (for OSX)
+make _brew_install
+
+# build our SW.
+make _build_all
+
+# run the server.
+make _fct_run_server
+```
+
+TODO
+--------------------------------------------------
+
+- The memory consumption around 10GiB for the test files.
+
+- The UI should display unique values in the selector.
+
+- The files split out of the omx files should be in their own subdir.
+  When running as a container, we want a single mount point.
+  
+- The input omx files should not be under "public" as they are not public.
+
+- The python files should not be under "public" either.
+  Should be python-3 too.
+
+
+==================================================
 
 ## Set Up
+
 #### 1. Download the folder
+
 #### 2. Go to the root of the folder, and run some npm commands in the terminal/cmd. If 'npm' is not found, then you may need to install nodejs first...
 
     1. npm install
@@ -16,15 +63,30 @@ This is a [Nodejs](https://docs.npmjs.com/getting-started/installing-node) web a
     8. npm install --save morgan
        
 #### 3. Python2.7 is needed. Please use PIP to install openmatrix and numpy.
+
 #### 4. Go to './public/data/' folder, add your 'flow_matrices_Scenario_Year_Version.omx'(name is important, must follow the format) file there. For example, 'flow_matrices_110_2018_1.omx' or 'flow_matrices_S1_2014_version4.omx' is good; however, 'flow_matrices.omx' or 'flow_matrices_110.omx' is invalid.
 
 ## Run The Application
+
 #### 1. Use your terminal going to the root and type 'npm start'
 
 1. You can see some messages in the terminal.
-2. The application will create corresponding new folders './public/flow_data_Scenario_Year_Version/' if there is no such folder. For example, if the omx file is 'flow_matrices_120_2017_1', the folder created should be './public/flow_data_120_2017_1'.
-3. To extract a single .omx file needs 2-3 minutes. If you put 10 omx files in the './public/data/' folder, then it will take about 25 minutes to extract all of them. 
-4. The App won't extract all .omx files every time. As long as the corresponding './public/flow_data_Scenario_Year_Version/' folder exists, the App will ignore that omx file and execute the next one.
+
+2. The application will create corresponding new folders
+   './public/flow_data_Scenario_Year_Version/' if there is
+   no such folder. For example, if the omx file is
+   'flow_matrices_120_2017_1', the folder created should be
+   './public/flow_data_120_2017_1'.
+
+3. To extract a single .omx file needs 2-3 minutes. If you
+   put 10 omx files in the './public/data/' folder, then it
+   will take about 25 minutes to extract all of them.
+
+4. The App won't extract all .omx files every time. As long
+   as the corresponding
+   './public/flow_data_Scenario_Year_Version/' folder
+   exists, the App will ignore that omx file and execute the
+   next one.
 
 #### 2. Use Google Chrome or Firefox to browse "https://localhost:3000".
 
