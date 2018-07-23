@@ -48,6 +48,18 @@ console.log("FCT_DIR=",FCT_DIR);
 //   pool.end();
 //
 // });
+
+function walkfolders(dir) {
+    var fs = fs || require('fs'),
+        files = fs.readdirSync(dir);
+    var filelist = filelist || [];
+    files.forEach(function(file) {
+            filelist.push(file);
+    });
+    return filelist;
+};
+var filelist = walkfolders('./public/data/uncompressed');
+console.log(filelist)
 var exec = require('child_process').exec(
   'python ./public/python/decode_omx.py', function(error, stdout, stderr) {
     if (error) {
@@ -77,7 +89,7 @@ router.get('/favicon.ico', function (req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-    res.render('selection',{title:'Flow Cluster Analysis Tool'});
+    res.render('selection',{title:'Flow Cluster Analysis Tool',omxList: filelist});
 });
 
 router.get('/flow_data',function(req,res,next){

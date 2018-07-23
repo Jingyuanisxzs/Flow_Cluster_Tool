@@ -22,18 +22,6 @@ for file in os.listdir("./public/data/compressed"):
     if file.endswith(".omx"):
         flow_matrices_group.append(os.path.join("./public/data/compressed", file))
 
-with open('./public/data/geoInfo/flow_list.csv', 'w') as csvFile:
-    writer = csv.writer(csvFile,delimiter = ',')
-    header = ['title']
-
-    writer.writerow(header)
-    for file in os.listdir('./public/data/uncompressed'):
-
-        if file.startswith('flow_data_'):
-
-
-            writer.writerow([file])
-    csvFile.close()
 
 
 for flow_matrices in flow_matrices_group:
@@ -86,12 +74,3 @@ for flow_matrices in flow_matrices_group:
 
     myfile.close()
 # print("OMX has alread been decoded")
-
-with open('./public/data/geoInfo/flow_list.csv', 'w') as csvFile:
-    writer = csv.writer(csvFile,delimiter = ',')
-    header = ['title']
-    writer.writerow(header)
-    for file in os.listdir('./public/data/uncompressed'):
-        if file.startswith('flow_data_'):
-            writer.writerow([file])
-    csvFile.close()
