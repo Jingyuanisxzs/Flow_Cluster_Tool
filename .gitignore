@@ -1,6 +1,5 @@
-/public/data/
-!/public/data/geoinfo/*.csv
-!/public/data/geoinfo/*.geojson
+/public/data/compressed/*
+/public/data/uncompressed/*
 
 
 *.omx
