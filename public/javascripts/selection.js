@@ -9,7 +9,7 @@ $( document ).ready(function() {
     $("#omxTable tr").remove();
     $("#omxTable").append('<tr><th onclick="sortTable(0,omxTable)">OMX File</th></tr>');
 
-    d3.csv('./data/flow_list.csv',function(data){
+    d3.csv('./data/geoInfo/flow_list.csv',function(data){
        for(var i = 0;i<data.length;i++){
 
 

@@ -37,7 +37,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var href = window.location.href.split(/_=|&/);
             //href[1] = scenario,href[3]= year,version=href[5]
 
-            omxDirectory = '../flow_data_'+href[1]+'_'+href[3]+'_'+href[5]
+            omxDirectory = '../data/uncompressed/flow_data_'+href[1]+'_'+href[3]+'_'+href[5];
 
 
              if (!projection.isSupported()) {
@@ -136,7 +136,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              }, "viewDiv");
             toggle.startup();
             map.on("load", function () {
-                addGeoJsonLayer("../data/SinglePolygenZoneBoundaries4326.geojson");
+                addGeoJsonLayer("../data/geoInfo/SinglePolygenZoneBoundaries4326.geojson");
             });
             on(map, "update-start", showLoading);
             on(map, "update-end", hideLoading);

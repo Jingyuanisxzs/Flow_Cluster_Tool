@@ -10,21 +10,24 @@ import os
 import sys
 import time
 
-####myfile = omx.open_file('./public/data/flow_matrices.omx')
 
+if not os.path.exists("./public/data/compressed"):
+    os.makedirs('./public/data/compressed')
+if not os.path.exists("./public/data/uncompressed"):
+    os.makedirs('./public/data/uncompressed')
 
 flow_matrices_group = []
 
-for file in os.listdir("./public/data"):
+for file in os.listdir("./public/data/compressed"):
     if file.endswith(".omx"):
-        flow_matrices_group.append(os.path.join("./public/data", file))
+        flow_matrices_group.append(os.path.join("./public/data/compressed", file))
 
-with open('./public/data/flow_list.csv', 'w') as csvFile:
+with open('./public/data/geoInfo/flow_list.csv', 'w') as csvFile:
     writer = csv.writer(csvFile,delimiter = ',')
     header = ['title']
 
     writer.writerow(header)
-    for file in os.listdir('./public'):
+    for file in os.listdir('./public/data/uncompressed'):
 
         if file.startswith('flow_data_'):
 
@@ -39,7 +42,7 @@ for flow_matrices in flow_matrices_group:
     splitFileName = flow_matrices.split('_')
     flow_data_dir = 0;
     if(len(splitFileName)>3):
-        flow_data_dir = './public/flow_data_'+splitFileName[2]+'_'+splitFileName[3]+'_'+splitFileName[4].split('.')[0]
+        flow_data_dir = './public/data/uncompressed/flow_data_'+splitFileName[2]+'_'+splitFileName[3]+'_'+splitFileName[4].split('.')[0]
 
 
         #create the folder if not exist
@@ -50,7 +53,7 @@ for flow_matrices in flow_matrices_group:
             zoneLatLongDict = {}
             indexLatLongDict = {}
 
-            with open('./public/data/ZonesCoordinates.csv',mode = 'r') as infile:
+            with open('./public/data/geoInfo/ZonesCoordinates.csv',mode = 'r') as infile:
                 read = csv.reader(infile)
                 zoneLatLongDict = {rows[0]:[rows[1],rows[2]]for rows in read}
 
@@ -84,15 +87,11 @@ for flow_matrices in flow_matrices_group:
     myfile.close()
 # print("OMX has alread been decoded")
 
-with open('./public/data/flow_list.csv', 'w') as csvFile:
+with open('./public/data/geoInfo/flow_list.csv', 'w') as csvFile:
     writer = csv.writer(csvFile,delimiter = ',')
     header = ['title']
-
     writer.writerow(header)
-    for file in os.listdir('./public'):
-
+    for file in os.listdir('./public/data/uncompressed'):
         if file.startswith('flow_data_'):
-
-
             writer.writerow([file])
     csvFile.close()
