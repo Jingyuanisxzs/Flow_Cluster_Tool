@@ -1,4 +1,3 @@
-
 # Flow_Cluster_Tool/README
 
 
@@ -28,6 +27,14 @@ make _build_all
 # run the server.
 make _fct_run_server
 ```
+
+Programs
+--------------------------------------------------
+
+- ``fct-run-server`` = runs the nodejs server.
+
+- ``fct-decode-omx`` = run from top of tree, uncompresses ``./public/data/compressed``.
+
 
 TODO
 --------------------------------------------------

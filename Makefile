@@ -64,14 +64,14 @@ _omx_rsync_data:
 	  --exclude "*" \
 	  --prune-empty-dirs \
 	  10.11.1.141:/Users/hba-user/ATPECAS/P107/ \
-	  ${FCT_OMX_DATA_DIR}/P107/
+	  ${FCT_DATA_RSYNCED_DIR}/P107/
 
 # We want the name to be:
 #   ``flow_matrices_SCENARIO_YEAR_VERSION.omx``
 # For now we use a version of "_1"
-# Do the rename in a couple of shell rename rules, then rsync it there.
+# Do the rename in a couple of shell rename rules, then rsync the omx file there.
 _omx_rename_data:
-	( builtin cd ${FCT_OMX_DATA_DIR} ; find . -name \*.omx ) | \
+	( builtin cd ${FCT_DATA_RSYNCED_DIR} ; find . -name \*.omx ) | \
 	while read omx_path ; \
 	do \
 	   fm_path=$${omx_path} ; \
@@ -79,10 +79,17 @@ _omx_rename_data:
 	   fm_path=$${fm_path/flow_matrices/1} ; \
 	   fm_path=flow_matrices_$${fm_path//\//_} ; \
 	   echo "$${omx_path} -> $${fm_path}" ; \
-	   rsync -Pa $${FCT_OMX_DATA_DIR}/$${omx_path} $${FCT_DATA_DIR}/$${fm_path} ; \
+	   rsync -Pa $${FCT_DATA_RSYNCED_DIR}/$${omx_path} $${FCT_DATA_COMPRESSED_DIR}/$${fm_path} ; \
 	done
+
+_data_uncompressed_rm:
+	rm ${FCT_DATA_UNCOMPRESSED_DIR}/*/*
 
 #####
 
 _fct_run_server:
+#
+	mkdir -p ./public/data/compressed
+	mkdir -p ./public/data/uncompressed
+#
 	./bin/fct-run-server
