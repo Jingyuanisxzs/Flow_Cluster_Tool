@@ -13,10 +13,12 @@
     "debug": "~2.6.9",
     "express": "^4.16.3",
     "fs": "0.0.1-security",
+    "hound": "^1.0.5",
     "http-errors": "^1.6.3",
     "jade": "^1.11.0",
     "jsdom": "^11.11.0",
     "morgan": "^1.9.0",
-    "python-shell": "^0.5.0"
+    "python-shell": "^0.5.0",
+    "reload": "^2.3.0"
   }
 }

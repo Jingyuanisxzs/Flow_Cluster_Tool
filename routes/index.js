@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
 
-var express = require('express');
-var router = express.Router();
+var hound = require('hound');
+var reload = require('reload')
+var router = require('express').Router();
 
 // The top of our dir.
 var FCT_DIR = process.env.FCT_DIR;
@@ -49,6 +50,7 @@ console.log("FCT_DIR=",FCT_DIR);
 //
 // });
 
+
 function walkfolders(dir) {
     var fs = fs || require('fs'),
         files = fs.readdirSync(dir);
@@ -63,14 +65,34 @@ var filelist = walkfolders('./public/data/compressed');
 var decodedFileList = walkfolders('./public/data/uncompressed');
 
 
+var watcherForCompressed = hound.watch('./public/data/compressed');
+
+watcherForCompressed.on('create',function(file,stats){
+    filelist = walkfolders('./public/data/compressed');
+    console.log(file+'was created');
+
+    reload(router);
+});
+watcherForCompressed.on('delete',function(file,stats){
+    filelist = walkfolders('./public/data/compressed');
+    console.log(file+'was deleted');
+    reload(router)
+});
+
+
+
 router.get('/favicon.ico', function (req, res, next) {
     ico_path=FCT_DIR+"/public/images/FCT.ico";
     console.log("favicon.ico => "+ico_path);
     res.sendFile(ico_path);
 });
 
+
 router.get('/', function(req, res, next) {
     res.render('selection',{title:'Flow Cluster Analysis Tool',omxList: filelist,decodedOmxList:decodedFileList});
+
+
+
 });
 
 router.get('/flow_data',function(req,res,next){
