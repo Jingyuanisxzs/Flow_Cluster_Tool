@@ -68,6 +68,8 @@ TODO
     6. npm install --save jade
     7. npm install --save jsdom
     8. npm install --save morgan
+    9. npm install --save fs
+    10. npm install --save python-shell
        
 #### 3. Python2.7 is needed. Please use PIP to install openmatrix and numpy.
 
