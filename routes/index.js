@@ -80,46 +80,53 @@ router.get('/flow_data',function(req,res,next){
 //get data from frontend
 router.post('/userOmxRequest', (req, res) => {
     console.log(req.body);
-    //
-    // var PythonShell = require('python-shell');
-    //
-    // var options = {
-    //     mode: 'text',
-    //     pythonOptions: ['-u'],
-    //     args: ['value1', 'value2', 'value3']
-    // };
-    //
-    // PythonShell.run('./public/python/decode_omx.py', options, function (err, results) {
-    //     if (err)
-    //         throw err;
-    //     // Results is an array consisting of messages collected during execution
-    //     console.log('results: %j', results);
-    // });
-    var exec = require('child_process').exec(
-        'python ./public/python/decode_omx.py '+req.body['scenario_']+' '+req.body['year_']+' '+req.body['version_'] , function(error, stdout, stderr) {
-            if (error) {
-                console.log(error);
 
-            }
-            else if (stderr) {
-                console.log(stderr);
+    var PythonShell = require('python-shell');
 
-            }
-            else if (stdout) {
-                console.log("RAN SUCCESSFULLY");
-            }
-        }
+    var options = {
+        mode: 'text',
+        pythonOptions: ['-u'],
+        args: [req.body['scenario_'],req.body['year_'], req.body['version_'] ]
+    };
 
-    );
+    PythonShell.run('./public/python/decode_omx.py', options, function (err, results) {
+        if (err)
+            throw err;
 
-    exec.stdout.pipe(process.stdout);
-    exec.on('exit', function() {
+        console.log('results: %j', results);
 
-        var newFilelist = walkfolders('./public/data/compressed');
-        var newDecodedFileList = walkfolders('./public/data/uncompressed');
-        res.render('selection',{title:'Flow Cluster Analysis Tool',omxList: newFilelist,decodedOmxList:newDecodedFileList});
-
+        filelist = walkfolders('./public/data/compressed');
+        decodedFileList = walkfolders('./public/data/uncompressed');
+        res.render('selection',{title:'Flow Cluster Analysis Tool',omxList: filelist,decodedOmxList:decodedFileList});
     });
+
+    // var exec = require('child_process').exec(
+    //     'python ./public/python/decode_omx.py '+req.body['scenario_']+' '+req.body['year_']+' '+req.body['version_'] , function(error, stdout, stderr) {
+    //         if (error) {
+    //             console.log(error);
+    //
+    //         }
+    //         else if (stderr) {
+    //             console.log(stderr);
+    //
+    //         }
+    //         else if (stdout) {
+    //             filelist = walkfolders('./public/data/compressed');
+    //             decodedFileList = walkfolders('./public/data/uncompressed');
+    //             console.log("RAN SUCCESSFULLY");
+    //         }
+    //     }
+    //
+    // );
+
+    //
+    //
+    // exec.stdout.pipe(process.stdout);
+    // exec.on('exit', function() {
+
+
+    //
+    // });
 });
 
 module.exports = router;

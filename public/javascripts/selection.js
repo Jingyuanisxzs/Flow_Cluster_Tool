@@ -101,6 +101,10 @@ $( document ).ready(function() {
 
     });
     $('#submitButton').on('click',function(){
+        if(omxList.includes('flow_matrices_'+scenario+'_'+year+'_'+version+'.omx')=== false){
+            alert('Not exists. Try another OMX file!');
+            return false
+        }
 
         if(decodedOmxList.includes('flow_data_'+scenario+'_'+year+'_'+version)===false){
             alert('Not decoded. Start decoding the OMX file');
