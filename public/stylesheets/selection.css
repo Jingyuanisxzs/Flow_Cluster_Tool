@@ -70,3 +70,6 @@ h1{
     background-color: white
 
 }
+#newOMXForm{
+    visibility: hidden;
+}

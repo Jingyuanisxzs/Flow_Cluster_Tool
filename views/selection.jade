@@ -35,7 +35,6 @@ html
                 select(id = 'version')
                     option(value=" ") Select a version
 
-            //form(type='button' value = "Submit" id = 'submitButton')
 
             form(id = 'selectionForm' action="/flow_data" method="GET")
                 input(type="text" name="scenario_" id = 'queryScenario')
@@ -44,10 +43,21 @@ html
                 input(type="submit" value="Submit" id = 'submitButton')
 
 
-            script(type="text/javascript" src="/javascripts/selection.js")
+            form(action='/userOmxRequest',method='post',id = 'newOMXForm')
+                input(type="text" name="scenario_" id = 'newQueryScenario')
+                input(type="text" name="year_" id = 'newQueryYear')
+                input(type="text" name="version_" id = 'newQueryVersion')
+                input(type="submit" value="Submit" id = 'newSubmitButton')
+
+
+
 
             script.
                 //console.log($('#map').attr('id'))
                 //pass data to frontend from backend
+                var decodedOmxList = !{JSON.stringify(decodedOmxList)};
+
                 var omxList = !{JSON.stringify(omxList)};
+
+            script(type="text/javascript" src="/javascripts/selection.js")
 

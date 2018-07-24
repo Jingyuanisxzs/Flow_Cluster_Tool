@@ -10,65 +10,73 @@ $( document ).ready(function() {
     $("#omxTable").append('<tr><th onclick="sortTable(0,omxTable)">OMX File</th></tr>');
 
 
+    $("#newOmxTable tr").remove();
+    $("#newOmxTable").append('<tr><th onclick="sortTable(0,newOmxTable)">OMX File</th></tr>');
+
 
     console.log(omxList);
 
+    for(var i = 0;i<omxList.length;i++){
+
+        var splitedData = omxList[i].split('_');
+        var omxFileName = omxList[i].split('.');
+        if(splitedData.length>4){
+            $("#omxTable").append('<tr class="clickableRow3"><td>'+omxFileName[0]+'</td></tr>');
+
+            $("#newOmxTable").append('<tr class="clickableRow4"><td>'+omxFileName[0]+'</td></tr>');
+
+            validFlowList.push(omxList[i]);
+
+            var option = document.createElement("option");
+            option.text = splitedData[2];
+            option.value =splitedData[2];
+
+            var select = document.getElementById("scenario");
+            select.appendChild(option);
+            var optionYear = document.createElement("option");
+
+            optionYear.text = splitedData[3];
+            optionYear.value =splitedData[3];
+            var selectYear = document.getElementById("year");
+            selectYear.appendChild(optionYear);
 
 
+            var optionVersion = document.createElement("option");
 
-   for(var i = 0;i<omxList.length;i++){
+            optionVersion.text = splitedData[4].split('.')[0];
+            optionVersion.value =splitedData[4].split('.')[0];
+            var selectVersion = document.getElementById("version");
+            selectVersion.appendChild(optionVersion);
 
-       var splitedData = omxList[i].split('_');
+        }
+    }
 
-       if(splitedData.length>4){
-           $("#omxTable").append('<tr class="clickableRow3"><td>'+omxList[i]+'</td></tr>');
-           validFlowList.push(omxList[i]);
+    $(".clickableRow3").on("click",function(){
+        var rowItem = $(this).children('td').map(function () {
+            return this.innerHTML;
+        }).toArray();
 
-           var option = document.createElement("option");
-           option.text = splitedData[2];
-           option.value =splitedData[2];
+        var splitRowItem = rowItem[0].split('_');
+        scenario = splitRowItem[2];
+        $('#queryScenario').val(scenario);
+        $('#newQueryScenario').val(scenario);
 
-           var select = document.getElementById("scenario");
-           select.appendChild(option);
-           var optionYear = document.createElement("option");
+        $('#scenario').val(scenario);
 
-           optionYear.text = splitedData[3];
-           optionYear.value =splitedData[3];
-           var selectYear = document.getElementById("year");
-           selectYear.appendChild(optionYear);
+        year = splitRowItem[3];
+        $('#queryYear').val(year);
+        $('#newQueryYear').val(year);
 
-
-           var optionVersion = document.createElement("option");
-
-           optionVersion.text = splitedData[4];
-           optionVersion.value =splitedData[4];
-           var selectVersion = document.getElementById("version");
-           selectVersion.appendChild(optionVersion);
-
-       }
-   }
-
-   $(".clickableRow3").on("click",function(){
-       var rowItem = $(this).children('td').map(function () {
-           return this.innerHTML;
-       }).toArray();
-
-       var splitRowItem = rowItem[0].split('_');
-       scenario = splitRowItem[2];
-       $('#queryScenario').val(scenario);
-       $('#scenario').val(scenario);
-
-       year = splitRowItem[3];
-       $('#queryYear').val(year);
-       $('#year').val(year);
+        $('#year').val(year);
 
 
-       version = splitRowItem[4];
-       $('#queryVersion').val(version);
-       $('#version').val(version);
+        version = splitRowItem[4];
+        $('#queryVersion').val(version);
+        $('#newQueryVersion').val(version);
+        $('#version').val(version);
 
 
-   })
+    });
 
 
 
@@ -76,22 +84,40 @@ $( document ).ready(function() {
     $('#scenario').on('click',function(){
         scenario=document.getElementById('scenario').value;
         $('#queryScenario').val(scenario);
+        $('#newQueryScenario').val(scenario);
+
     });
     $('#year').on('click',function(){
         year = document.getElementById('year').value;
         $('#queryYear').val(year);
+        $('#newQueryYear').val(year);
+
 
     });
     $('#version').on('click',function(){
         version = document.getElementById('version').value;
-        $('#queryVersion').val(version)
+        $('#queryVersion').val(version);
+        $('#newQueryVersion').val(version);
+
     });
     $('#submitButton').on('click',function(){
-        if(validFlowList.includes('flow_data_'+scenario+'_'+year+'_'+version)===false){
-            alert('Not Exists');
-            return false;
 
-        }        //scenario=document.getElementById('scenario').value;
-    })
+        if(decodedOmxList.includes('flow_data_'+scenario+'_'+year+'_'+version)===false){
+            alert('Not decoded. Start decoding the OMX file');
+            $('#newSubmitButton').click();
+            return false;
+        }
+
+    });
+    //
+    //
+    // $('#newSubmitButton').on('click',function(){
+    //     if(decodedOmxList.includes('flow_data_'+scenario+'_'+year+'_'+version)===true){
+    //         alert('Already Exists');
+    //         return false;
+    //
+    //     }        //scenario=document.getElementById('scenario').value;
+    // });
+
 
 });
