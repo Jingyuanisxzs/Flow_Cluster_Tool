@@ -17,7 +17,9 @@ _default:
 
 ifeq (${FCT_UNAME},Linux)
 _apt_get_install:
-	sudo apt-get install npm
+	sudo apt-get install -y \
+	  python python-virtualenv \
+	  npm
 endif
 
 ifeq (${FCT_UNAME},Darwin)
@@ -93,3 +95,8 @@ _fct_run_server:
 	mkdir -p ./public/data/uncompressed
 #
 	./bin/fct-run-server
+
+#####
+
+_docker_build _docker_run_server _docker_run_bash:
+	cd docker && make ${@}
