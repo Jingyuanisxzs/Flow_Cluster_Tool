@@ -58,6 +58,7 @@ function walkfolders(dir) {
     });
     return filelist;
 };
+
 var filelist = walkfolders('./public/data/uncompressed');
 console.log(filelist)
 var exec = require('child_process').exec(

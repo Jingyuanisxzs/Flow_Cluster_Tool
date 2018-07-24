@@ -1,12 +1,9 @@
-/public/data/compressed/*
-/public/data/uncompressed/*
-
-
+*.csv
 *.omx
 .DS_Store
 /node_modules
-
+/public/data/compressed/*
+/public/data/uncompressed/*
 /public/flow_data*
 omx-data/
 ve/
-/bin/fct-run-server

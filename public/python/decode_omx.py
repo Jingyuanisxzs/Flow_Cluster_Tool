@@ -2,6 +2,10 @@
 # Flow_Cluster_Tool/public/python/decode_omx.py ---
 #
 
+# @todo: Currently uncompresses all the files.
+#        It should be able to uncompress a single ".omx" at a time.
+#        That way a single file can be uncompressed at a time.
+
 import csv
 import json
 import numpy as np
@@ -9,7 +13,6 @@ import openmatrix as omx
 import os
 import sys
 import time
-
 
 if not os.path.exists("./public/data/compressed"):
     os.makedirs('./public/data/compressed')
@@ -26,12 +29,13 @@ for file in os.listdir("./public/data/compressed"):
 
 for flow_matrices in flow_matrices_group:
 
+    print "Uncompressing :",flow_matrices
+
     myfile = omx.open_file(flow_matrices)
     splitFileName = flow_matrices.split('_')
     flow_data_dir = 0;
     if(len(splitFileName)>3):
         flow_data_dir = './public/data/uncompressed/flow_data_'+splitFileName[2]+'_'+splitFileName[3]+'_'+splitFileName[4].split('.')[0]
-
 
         #create the folder if not exist
         if not os.path.exists(flow_data_dir):
