@@ -98,8 +98,14 @@ router.post('/userOmxRequest', (req, res) => {
     };
 
     PythonShell.run('./public/python/decode_omx.py', options, function (err, results) {
-        if (err)
-            throw err;
+      
+      // When running with some versions of python, warnings are printed to stderr.
+      // The warnings are not errors, but PythonShell things anything to stderr is an error.
+      // So just log them for now.
+      if (err) {
+        console.log("python-shell err: %j", err);
+        // throw err;
+      }
 
         console.log('results: %j', results);
 
