@@ -25,9 +25,13 @@ _docker_build:
 
 # build up our cmd, with comments.
 run_cmd:=docker run
-run_cmd+= --rm
-run_cmd+= --interactive
-run_cmd+= --tty
+# For a real server:
+run_cmd+=--detach
+run_cmd+=--restart on-failure:10
+# for debugging:
+# run_cmd+= --rm
+# run_cmd+= --interactive
+# run_cmd+= --tty
 run_cmd+= --name fct_server
 #
 run_cmd+= -p ${FCT_HTTP_PORT}:${FCT_HTTP_PORT}
@@ -39,11 +43,25 @@ run_cmd+= --mount type=bind,src=${FCT_DATA_UNCOMPRESSED_DIR},dst=/opt/flow-clust
 #
 run_cmd+= ${FCT_DOCKER_TAG}
 #
-_docker_run_bash:
+_docker_bash:
 	${run_cmd}
 
-_docker_run_server:
+_docker_server_stop:
+# stop and remove the server.
+	-docker kill fct_server
+	sleep 3
+	-docker rm fct_server
+
+_docker_server_start:
+#
+	mkdir -p ${FCT_DIR}/public/data/{un,}compressed
+#
 	${run_cmd} bash -c "source ./fct-setup.env && exec ./bin/fct-run-server"
+
+_docker_server_logs:
+	docker logs --tail 50 fct_server
+
+_docker_server_restart: _docker_server_stop _docker_server_start
 
 #####
 
