@@ -98,5 +98,5 @@ _fct_run_server:
 
 #####
 
-_docker_build _docker_run_server _docker_run_bash:
+_docker_build _docker_server_restart _docker_bash:
 	cd docker && make ${@}
