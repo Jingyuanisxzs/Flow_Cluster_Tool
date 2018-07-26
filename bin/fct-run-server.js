@@ -3,9 +3,6 @@
 /**
  * Module dependencies.
  */
- 
-
-
 var app = require('../app');
 var debug = require('debug')('te:server');
 var http = require('http');
@@ -13,17 +10,12 @@ var fs = require('fs');
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.FCT_HTTP_PORT || '3000');
 app.set('port', port);
-// console.log("If the flow_matrices_<>_<>_<>.omx file is not decoded, it may take a long time to decode it. After the decoding, the webpage will work.")
-
 /**
  * Create HTTP server.
  */
-// 
-var myVar;
-
+var myVar;//listen to the decoding process
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
@@ -35,9 +27,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function(){
        console.log('user disconnected');
     });
-    
     socket.on('chat message',function(msg){
-
       var originOMXList = walkfolders('./public/data/compressed');
       var OMXList = walkfolders('./public/data/uncompressed');
       var receivedOMXRequest = 'flow_data_'+msg;
@@ -105,33 +95,25 @@ function walkfolders(dir) {
     });
     return filelist;
 }
-
-
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
-
   if (isNaN(port)) {
     // named pipe
     return val;
   }
-
   if (port >= 0) {
     // port number
     return port;
   }
-
   return false;
 }
 
@@ -162,11 +144,9 @@ function onError(error) {
       throw error;
   }
 }
-
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'

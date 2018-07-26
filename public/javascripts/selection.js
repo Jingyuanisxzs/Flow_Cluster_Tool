@@ -121,15 +121,7 @@ $( document ).ready(function() {
       });
     })
   
-    //
-    //
-    // $('#newSubmitButton').on('click',function(){
-    //     if(decodedOmxList.includes('flow_data_'+scenario+'_'+year+'_'+version)===true){
-    //         alert('Already Exists');
-    //         return false;
-    //
-    //     }        //scenario=document.getElementById('scenario').value;
-    // });
+
 
 
 });
