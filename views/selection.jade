@@ -2,10 +2,13 @@ doctype html
 html
     head
         link(rel="shortcut icon" href="")
+        script(src="/socket.io/socket.io.js")   
+
         script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
         script(src="https://d3js.org/d3.v4.min.js")
         script(src="https://js.arcgis.com/3.25/")
         script(src='../externalJS/multithread.js')
+
         script(src = '../javascripts/table.js')
         script(src="../vendor/terraformer/terraformer.min.js")
         script(src="../vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js")
@@ -34,30 +37,20 @@ html
                 h2 Version
                 select(id = 'version')
                     option(value=" ") Select a version
-
-
             form(id = 'selectionForm' action="/flow_data" method="GET")
                 input(type="text" name="scenario_" id = 'queryScenario')
                 input(type="text" name="year_" id = 'queryYear')
                 input(type="text" name="version_" id = 'queryVersion')
                 input(type="submit" value="Submit" id = 'submitButton')
-
-
             form(action='/userOmxRequest',method='post',id = 'newOMXForm')
                 input(type="text" name="scenario_" id = 'newQueryScenario')
                 input(type="text" name="year_" id = 'newQueryYear')
                 input(type="text" name="version_" id = 'newQueryVersion')
                 input(type="submit" value="Submit" id = 'newSubmitButton')
-
-
-
-
             script.
                 //console.log($('#map').attr('id'))
                 //pass data to frontend from backend
                 var decodedOmxList = !{JSON.stringify(decodedOmxList)};
 
                 var omxList = !{JSON.stringify(omxList)};
-
-            script(type="text/javascript" src="/javascripts/selection.js")
-
+           script(type="text/javascript" src="/javascripts/selection.js")

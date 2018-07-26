@@ -16,12 +16,14 @@ body {
     margin-top:150px;
 }
 
-#selectionForm{
+#newOMXForm{
 
     position:relative;
-
     text-align: center;
     margin-top:150px;
+}
+#selectionForm{
+  visibility: hidden;
 }
 
 form input{
@@ -57,7 +59,7 @@ table#omxTable {
     cursor: pointer;
 }
 #omxTable{
-    height:190px; overflow-y:scroll; display:block;width:200px;
+    height:190px; overflow-y:scroll; display:block;width:300px;
 }
 
 #omxTable tr.selected td {
@@ -70,6 +72,6 @@ h1{
     background-color: white
 
 }
-#newOMXForm{
+/* #newOMXForm{
     visibility: hidden;
-}
+} */

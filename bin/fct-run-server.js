@@ -9,20 +9,92 @@
 var app = require('../app');
 var debug = require('debug')('te:server');
 var http = require('http');
-
+var fs = require('fs');
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.FCT_HTTP_PORT || '3000');
 app.set('port', port);
-console.log("If the flow_matrices_<>_<>_<>.omx file is not decoded, it may take a long time to decode it. After the decoding, the webpage will work.")
+// console.log("If the flow_matrices_<>_<>_<>.omx file is not decoded, it may take a long time to decode it. After the decoding, the webpage will work.")
 
 /**
  * Create HTTP server.
  */
+// 
+ var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 
-var server = http.createServer(app);
+// When a client connects, we note it in the console
+io.sockets.on('connection', function (socket) {
+    var startOMXList = walkfolders('./public/data/compressed');
+    socket.emit('start omx list',startOMXList);
+    console.log('A client is connected!');
+    socket.on('disconnect', function(){
+       console.log('user disconnected');
+    });
+    socket.on('chat message',function(msg){
+      var originOMXList = walkfolders('./public/data/compressed');
+      var OMXList = walkfolders('./public/data/uncompressed');
+      var receivedOMXRequest = 'flow_data_'+msg;
+      var receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
+      if(!originOMXList.includes(receivedOMXMatrices)){
+        socket.emit('find','false');
+      }
+      else if(OMXList.includes(receivedOMXRequest)){
+        
+        fs.readdir('./public/data/uncompressed/'+receivedOMXRequest, (err, files) => {
+          var fileLength = files.length;
+          
+          if(fileLength<690){
+            socket.emit('find','not complete');
+          }
+          else{
+            socket.emit('find','true');
+          }    
+        });
+    
+      }
+      else{
+        //exists, without Decoding, start decoding process
+        socket.emit('find','not decoded');
+        var msgSplit = msg.split('_');
+        var exec = require('child_process').exec(
+            'python ./public/python/decode_omx.py '+msgSplit[0]+' '+msgSplit[1]+' '+ msgSplit[2] , function(error, stdout, stderr) {
+                if (error) {
+                    console.log(error);
+        
+                }
+                else if (stderr) {
+                    console.log(stderr);
+        
+                }
+                else if (stdout) {
+                    // socket.emit('finish',receivedOMXRequest);
+
+                    console.log("RAN SUCCESSFULLY");
+                }
+            }
+        
+        );
+        exec.stdout.pipe(process.stdout);
+        exec.on('exit', function() {
+        });
+      }
+    });
+});
+
+
+function walkfolders(dir) {
+    var fs = fs || require('fs'),
+        files = fs.readdirSync(dir);
+    var filelist = filelist || [];
+    files.forEach(function(file) {
+            filelist.push(file);
+    });
+    return filelist;
+}
+
 
 /**
  * Listen on provided port, on all network interfaces.

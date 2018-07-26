@@ -59,26 +59,18 @@ function walkfolders(dir) {
             filelist.push(file);
     });
     return filelist;
-};
+}
 
 var filelist = walkfolders('./public/data/compressed');
 var decodedFileList = walkfolders('./public/data/uncompressed');
-
-
-
-
 router.get('/favicon.ico', function (req, res, next) {
     ico_path=FCT_DIR+"/public/images/FCT.ico";
     console.log("favicon.ico => "+ico_path);
     res.sendFile(ico_path);
 });
 
-
 router.get('/', function(req, res, next) {
     res.render('selection',{title:'Flow Cluster Analysis Tool',omxList: filelist,decodedOmxList:decodedFileList});
-
-
-
 });
 
 router.get('/flow_data',function(req,res,next){
