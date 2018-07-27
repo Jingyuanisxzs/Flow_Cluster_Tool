@@ -38,8 +38,10 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             //href[1] = scenario,href[3]= year,version=href[5]
 
             omxDirectory = '../data/uncompressed/flow_data_'+href[1]+'_'+href[3]+'_'+href[5];
-
-
+            $('#scenario_info').text(href[1]);
+            $('#year_info').text(href[3]);
+            $('#version_info').text(href[5]);
+            
              if (!projection.isSupported()) {
                alert("client-side projection is not supported");
                return;

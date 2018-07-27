@@ -20,12 +20,19 @@ html
 
           h1= title
           //p Welcome to #{title}
-
+          div(id = "infoDiv")
+            p Scenario: <em id = 'scenario_info'>ddd</em>&nbsp&nbsp&nbsp 
+            p Year: <em id = 'year_info'></em>&nbsp&nbsp&nbsp 
+            p Version: <em id = 'version_info'></em>&nbsp&nbsp&nbsp 
           div(id = "map")
+  
+
+              
             div(id="viewDiv")
             div(id = "layerSelection")
                 input(type="radio" name="AlbertaBaseLayer" id="AlbertaBaseLayer"  style="height:18px; width:18px")
                 Thing Alberta Base Layer
+
           div(id = "legendDiv")
             fieldset(data-role='controlgroup')
               legend Legend
@@ -99,8 +106,6 @@ html
               table(id = "dataTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
             div(id = "flowDiv")
               table(id = "flowTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
-
-
 
           script(type="text/javascript" src="/javascripts/main.js")
 

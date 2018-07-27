@@ -16,7 +16,7 @@ $( document ).ready(function() {
         alert('Invalid OMX file!');
       }
       else if (msg === 'not complete'){
-        var answer = confirm('The OMX file is in decoding process. Do you still want to open it?')
+        var answer = confirm('The OMX file is in decoding process. Do you still want to open it?');
         if(answer){
           $('#submitButton').click();
         }
@@ -28,10 +28,7 @@ $( document ).ready(function() {
     var scenario;
     var year;
     var version;
-
     var validFlowList = [];
-
-
     $("#omxTable tr").remove();
     $("#omxTable").append('<tr><th onclick="sortTable(0,omxTable)">OMX File</th></tr>');
 
