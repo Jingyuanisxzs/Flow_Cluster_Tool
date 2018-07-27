@@ -7,6 +7,7 @@ var app = require('../app');
 var debug = require('debug')('te:server');
 var http = require('http');
 var fs = require('fs');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -18,6 +19,9 @@ app.set('port', port);
 var myVar;//listen to the decoding process
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
+
+
+
 
 // When a client connects, we note it in the console
 io.sockets.on('connection', function (socket) {
