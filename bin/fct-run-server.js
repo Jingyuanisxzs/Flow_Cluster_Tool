@@ -32,17 +32,18 @@ io.sockets.on('connection', function (socket) {
        console.log('user disconnected');
     });
     socket.on('chat message',function(msg){
-      var originOMXList = walkfolders('./public/data/compressed');
-      var OMXList = walkfolders('./public/data/uncompressed');
+    //  var originOMXList = walkfolders('./public/data/compressed');
+      // var OMXList = walkfolders('./public/data/uncompressed');
       var receivedOMXRequest = 'flow_data_'+msg;
       var receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
       myVar = new Variable(10, function(){
         socket.emit('finish',receivedOMXRequest);
       });
-      if(!originOMXList.includes(receivedOMXMatrices)){
+      console.log(walkfolders('./public/data/compressed'))
+      if(!walkfolders('./public/data/compressed').includes(receivedOMXMatrices)){
         socket.emit('find','false');
       }
-      else if(OMXList.includes(receivedOMXRequest)){
+      else if(walkfolders('./public/data/uncompressed').includes(receivedOMXRequest)){
         fs.readdir('./public/data/uncompressed/'+receivedOMXRequest, (err, files) => {
           var fileLength = files.length;
           if(fileLength<690){
@@ -93,7 +94,7 @@ function Variable(initVal, onChange)
 function walkfolders(dir) {
     var fs = fs || require('fs'),
         files = fs.readdirSync(dir);
-    var filelist = filelist || [];
+    var filelist = [];
     files.forEach(function(file) {
             filelist.push(file);
     });

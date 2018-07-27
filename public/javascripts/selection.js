@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     var socket = io();
+    console.log(socket)
     var omxList = [];
     $('#newOMXForm').submit(function(){
       socket.emit('chat message',$('#scenario').val()+'_'+$('#year').val()+'_'+$('#version').val());
