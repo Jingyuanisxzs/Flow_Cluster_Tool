@@ -32,18 +32,19 @@ io.sockets.on('connection', function (socket) {
        console.log('user disconnected');
     });
     socket.on('chat message',function(msg){
-    //  var originOMXList = walkfolders('./public/data/compressed');
-      // var OMXList = walkfolders('./public/data/uncompressed');
+      var originOMXList = walkfolders('./public/data/compressed');
+      var OMXList = walkfolders('./public/data/uncompressed');
       var receivedOMXRequest = 'flow_data_'+msg;
       var receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
       myVar = new Variable(10, function(){
         socket.emit('finish',receivedOMXRequest);
       });
-      console.log(walkfolders('./public/data/compressed'))
-      if(!walkfolders('./public/data/compressed').includes(receivedOMXMatrices)){
+  
+      
+      if(!includeOrNot(receivedOMXMatrices,originOMXList)){
         socket.emit('find','false');
       }
-      else if(walkfolders('./public/data/uncompressed').includes(receivedOMXRequest)){
+      else if(includeOrNot(receivedOMXRequest,OMXList)){
         fs.readdir('./public/data/uncompressed/'+receivedOMXRequest, (err, files) => {
           var fileLength = files.length;
           if(fileLength<690){
@@ -78,6 +79,15 @@ io.sockets.on('connection', function (socket) {
       }
     });
 });
+
+function includeOrNot(element,array){
+  for (var i =0;i<array.length;i++){
+      if(element === array[i]){
+        return true;
+      }
+  }
+  return false;
+}
 function Variable(initVal, onChange)
 {
     this.val = initVal;          //Value to be stored in this object
