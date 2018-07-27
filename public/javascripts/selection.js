@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    var socket = io();
+    var socket = io('ws://localhost:3000', {transports: ['websocket']});
     var omxList = [];
     $('#newOMXForm').submit(function(){
       socket.emit('chat message',$('#scenario').val()+'_'+$('#year').val()+'_'+$('#version').val());
