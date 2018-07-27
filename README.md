@@ -81,27 +81,12 @@ TODO
 
 1. You can see some messages in the terminal.
 
-2. The application will create corresponding new folders
-   './public/flow_data_Scenario_Year_Version/' if there is
-   no such folder. For example, if the omx file is
-   'flow_matrices_120_2017_1', the folder created should be
-   './public/flow_data_120_2017_1'.
-
-3. To extract a single .omx file needs 2-3 minutes. If you
-   put 10 omx files in the './public/data/' folder, then it
-   will take about 25 minutes to extract all of them.
-
-4. The App won't extract all .omx files every time. As long
-   as the corresponding
-   './public/flow_data_Scenario_Year_Version/' folder
-   exists, the App will ignore that omx file and execute the
-   next one.
-
 #### 2. Use Google Chrome or Firefox to browse "https://localhost:3000".
 
-1. During the process of decoding, the webpage won't work.
-2. You need to select a omx file to browse.
-    
+1. To extract a single .omx file needs 2-3 minutes. You can put all .omx file into './public/compressed/' folder. When the user select a omx file, the app will check whether it has been decoded. If it is not, then it will call python code to decode it in another thread. The user can still view other omx files without being blocked.
+
+2. During decoding process, the application will create corresponding a folder './public/uncompressed/flow_data_Scenario_Year_Version/' for the omx file.For example, if the omx file is 'flow_matrices_120_2017_1', the folder created should be './public/uncompressed/flow_data_120_2017_1'.
+
 ## Current Issues:
 
 1. Sometimes, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
