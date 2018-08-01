@@ -173,13 +173,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
                   map.addLayer(graphicsLayer);
-                console.log('asda')
                   graphicsLayer.on("click",function(evt){
 
                     var clickedGroup = evt.graphic.attributes.indexOfGroup;
                     if(typeof(clickedGroup)!=="undefined"){
                       map.removeLayer(startEndLayer);
-                        console.log('sss')
 
                         startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
                       if($("#dots").is(':checked') === true){
@@ -280,7 +278,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               map.disableMapNavigation();
               map.hideZoomSlider();
               result = splitIntoGroups();
-              newCentroid = findNewCentroid(result);
+              // newCentroid = findNewCentroid(result);
             });
             $("#autoRun").click(function(e, parameters) {
                 
@@ -391,6 +389,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
         });
 
         function splitIntoGroups(){
+  
           transitArrayWithClusters=[];
           for(var m=0,l=newCentroid.length;m<l;m++){
             transitArrayWithClusters[JSON.stringify(m)] = [];
@@ -422,7 +421,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 var group = 0;
                 var minDist =  Number.POSITIVE_INFINITY;
                 for(var j = 0,l2=newCentroid.length;j<l2;j++){
-
                   // coordinate distance
                   var currentDist=Math.sqrt(
                       (transitArray[i][0]-newCentroid[j][0])*(transitArray[i][0]-newCentroid[j][0]) +
@@ -494,6 +492,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 this.onChange();};
         }
         function findNewCentroid(transitArrayWithClusters){
+          console.log($('#currentIteration').val())
           newCentroid = [];
           for(var key in transitArrayWithClusters){
             var weight = 0,dest_x = 0,dest_y = 0,orig_x = 0,orig_y = 0;
@@ -688,13 +687,15 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                         }
                     });
                     var originG = new Graphic(projectedPointOrigin,squareSymbol, {inZone: line[5],outZone:line[6],value:line[4]}, infoTemplate);
-
-
                     return originG;
-
-
                 }
                 else{
+                  
+                  // var lineSymbol = new SimpleLineSymbol()
+                  //   lineSymbol.setMarker({
+                  //     style: "arrow",
+                  //     placement: "end"
+                  //   });
                     var advSymbol = new DirectionalLineSymbol({
                         style: SimpleLineSymbol.STYLE_SOLID,
                         color: new Color([0,0,204]),
