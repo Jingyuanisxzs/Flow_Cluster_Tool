@@ -7,11 +7,11 @@ html
         script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
         script(src="https://d3js.org/d3.v4.min.js")
         script(src="https://js.arcgis.com/3.25/")
-        script(src='../externalJS/multithread.js')
+        script(src='./externalJS/multithread.js')
 
-        script(src = '../javascripts/table.js')
-        script(src="../vendor/terraformer/terraformer.min.js")
-        script(src="../vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js")
+        script(src = './javascripts/table.js')
+        script(src="./vendor/terraformer/terraformer.min.js")
+        script(src="./vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js")
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/stylesheets/selection.css')
@@ -24,7 +24,7 @@ html
 
 
             h1= title
-            p App Version: <em>2:40AM 8/10/2018</em> 
+            p App Version: <em>3:05AM 8/10/2018</em> 
 
             div(id = "omxDiv")
                 table(id = "omxTable" border="1" class="table table-bordered table-condensed table-striped table-hover")
