@@ -33,10 +33,14 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('chat message',function(msg){
       var originOMXList = walkfolders('./public/data/compressed');
+      console.log(originOMXList);
       var OMXList = walkfolders('./public/data/uncompressed');
+      console.log(OMXList);
+
       var receivedOMXRequest = 'flow_data_'+msg;
       var receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
       myVar = new Variable(10, function(){
+        console.log('python script finished decoding!');
         socket.emit('finish',receivedOMXRequest);
       });
   
@@ -59,6 +63,7 @@ io.sockets.on('connection', function (socket) {
         //exists, without Decoding, start decoding process
         socket.emit('find','not decoded');
         var msgSplit = msg.split('_');
+        console.log('python script starts running')
         var exec = require('child_process').exec(
             'python ./public/python/decode_omx.py '+msgSplit[0]+' '+msgSplit[1]+' '+ msgSplit[2] , function(error, stdout, stderr) {
                 if (error) {
@@ -72,6 +77,7 @@ io.sockets.on('connection', function (socket) {
                 }
             }
         );
+        
         exec.stdout.pipe(process.stdout);
         exec.on('exit', function() {
             myVar.SetValue(1);

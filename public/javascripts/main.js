@@ -63,12 +63,15 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             //can be labour flow, transit flow, whatever flow
             var transitURL = null;
             var flowTitleURL = omxDirectory+"/pecas_matrices_title.csv";
+            console.log(flowTitleURL)
             var indexLatLongURL = omxDirectory+"/indexLatLongDict.csv";
             $("#flowTable tr").remove();
             $("#flowTable").append('<tr><th>Flow Matrices</th></tr>');
 
             d3.csv(flowTitleURL, function(flowTitles) {
+              
               var keys = Object.keys(flowTitles);
+              console.log(keys)
                 keys.forEach(function(key){
                     var subkeys = Object.keys(flowTitles[key]);
                     subkeys.forEach(function(subkey){

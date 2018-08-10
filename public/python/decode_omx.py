@@ -14,6 +14,7 @@ import os
 import sys
 import time
 
+
 omxFilePath = './public/data/compressed/flow_matrices_' + sys.argv[1] + '_' + sys.argv[2] + '_' + sys.argv[3] + '.omx'
 decodedOmxPath = './public/data/uncompressed/flow_data_' + sys.argv[1] + '_' + sys.argv[2] + '_' + sys.argv[3]
 
