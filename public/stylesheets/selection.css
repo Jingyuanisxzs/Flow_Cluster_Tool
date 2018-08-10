@@ -8,7 +8,9 @@ body {
     position:relative;
     text-align:center;
 }
-
+p {
+  margin-top:-40px;
+}
 
 #selectScenario{
 
@@ -59,7 +61,7 @@ table#omxTable {
     cursor: pointer;
 }
 #omxTable{
-    height:190px; overflow-y:scroll; display:block;width:300px;
+    height:190px; overflow-y:scroll; display:block;width:250px;
 }
 
 #omxTable tr.selected td {
