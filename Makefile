@@ -98,5 +98,11 @@ _fct_run_server:
 
 #####
 
+_update_public_version_txt:
+	( date +%Y%m%d-%H%M ; \
+	  git describe --always --dirty --long --tags ) \
+	  > ./public/version.txt
+	cat ./public/version.txt
+
 _docker_build _docker_server_restart _docker_bash:
 	cd docker && make ${@}
