@@ -7,6 +7,7 @@ html
         script(src="https://js.arcgis.com/3.25/")
         script(src='./externalJS/multithread.js')
         script(src = './javascripts/table.js')
+        script(src = './javascripts/fct_version_info.js')
         script(src="./vendor/terraformer/terraformer.min.js")
         script(src="./vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js")
         title= title
@@ -24,7 +25,7 @@ html
             p Scenario: <em id = 'scenario_info'>ddd</em>&nbsp&nbsp&nbsp 
             p Year: <em id = 'year_info'></em>&nbsp&nbsp&nbsp 
             p Version: <em id = 'version_info'></em>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            p App Version: <em>3:06AM 8/10/2018</em> 
+            p App Version: <em id="fct_version_info">3:06AM 8/10/2018</em> 
           div(id = "map")
               
             div(id="viewDiv")

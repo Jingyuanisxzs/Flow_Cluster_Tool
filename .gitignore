@@ -7,4 +7,6 @@
 /public/data/uncompressed/*
 /public/flow_data*
 omx-data/
+public/data/flow_list.csv
+public/version.txt
 ve/
