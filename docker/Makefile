@@ -33,6 +33,7 @@ run_cmd+=--restart on-failure:10
 # run_cmd+= --interactive
 # run_cmd+= --tty
 run_cmd+= --name fct_server
+run_cmd+=--user $$(id -u fct-prd):$$(id -g fct-prd)
 #
 run_cmd+= -p ${FCT_HTTP_PORT}:${FCT_HTTP_PORT}
 #
