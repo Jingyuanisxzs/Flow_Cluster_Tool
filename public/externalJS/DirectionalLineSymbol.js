@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 // The MIT License (MIT)
 //
 // Copyright (c) 2016 Nick Cameron
@@ -290,20 +290,25 @@ define([
                         //get the angle of the segment to rotate the symbol. The -180 relates to the fact that each path should point directly left as a starting direction.
                         var angle = this._getAngle(pt1, pt2);
                         var directionPoints = this._getDirectionPoints(pt1, pt2, screenExtent);
-
+                        
                         //add a symbol shape for each direction point
                         for (var x = 0, xLen = directionPoints.length; x < xLen; x++) {
                             var g =  this._createGraphic(directionPoints[x], this._createSymbol(this.directionSymbol, angle));
                             graphicsLayer.add(g);
-
                             var s = g.getShape();
-                            group.add(s);
-                            g.attr("class", "dls-symbol");
-                            graphic.directions.push(g);
-                            if (!graphic.visible) g.hide();
-
-                            g.origJson = g.toJson();
-                            g.toJson = this.directionGraphicToJson;
+                            if(s){
+                          
+                                
+                              group.add(s);      
+          
+                              g.attr("class", "dls-symbol");
+                              graphic.directions.push(g);
+                              if (!graphic.visible) g.hide();
+                          
+                              g.origJson = g.toJson();
+                              g.toJson = this.directionGraphicToJson;  
+                            }
+    
                         }
                     }
                 }

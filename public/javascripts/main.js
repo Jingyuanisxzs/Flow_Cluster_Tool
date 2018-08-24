@@ -64,6 +64,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var transitURL = null;
             var flowTitleURL = omxDirectory+"/pecas_matrices_title.csv";
             console.log(flowTitleURL)
+            console.log('8.24')
             var indexLatLongURL = omxDirectory+"/indexLatLongDict.csv";
             $("#flowTable tr").remove();
             $("#flowTable").append('<tr><th>Flow Matrices</th></tr>');
@@ -71,7 +72,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             d3.csv(flowTitleURL, function(flowTitles) {
               
               var keys = Object.keys(flowTitles);
-              console.log(keys)
                 keys.forEach(function(key){
                     var subkeys = Object.keys(flowTitles[key]);
                     subkeys.forEach(function(subkey){
@@ -318,16 +318,24 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                if(Number($("#clusters").val())>0){
                  clusterNumber =Number($("#clusters").val());
 
-                   newCentroid = new Array(clusterNumber);
-                   for(var i2 = 0;i2<clusterNumber;i2++){
-                       var randomWeight = Math.floor(Math.random()*(totalWeight));
-                       for (var i3=0,l = transitArray.length;i3<l;i3++){
-                           if(sumOfTransitArray[i3]>=randomWeight && newCentroid.indexOf(transitArray[i3])< 0) {
-                               newCentroid[i2] = transitArray[i3];
-                               break;
-                           }
+                 var totalTransitLength = transitArray.length;
+   
+   
+                 newCentroid= new Array(clusterNumber);
+   
+                 for(var i2=0;i2<clusterNumber;i2++){
+                     var randomWeight = Math.floor(Math.random()*(totalWeight));
+   
+                     for(var i3=0;i3<totalTransitLength;i3++){
+                         randomWeight = randomWeight-transitArray[i3][4]
+                       if(randomWeight<=0 && newCentroid.indexOf(transitArray[i3])< 0){
+                   
+                         newCentroid[i2] = transitArray[i3];
+                         break;
                        }
-                   }
+                     }
+                   
+                 }
 
                  result = splitIntoGroups();
                }
@@ -345,7 +353,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               q.defer(d3.csv,indexLatLongURL)
                         .defer(d3.csv,transitURL)
                         .await(kmeansCalculate);
-
+              transitArray = [];
               function kmeansCalculate(error,zones,transit){
             
                 if(error){console.log(error);}
@@ -359,22 +367,21 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 //initialization
                 var totalTransitLength = transitArray.length;
 
-                var currentSum = 0;
-                sumOfTransitArray = new Array(transitArray.length);
-                for(var r = 0;r<totalTransitLength;r++){
-                  currentSum+=transitArray[r][4];
-                  sumOfTransitArray[r] = currentSum;
-                }
-                newCentroid= new Array(clusterNumber);
-                for(var i2 = 0;i2<clusterNumber;i2++){
-                    var randomWeight = Math.floor(Math.random()*(totalWeight));
-                    for (var i3=0;i3<totalTransitLength;i3++){
-                        if(sumOfTransitArray[i3]>=randomWeight && newCentroid.indexOf(transitArray[i3])< 0) {
-                            newCentroid[i2] = transitArray[i3];
-                            break;
-                        }
-                    }
 
+                newCentroid= new Array(clusterNumber);
+
+                for(var i2=0;i2<clusterNumber;i2++){
+                    var randomWeight = Math.floor(Math.random()*(totalWeight));
+
+                    for(var i3=0;i3<totalTransitLength;i3++){
+                        randomWeight = randomWeight-transitArray[i3][4]
+                      if(randomWeight<=0 && newCentroid.indexOf(transitArray[i3])< 0){
+                  
+                        newCentroid[i2] = transitArray[i3];
+                        break;
+                      }
+                    }
+                  
                 }
                 transitLen = new Array(totalTransitLength);
                 transitAngle = new Array(totalTransitLength);
@@ -495,7 +502,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                 this.onChange();};
         }
         function findNewCentroid(transitArrayWithClusters){
-          console.log($('#currentIteration').val())
           newCentroid = [];
           for(var key in transitArrayWithClusters){
             var weight = 0,dest_x = 0,dest_y = 0,orig_x = 0,orig_y = 0;
@@ -587,7 +593,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               };
               var infoTemplate = new InfoTemplate("Value: ${value}");
               var advPolyline = new Polyline(polylineJson,viewSpatialReference);
-              var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:newCentroid[j][5],value:newCentroid[j][4]}, infoTemplate);
+              var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:j,value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
           }
