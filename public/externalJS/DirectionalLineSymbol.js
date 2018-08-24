@@ -296,8 +296,7 @@ define([
                             var g =  this._createGraphic(directionPoints[x], this._createSymbol(this.directionSymbol, angle));
                             graphicsLayer.add(g);
                             var s = g.getShape();
-                            if(s){
-                          
+                        
                                 
                               group.add(s);      
           
@@ -307,7 +306,7 @@ define([
                           
                               g.origJson = g.toJson();
                               g.toJson = this.directionGraphicToJson;  
-                            }
+                            
     
                         }
                     }
