@@ -26,10 +26,10 @@ var omxDirectory;
 
 require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/GraphicsLayer", "esri/graphic", "esri/geometry/Polyline", "esri/geometry/Polygon", "../externalJS/DirectionalLineSymbol.js","../externalJS/geojsonlayer.js",
         "esri/symbols/SimpleMarkerSymbol",  "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/toolbars/draw", "esri/SpatialReference","esri/config", "esri/request",
-        "dojo/ready", "dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/geometry/Extent"],
+        "dojo/ready", "dojo/_base/connect","dojo/dom", "dojo/on","esri/dijit/BasemapToggle","esri/dijit/Scalebar","esri/geometry/Point","esri/InfoTemplate",   "esri/geometry/Extent"],
     function (projection,Map, Color, GraphicsLayer, Graphic, Polyline, Polygon, DirectionalLineSymbol,GeoJsonLayer,
               SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw,SpatialReference, config, request,
-              ready, dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,Extent) {
+              ready, connect,dom, on,BasemapToggle,Scalebar,Point,InfoTemplate,Extent) {
         ready(function () {
              //for the sample print server
 
@@ -176,7 +176,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.removeLayer(startEndLayer);
                   graphicsLayer = new GraphicsLayer({ id: "graphicsLayer" });
                   map.addLayer(graphicsLayer);
-                  graphicsLayer.on("click",function(evt){
+                  connect.connect(graphicsLayer,"onClick",function(evt){
 
                     var clickedGroup = evt.graphic.attributes.indexOfGroup;
                     if(typeof(clickedGroup)!=="undefined"){
