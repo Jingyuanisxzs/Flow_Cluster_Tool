@@ -545,6 +545,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             singleRecord.geometry.type = "LineString";
             singleRecord.geometry.coordinates =[[centroids[i][0],centroids[i][1]],[centroids[i][2],centroids[i][3]]];
             singleRecord.properties.weight = centroids[i][4];
+            singleRecord.properties.ratioWeight = centroids[i][4]/totalWeight;
             geojson.features.push(singleRecord);
           }
           return geojson;
