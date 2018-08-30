@@ -10,3 +10,5 @@ omx-data/
 public/data/flow_list.csv
 public/version.txt
 ve/
+indexLatLongDict.csv
+pecas_matrices_title.csv
