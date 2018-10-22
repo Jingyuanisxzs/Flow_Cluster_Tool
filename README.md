@@ -52,8 +52,6 @@ TODO
   Should be python-3 too.
 
 
-==================================================
-
 ## Set Up
 
 #### 1. Download the folder
@@ -93,12 +91,6 @@ TODO
 2. Browsing through a Chrome Box may not work.
 3. If the matrix is not a flow matrix or consists some wired data, it may make the App stuck. You need to refresh the page manually. 
 
-## Improvements:
-1. There is a [Node.js HDF5 library](https://www.npmjs.com/package/hdf5) that could read the [omx matrices](https://github.com/osPlanning/omx) directly, rather than decoding them very slowly with python.  
-The internal [omx file structure is documented](https://github.com/osPlanning/omx/wiki/Specification).
-
-2. We need another arrowhead shape at the end of the line also indicating quantity, probably in a different colour. Otherwise, intrazonal flows that have zero length don't show up at all, especially after
-clicking on an arrow for see the detailed lines or dots. 
 
 ## Some Tips:
 
