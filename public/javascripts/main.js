@@ -64,7 +64,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             var transitURL = null;
             var flowTitleURL = omxDirectory+"/pecas_matrices_title.csv";
             console.log(flowTitleURL)
-            console.log('8.24')
             var indexLatLongURL = omxDirectory+"/indexLatLongDict.csv";
             $("#flowTable tr").remove();
             $("#flowTable").append('<tr><th>Flow Matrices</th></tr>');
@@ -178,11 +177,11 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   map.addLayer(graphicsLayer);
                   connect.connect(graphicsLayer,"onClick",function(evt){
 
-                    var clickedGroup = evt.graphic.attributes.indexOfGroup;
+                    var clickedGroup = evt.graphic.attributes.index||evt.graphic.symbol.index;
                     if(typeof(clickedGroup)!=="undefined"){
                       map.removeLayer(startEndLayer);
 
-                        startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
+                      startEndLayer = new GraphicsLayer({ id: "startEndLayer" });
                       if($("#dots").is(':checked') === true){
                         for (var h =0;h<transitArrayWithClusters[clickedGroup].length;h++){
                           var orginDest = startEndDots(transitArrayWithClusters[clickedGroup][h]);
@@ -374,7 +373,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                     var randomWeight = Math.floor(Math.random()*(totalWeight));
 
                     for(var i3=0;i3<totalTransitLength;i3++){
-                        randomWeight = randomWeight-transitArray[i3][4]
+                        randomWeight = randomWeight-transitArray[i3][4];
                       if(randomWeight<=0 && newCentroid.indexOf(transitArray[i3])< 0){
                   
                         newCentroid[i2] = transitArray[i3];
@@ -528,15 +527,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               "type":"FeatureCollection",
               "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3401" } },
               "features":[]};
-            /* geoJsonFormat=  {"name":"NewFeatureType",
-               "type":"FeatureCollection",
-               "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
-               "features":[{"type":"Feature",
-                            "geometry":{"type":"LineString",
-                                        "coordinates":[[null,null],[null,null]]},
-                            "properties":null}]};
 
-            */
           for(var i = 0,k=centroids.length;i<k;i++){
             var singleRecord = {};
             singleRecord.type = "Feature";
@@ -550,17 +541,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
           }
           return geojson;
         }
-
-        /*function cartesianDistance(firstCoords,secondCoords){
-            //firstCoords = [[-113,53],[-112,54]]
-            return Math.sqrt(
-                (firstCoords[1][0]-secondCoords[1][0])*(firstCoords[1][0]-secondCoords[1][0]) +
-                (firstCoords[1][1]-secondCoords[1][1])*(firstCoords[1][1]-secondCoords[1][1]) +
-                (firstCoords[0][0]-secondCoords[0][0])*(firstCoords[0][0]-secondCoords[0][0]) +
-                (firstCoords[0][1]-secondCoords[0][1])*(firstCoords[0][1]-secondCoords[0][1]));
-        }
-        */
-        
         function redrawClusters(newCentroid,graphicsLayer){
           var maxWidth = 0;
           for(var p=0,l=newCentroid.length;p<l;p++){
@@ -583,6 +563,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                   style: SimpleLineSymbol.STYLE_SOLID,
                   color: new Color([255,102, 102]),
                   width: centroidWidth,
+                  index:newCentroid[j][5],
                   directionSymbol: "arrow2",
                   directionPixelBuffer: 12,
                   directionColor: new Color([204, 51, 0]),
@@ -594,7 +575,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
               };
               var infoTemplate = new InfoTemplate("Value: ${value}");
               var advPolyline = new Polyline(polylineJson,viewSpatialReference);
-              var ag = new Graphic(advPolyline, advSymbol, {indexOfGroup:j,value:newCentroid[j][4]}, infoTemplate);
+              var ag = new Graphic(advPolyline, advSymbol, {value:newCentroid[j][4]}, infoTemplate);
               graphicsLayer.add(ag);
             }
           }
@@ -700,12 +681,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                     return originG;
                 }
                 else{
-                  
-                  // var lineSymbol = new SimpleLineSymbol()
-                  //   lineSymbol.setMarker({
-                  //     style: "arrow",
-                  //     placement: "end"
-                  //   });
+
                     var advSymbol = new DirectionalLineSymbol({
                         style: SimpleLineSymbol.STYLE_SOLID,
                         color: new Color([0,0,204]),
