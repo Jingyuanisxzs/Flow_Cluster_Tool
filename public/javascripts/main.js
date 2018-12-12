@@ -140,6 +140,7 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
              }, "viewDiv");
             toggle.startup();
             map.on("load", function () {
+				map.disablePan();
                 addGeoJsonLayer("../data/geoInfo/SinglePolygenZoneBoundaries4326.geojson");
             });
             on(map, "update-start", showLoading);
