@@ -39,8 +39,6 @@ Programs
 TODO
 --------------------------------------------------
 
-- The memory consumption around 10GiB for the test files.
-
 - The UI should display unique values in the selector.
 
 - The files split out of the omx files should be in their own subdir.
@@ -86,11 +84,7 @@ TODO
 2. During decoding process, the application will create corresponding a folder './public/uncompressed/flow_data_Scenario_Year_Version/' for the omx file.For example, if the omx file is 'flow_matrices_120_2017_1', the folder created should be './public/uncompressed/flow_data_120_2017_1'.
 
 ## Current Issues:
-
-1. Sometimes, when you zoom out very quickly, the webpage may lose all the lines. You can run the next iteration to fix it.
-2. Browsing through a Chrome Box may not work.
-3. If the matrix is not a flow matrix or consists some wired data, it may make the App stuck. You need to refresh the page manually. 
-
+1. If the matrix is not a flow matrix or consists some wired data, it may make the App stuck. You need to refresh the page manually. 
 
 ## Some Tips:
 
