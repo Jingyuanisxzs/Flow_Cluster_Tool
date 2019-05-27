@@ -107,7 +107,7 @@ function Variable(initVal, onChange)
 }
 
 function walkfolders(dir) {
-    const fs = fs || require('fs'),
+    const fs = require('fs'),
         files = fs.readdirSync(dir);
     const filelist = [];
     files.forEach(function(file) {
