@@ -3,81 +3,80 @@
 /**
  * Module dependencies.
  */
-var app = require('../app');
-var debug = require('debug')('te:server');
-var http = require('http');
-var fs = require('fs');
+const app = require('../app');
+const debug = require('debug')('te:server');
+const http = require('http');
+const fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.FCT_HTTP_PORT || '3000');
+const port = normalizePort(process.env.FCT_HTTP_PORT || '3000');
 app.set('port', port);
 /**
  * Create HTTP server.
  */
-var myVar;//listen to the decoding process
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
-
+let myVar;//listen to the decoding process
+const server = http.createServer(app);
+const io = require('socket.io').listen(server);
 
 
 
 // When a client connects, we note it in the console
 io.sockets.on('connection', function (socket) {
-    var startOMXList = walkfolders('./public/data/compressed');
+    const startOMXList = walkfolders('./public/data/compressed');
     socket.emit('start omx list',startOMXList);
     console.log('A client is connected!');
     socket.on('disconnect', function(){
        console.log('user disconnected');
     });
     socket.on('chat message',function(msg){
-      var originOMXList = walkfolders('./public/data/compressed');
+      const originOMXList = walkfolders('./public/data/compressed');
       console.log(originOMXList);
-      var OMXList = walkfolders('./public/data/uncompressed');
+      const OMXList = walkfolders('./public/data/uncompressed');
       console.log(OMXList);
 
-      var receivedOMXRequest = 'flow_data_'+msg;
-      var receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
+      const receivedOMXRequest = 'flow_data_'+msg;
+      const receivedOMXMatrices = 'flow_matrices_'+msg+'.omx';
       myVar = new Variable(10, function(){
         console.log('python script finished decoding!');
         socket.emit('finish',receivedOMXRequest);
       });
-  
-      
+
+
       if(!includeOrNot(receivedOMXMatrices,originOMXList)){
         socket.emit('find','false');
       }
       else if(includeOrNot(receivedOMXRequest,OMXList)){
         fs.readdir('./public/data/uncompressed/'+receivedOMXRequest, (err, files) => {
-          var fileLength = files.length;
+          const fileLength = files.length;
           if(fileLength<690){
             socket.emit('find','not complete');
           }
           else{
             socket.emit('find','true');
-          }    
+          }
         });
       }
       else{
         //exists, without Decoding, start decoding process
         socket.emit('find','not decoded');
-        var msgSplit = msg.split('_');
+        const msgSplit = msg.split('_');
         console.log('python script starts running')
-        var exec = require('child_process').exec(
+        const exec = require('child_process').exec(
             'python ./public/python/decode_omx.py '+msgSplit[0]+' '+msgSplit[1]+' '+ msgSplit[2] , function(error, stdout, stderr) {
                 if (error) {
                     console.log(error);
                 }
                 else if (stderr) {
-                    console.log(stderr);        
+                    console.log(stderr);
                 }
                 else if (stdout) {
                     console.log("RAN SUCCESSFULLY");
                 }
             }
         );
-        
+
         exec.stdout.pipe(process.stdout);
         exec.on('exit', function() {
             myVar.SetValue(1);
@@ -87,7 +86,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function includeOrNot(element,array){
-  for (var i =0;i<array.length;i++){
+  for (const i =0;i<array.length;i++){
       if(element === array[i]){
         return true;
       }
@@ -108,9 +107,9 @@ function Variable(initVal, onChange)
 }
 
 function walkfolders(dir) {
-    var fs = fs || require('fs'),
+    const fs = fs || require('fs'),
         files = fs.readdirSync(dir);
-    var filelist = [];
+    const filelist = [];
     files.forEach(function(file) {
             filelist.push(file);
     });
@@ -126,7 +125,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
   if (isNaN(port)) {
     // named pipe
     return val;
@@ -147,7 +146,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -169,8 +168,8 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
