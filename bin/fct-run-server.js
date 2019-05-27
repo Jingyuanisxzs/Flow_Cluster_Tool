@@ -86,8 +86,8 @@ io.sockets.on('connection', function (socket) {
 });
 
 function includeOrNot(element,array){
-  for (const i =0;i<array.length;i++){
-      if(element === array[i]){
+  for (let i = 0; i < array.length; i++){
+      if (element === array[i]) {
         return true;
       }
   }
