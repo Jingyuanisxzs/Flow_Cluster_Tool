@@ -141,7 +141,8 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
             toggle.startup();
             map.on("load", function () {
 
-                addGeoJsonLayer("../data/geoInfo/SinglePolygenZoneBoundaries4326.geojson");
+                //addGeoJsonLayer("../data/geoInfo/SinglePolygenZoneBoundaries4326.geojson");
+                addGeoJsonLayer("../data/geoInfo/TAZ_3776.geojson");
             });
             on(map, "update-start", showLoading);
             on(map, "update-end", hideLoading);
@@ -191,7 +192,6 @@ require([  "esri/geometry/projection","esri/map", "esri/Color", "esri/layers/Gra
                           startEndLayer.add(orginDest[0]);
                           if(orginDest[1]!==null){
                               startEndLayer.add(orginDest[1]);
-
                           }
                         }
                       }
